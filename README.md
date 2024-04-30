@@ -25,7 +25,7 @@ The application is to be developed in teams of three 👨‍💻👩‍💻👨�
  - [TypeScript](https://www.typescriptlang.org/)
  - [SASS](https://sass-lang.com/)
  - [React](https://react.dev/)
- - [Vitest](https://vitest.dev/)
+ - [Jest](https://jestjs.io/)
  - [Vite](https://vitejs.dev/)
  - [Commercetools API](https://docs.commercetools.com/api/)
 
