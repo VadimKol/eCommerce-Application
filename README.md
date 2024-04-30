@@ -29,12 +29,12 @@ The application is to be developed in teams of three 👨‍💻👩‍💻👨�
  - [Vite](https://vitejs.dev/)
  - [Commercetools API](https://docs.commercetools.com/api/)
 
- ## Requirements:
+ ## Requirements 📜
 
 - Installed [Git](https://git-scm.com/).
 - Installed [Node](https://nodejs.org/) version 20+.
 
-## Installation and running
+## Installation and running 🔄
  - Clone this repo:
 ```bash
 git clone https://github.com/VadimKol/eCommerce-Application.git
@@ -52,7 +52,7 @@ npm install
 npm run dev
 ```
 
-## Scripts
+## Scripts 🧾
 Use `npm run ...`
  - `dev` Runs local server.
  - `build` Build the project.
