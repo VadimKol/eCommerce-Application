@@ -1,4 +1,4 @@
 {
-  "pattern": "^(main|develop|sprint-\\d+){1}$|^(init|feat|fix|refactor|chore|docs)\/ECOMM-\\d+_\\d+(?:,\\d+|\\d+-|-\\d+)+_[a-zA-Z0-9]+$",
+  "pattern": "^(main|develop|sprint-\\d+){1}$|^(init|feat|fix|refactor|chore|docs)\/ECOMM-\\d+_\\d{2,}(?:,\\d{2,}|\\d{2,}-|-\\d{2,})*_[a-zA-Z0-9]+$",
   "errorMsg": "Branch name is not valid!"
 }
