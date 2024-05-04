@@ -18,7 +18,7 @@ Key pages in the application include:
 
 The application is powered by CommerceTools 🌐, a leading provider of commerce solutions for B2C and B2B enterprises. CommerceTools offers a cloud-native, microservices-based commerce platform that enables brands to create unique and engaging digital commerce experiences.
 
-The application is to be developed in teams of three 👨‍💻👩‍💻👨‍💻: [vadimkol](https://github.com/VadimKol), [izy](https://github.com/izy-code) & [bodnaralex](https://github.com/BodnarAlex). Our mentors: [926227](https://github.com/926227) & [devarslan]().
+The application is to be developed in teams of three 👨‍💻👩‍💻👨‍💻: [vadimkol](https://github.com/VadimKol), [izy](https://github.com/izy-code) & [bodnaralex](https://github.com/BodnarAlex). Our mentors: [926227](https://github.com/926227) & [devarslan](https://github.com/devarslan).
 
 ## Technology Stack 💻📚
 
@@ -56,6 +56,9 @@ npm run dev
 Use `npm run ...`
  - `dev` Runs local server.
  - `build` Build the project.
- - `lint` Runs eslint.
- - `format` Runs prettier.
+ - `preview` Preview the production build.
+ - `lint` Runs linter for ts/tsx.
+ - `stylelint` Runs linter for scss/css.
+ - `format` Runs formatter.
  - `test` Runs tests.
+ - `prepare` Enables Git hooks.
