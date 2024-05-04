@@ -27,6 +27,10 @@ The application is to be developed in teams of three 👨‍💻👩‍💻👨�
  - [React](https://react.dev/)
  - [Jest](https://jestjs.io/)
  - [Vite](https://vitejs.dev/)
+ - [ESLint](https://eslint.org/)
+ - [Prettier](https://prettier.io/)
+ - [Husky](https://typicode.github.io/husky/)
+ - [Stylelint](https://stylelint.io/)
  - [Commercetools API](https://docs.commercetools.com/api/)
 
  ## Requirements 📜
