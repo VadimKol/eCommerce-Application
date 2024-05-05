@@ -23,6 +23,7 @@ The application is powered by CommerceTools 🌐, a leading provider of commerce
 - Frontend:
   - [TypeScript](https://www.typescriptlang.org/) 🚀
   - [React](https://react.dev/) ⚛️
+  - [Vite](https://vitejs.dev/) 📦
   - [SASS](https://sass-lang.com/) 🎨
 - Backend:
   - [Commercetools API](https://docs.commercetools.com/api/) 🔮
@@ -32,7 +33,6 @@ The application is powered by CommerceTools 🌐, a leading provider of commerce
 - Testing:
   - [Jest](https://jestjs.io/) 🃏
 - Other Tools:
-  - [Vite](https://vitejs.dev/) 📦
   - [ESLint](https://eslint.org/) ✨
   - [Prettier](https://prettier.io/) 🎩
   - [Husky](https://typicode.github.io/husky/) 🐶
