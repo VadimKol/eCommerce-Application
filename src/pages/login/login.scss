@@ -1,0 +1,17 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: auto;
+
+  &-button {
+    width: 60%;
+    margin: auto;
+  }
+
+  & .email,
+  & .password,
+  & .error {
+    margin-bottom: 10px;
+  }
+}
