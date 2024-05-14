@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.navList {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+}
