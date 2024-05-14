@@ -17,7 +17,7 @@ const rootElement = document.createElement('div');
 rootElement.className = 'root';
 document.body.insertBefore(rootElement, document.body.firstChild);
 
-const router = createBrowserRouter([
+export const routerConfig = [
   {
     path: '/',
     element: <App />,
@@ -36,7 +36,9 @@ const router = createBrowserRouter([
       { path: '*', element: <NoMatch /> },
     ],
   },
-]);
+];
+
+const router = createBrowserRouter(routerConfig);
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
