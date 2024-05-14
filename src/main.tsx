@@ -8,7 +8,7 @@ import { Login } from './pages/login/Login';
 import { Register } from './pages/register/Register';
 import { Catalog } from './pages/catalog/Catalog';
 import { About } from './pages/about/About';
-import { NoMatch } from './pages/no-match/No-match';
+import { NoMatch } from './pages/no-match/NoMatch';
 import { ErrorPage } from './pages/error/Error';
 import { LoginProvider } from './contexts/login-context';
 
