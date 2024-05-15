@@ -6,7 +6,7 @@ export function App(): JSX.Element {
   return (
     <>
       <Header />
-      <main>
+      <main className="main">
         <Outlet />
       </main>
       <Footer />

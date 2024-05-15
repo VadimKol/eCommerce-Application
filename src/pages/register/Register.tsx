@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 
 export function Register(): JSX.Element {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.registerMain}>
       <form className={styles.form} action="">
@@ -127,7 +130,7 @@ export function Register(): JSX.Element {
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
-          <button type="submit" id="toCatalog" className={styles.button}>
+          <button type="button" id="toCatalog" className={styles.button} onClick={() => navigate('/')}>
             Sign up
           </button>
         </div>
