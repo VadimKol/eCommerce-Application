@@ -1,11 +1,7 @@
 @import "../../style/colors";
 
-.errorMsg {
+.registerMain {
   width: 100%;
-  margin: -20px 0 -10px;
-  font-size: 14px;
-  text-align: right;
-  color: $error-color;
 }
 
 .form {
@@ -13,10 +9,10 @@
   flex-flow: column nowrap;
   justify-content: space-around;
   align-items: center;
-  width: 400px;
-  height: 500px;
-  margin-top: 50px;
-  padding: 0 30px 10px;
+  width: 70%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 0 50px 10px;
   font-size: 20px;
   color: $primary-color;
   background: $text-color;
@@ -27,19 +23,70 @@
   border-image-slice: 1;
 }
 
-.group {
+.groupSection,
+.inputWithError {
+  width: 100%;
+}
+
+.groupTitle {
+  position: relative;
+  width: 200px;
+  text-align: center;
+}
+
+.groupTitle::before,
+.groupTitle::after {
+  content: "";
+  position: absolute;
+  right: 200px;
+  bottom: 10px;
+  width: 15dvw;
+  max-width: 250px;
+  height: 1px;
+  background: linear-gradient(90deg, $primary-color, $secondary-color);
+}
+
+.groupTitle::before {
+  left: 200px;
+  background: linear-gradient(180deg, $primary-color, $secondary-color);
+}
+
+.groupSection {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.formInput {
+  display: flex;
+  flex-flow: column nowrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   width: 100%;
 }
 
 .input {
+  width: 100%;
   height: 30px;
   color: $primary-color;
   border: 1px solid $primary-color;
   border-radius: 5px;
+}
+
+.errorMsg {
+  width: 100%;
+  margin: -20px 0 -10px;
+  font-size: 14px;
+  text-align: right;
+  color: $error-color;
+}
+
+.bigInput {
+  width: 100%;
+}
+
+.smallInput {
+  width: 45%;
 }
 
 .button {
@@ -67,4 +114,14 @@
 
 .input:focus {
   box-shadow: 0 0 7px $secondary-color;
+}
+
+@media (width <= 700px) {
+  .form {
+    padding: 0 20px 10px;
+  }
+
+  .smallInput {
+    width: 80%;
+  }
 }

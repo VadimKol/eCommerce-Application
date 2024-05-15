@@ -4,47 +4,133 @@ export function Register(): JSX.Element {
   return (
     <div className={styles.registerMain}>
       <form className={styles.form} action="">
-        <h2>Sign in</h2>
-        <div>
-          <label htmlFor="name" className={styles.group}>
-            First name:
-            <input id="name" className={styles.invalid} type="text" />
-          </label>
+        <h2 className={styles.formTitle}>Registration</h2>
+        <h3 className={styles.groupTitle}>Personal</h3>
+        <div className={styles.groupSection}>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="name" className={styles.formInput}>
+              Name:
+              <input id="name" className={`${styles.invalid} ${styles.input}`} type="text" />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="last" className={styles.formInput}>
+              Surname:
+              <input id="last" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="date" className={styles.formInput}>
+              Birthday:
+              <input id="date" type="date" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="gender" className={styles.formInput}>
+              Gender:
+              <input id="gender" type="text" className={styles.input} />
+            </label>
+          </div>
         </div>
-        <span className={styles.errorMsg}>Only letters</span>
-        <div>
-          <label htmlFor="last" className={styles.group}>
-            Last name:
-            <input id="last" type="text" />
-          </label>
+        <h3 className={styles.groupTitle}>Billing address</h3>
+        <div className={styles.groupSection}>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Country:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              City:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Street:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Apartament number:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Postal code:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
         </div>
-        <div>
-          <label htmlFor="mail" className={styles.group}>
-            Email:
-            <input id="mail" type="email" />
-          </label>
+        <h3 className={styles.groupTitle}>Shipping address</h3>
+        <div className={styles.groupSection}>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Country:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              City:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Street:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Apartament number:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="adress" className={styles.formInput}>
+              Postal code:
+              <input id="adress" type="text" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
         </div>
-        <div>
-          <label htmlFor="date" className={styles.group}>
-            Birthday:
-            <input id="date" type="date" />
-          </label>
+        <h3 className={styles.groupTitle}>Login Info</h3>
+        <div className={styles.groupSection}>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="mail" className={styles.formInput}>
+              Email:
+              <input id="mail" type="email" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+            <label htmlFor="password" className={styles.formInput}>
+              Password:
+              <input id="password" type="password" className={styles.input} />
+            </label>
+            <span className={styles.errorMsg}>Only letters</span>
+          </div>
+          <button type="submit" id="toCatalog" className={styles.button}>
+            Sign up
+          </button>
         </div>
-        <div>
-          <label htmlFor="adress" className={styles.group}>
-            Adress:
-            <input id="adress" type="text" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="password" className={styles.group}>
-            Password:
-            <input id="password" type="password" />
-          </label>
-        </div>
-        <button type="submit" id="toCatalog" className={styles.button}>
-          Sign in
-        </button>
       </form>
     </div>
   );
