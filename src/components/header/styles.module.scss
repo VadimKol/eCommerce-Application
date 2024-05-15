@@ -1,11 +1,25 @@
 .header {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  font-size: 19px;
+  color: var(--text-color);
+  background: var(--primary-color);
 }
 
 .navList {
   display: flex;
   gap: 10px;
   list-style: none;
+}
+
+.loginLink,
+.registerLink,
+.logoutButton,
+.navLink {
+  text-decoration: none;
+  color: var(--text-color);
 }

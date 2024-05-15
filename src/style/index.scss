@@ -1,3 +1,36 @@
-* {
-  box-sizing: content-box;
+:root {
+  --primary-color: #00215e;
+  --secondary-color: #0ed145;
+  --accent-color: #0ed14580;
+  --error-color: #fc4100;
+  --text-color: #ffffff;
+}
+
+.body {
+  overflow-x: hidden;
+  width: 100svw;
+  height: 100svh;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.root {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  background: url("../assets/images/theme.png");
+  background-size: 700px;
 }

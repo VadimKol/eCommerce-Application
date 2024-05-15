@@ -11,7 +11,9 @@ import { About } from './pages/about/About';
 import { NoMatch } from './pages/no-match/NoMatch';
 import { ErrorPage } from './pages/error/Error';
 import { LoginProvider } from './contexts/login-context';
+import './style/index.scss';
 
+document.body.classList.add('body');
 const rootElement = document.createElement('div');
 
 rootElement.className = 'root';
