@@ -1,0 +1,14 @@
+@import "../../style/colors";
+
+.footer {
+  width: 100%;
+  height: 12%;
+  background: $primary-color;
+}
+
+.footerItem {
+  margin: 40px 0 20px;
+  font-size: 21px;
+  text-align: center;
+  color: $text-color;
+}
