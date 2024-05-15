@@ -1,0 +1,70 @@
+@import "../../style/colors";
+
+.errorMsg {
+  width: 100%;
+  margin: -20px 0 -10px;
+  font-size: 14px;
+  text-align: right;
+  color: $error-color;
+}
+
+.form {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 400px;
+  height: 500px;
+  margin-top: 50px;
+  padding: 0 30px 10px;
+  font-size: 20px;
+  color: $primary-color;
+  background: $text-color;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 15px;
+  border-image: linear-gradient(45deg, $primary-color, $secondary-color) 5;
+  border-image-slice: 1;
+}
+
+.group {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  height: 30px;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 5px;
+}
+
+.button {
+  width: 80px;
+  height: 40px;
+  font-size: 16px;
+  color: $text-color;
+  background: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 500ms;
+}
+
+.button:hover {
+  box-shadow: -5px 5px 5px $secondary-color;
+  transition: all 500ms;
+  transform: translateY(-2px);
+}
+
+.invalid,
+.input.invalid:focus {
+  box-shadow: 0 0 7px $error-color;
+}
+
+.input:focus {
+  box-shadow: 0 0 7px $secondary-color;
+}
