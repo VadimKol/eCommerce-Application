@@ -41,37 +41,37 @@ export function Register(): JSX.Element {
         <h3 className={styles.groupTitle}>Billing address</h3>
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="country_billing" className={styles.formInput}>
               Country:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="country_billing" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="sity_billing" className={styles.formInput}>
               City:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="sity_billing" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="street_billing" className={styles.formInput}>
               Street:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="street_billing" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
-              Apartament number:
-              <input id="adress" type="text" className={styles.input} />
+            <label htmlFor="house_billing" className={styles.formInput}>
+              House number:
+              <input id="house_billing" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="postcode_billing" className={styles.formInput}>
               Postal code:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="postcode_billing" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
@@ -79,37 +79,37 @@ export function Register(): JSX.Element {
         <h3 className={styles.groupTitle}>Shipping address</h3>
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="country_shipping" className={styles.formInput}>
               Country:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="country_shipping" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="sity_shipping" className={styles.formInput}>
               City:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="sity_shipping" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="street_shipping" className={styles.formInput}>
               Street:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="street_shipping" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="house_shipping" className={styles.formInput}>
               Apartament number:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="house_shipping" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="adress" className={styles.formInput}>
+            <label htmlFor="postcode_shipping" className={styles.formInput}>
               Postal code:
-              <input id="adress" type="text" className={styles.input} />
+              <input id="postcode_shipping" type="text" className={styles.input} />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
