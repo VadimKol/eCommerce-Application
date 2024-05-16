@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
-import './login.scss';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import styles from './login.module.scss';
 
 const formSchema = z.object({
   email: z
@@ -34,8 +34,8 @@ export function Login(): JSX.Element {
   const emailValue = getFieldState('email');
   const passwordValue = getFieldState('password');
 
-  let emailClass = 'email';
-  let passwordClass = 'password';
+  let emailClass = styles.email;
+  let passwordClass = styles.password;
 
   /*   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     console.log(data);
@@ -43,24 +43,24 @@ export function Login(): JSX.Element {
   }; */
 
   if (emailValue.isDirty) {
-    emailClass += emailValue.invalid ? ' invalid' : ' valid';
+    emailClass += emailValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
   if (passwordValue.isDirty) {
-    passwordClass += passwordValue.invalid ? ' invalid' : ' valid';
+    passwordClass += passwordValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
   return (
     <form
-      className="login"
+      className={styles.login}
       onSubmit={(event) => {
         // handleSubmit(onSubmit)(event).catch((err) => console.log(err));
         event.preventDefault();
         // navigate('/');
       }}
     >
-      <h2 className="login-title">Login</h2>
-      <label htmlFor="email-login" className="email-label">
+      <h2 className={styles.login_title}>Login</h2>
+      <label htmlFor="email-login" className={styles.email_label}>
         Email:
         <input
           onChange={(event) => {
@@ -72,16 +72,16 @@ export function Login(): JSX.Element {
           className={emailClass}
           type="email"
           placeholder="user@example.com"
-          aria-invalid={errors.email ? 'true' : 'false'}
+          aria-invalid={errors.email || !emailValue.isDirty ? 'true' : 'false'}
         />
       </label>
       {errors.email && (
-        <span role="alert" className="error">
+        <span role="alert" className={styles.error}>
           {errors.email.message}
         </span>
       )}
-      <div className="password-block">
-        <label htmlFor="password-login" className="password-label">
+      <div className={styles.password_block}>
+        <label htmlFor="password-login" className={styles.password_label}>
           Password:
           <input
             onChange={(event) => {
@@ -93,25 +93,25 @@ export function Login(): JSX.Element {
             className={passwordClass}
             type={revealPassword ? 'text' : 'password'}
             placeholder="password"
-            aria-invalid={errors.password ? 'true' : 'false'}
+            aria-invalid={errors.password || !passwordValue.isDirty ? 'true' : 'false'}
           />
         </label>
         <button
           type="button"
-          className={revealPassword ? 'reveal show' : 'reveal'}
+          className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
           aria-label="Reveal"
           onClick={() => setRevealPassword(!revealPassword)}
         />
       </div>
       {errors.password && (
-        <span role="alert" className="error">
+        <span role="alert" className={styles.error}>
           {errors.password.message}
         </span>
       )}
-      <button type="submit" className={!isValid ? 'login-button disabled' : 'login-button'}>
+      <button type="submit" className={!isValid ? `${styles.login_button} ${styles.disabled}` : styles.login_button}>
         Log in
       </button>
-      <p className="registry-link">
+      <p className={styles.registry_link}>
         Haven’t registered yet? Sign up {/* <Link> */}here{/* </Link> */}
       </p>
     </form>
