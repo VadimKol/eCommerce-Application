@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   env: { browser: true, es2022: true, jest: true },
-  plugins: ['@typescript-eslint', 'import', 'react', 'react-refresh', 'react-hooks', 'prettier'],
+  plugins: ['@typescript-eslint', 'simple-import-sort', 'import', 'react', 'react-refresh', 'react-hooks', 'prettier'],
   extends: [
     'airbnb',
     'airbnb-typescript',
@@ -23,6 +23,8 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   rules: {
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'prettier/prettier': 'error',
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',

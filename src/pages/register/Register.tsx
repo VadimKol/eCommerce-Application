@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+
+import { useAppStyles } from '@/hooks/useAppStyles';
+
 import styles from './styles.module.scss';
 
 export function Register(): JSX.Element {
   const navigate = useNavigate();
+  const appStyles = useAppStyles();
 
   return (
-    <div className={styles.registerMain}>
+    <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
       <form className={styles.form} action="">
         <h2 className={styles.formTitle}>Registration</h2>
         <h3 className={styles.groupTitle}>Personal</h3>
@@ -135,6 +139,6 @@ export function Register(): JSX.Element {
           </button>
         </div>
       </form>
-    </div>
+    </main>
   );
 }

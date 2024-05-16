@@ -1,8 +1,12 @@
+import { useAppStyles } from '@/hooks/useAppStyles';
+
 export function About(): JSX.Element {
+  const appStyles = useAppStyles();
+
   return (
-    <>
-      <h1>About</h1>
-      <p>About page</p>
-    </>
+    <main className={appStyles.main}>
+      <h1>About page</h1>
+      <p>Work in progress...</p>
+    </main>
   );
 }

@@ -1,26 +1,17 @@
-import { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LoginContext } from '@/contexts/login-context.tsx';
+
+import { ActionPaths, NavigationPaths } from '@/common/enums';
+import { useAuth } from '@/hooks/useAuth';
+
 import styles from './styles.module.scss';
 
-enum NavigationPaths {
-  HOME = '/',
-  CATALOG = '/catalog',
-  ABOUT = '/about',
-}
-
-enum ActionPaths {
-  LOGIN = '/login',
-  REGISTER = '/register',
-}
-
-export function Header(): JSX.Element {
-  const { isAuthenticated, setIsAuthenticated } = useContext(LoginContext);
+export function Header({ appStyles }: { appStyles: string | undefined }): JSX.Element {
+  const { isAuthenticated, handleLogout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogout = (): void => {
-    setIsAuthenticated(false);
+  const onLogoutClick = (): void => {
+    handleLogout();
 
     if (location.pathname !== String(NavigationPaths.HOME)) {
       navigate(NavigationPaths.HOME);
@@ -32,7 +23,7 @@ export function Header(): JSX.Element {
   const shouldShowLoginLink = location.pathname !== String(ActionPaths.LOGIN);
 
   return (
-    <header className={styles.header}>
+    <header className={`${appStyles || ''} ${styles.header}`}>
       <div className={styles.logo}>
         <Link to={NavigationPaths.HOME}>
           <img src="/logo.png" alt="Geek Store logo" />
@@ -55,7 +46,7 @@ export function Header(): JSX.Element {
       </nav>
       <div className={styles.actions}>
         {isAuthenticated ? (
-          <button className={styles.logoutButton} type="button" onClick={handleLogout}>
+          <button className={styles.logoutButton} type="button" onClick={onLogoutClick}>
             Logout
           </button>
         ) : (
