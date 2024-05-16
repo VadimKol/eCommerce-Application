@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import { NavigationPaths } from '@/common/enums';
+import { ActionPaths, NavigationPaths } from '@/common/enums';
 // import { useAppStyles } from '@/hooks/useAppStyles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -60,70 +60,75 @@ export function Login(): JSX.Element {
   }
 
   return (
-    <form
-      className={styles.login}
-      onSubmit={(event) => {
-        // handleSubmit(onSubmit)(event).catch((err) => console.log(err));
-        event.preventDefault();
-        handleLogin();
-        navigate(NavigationPaths.HOME);
-      }}
-    >
-      <h2 className={styles.login_title}>Login</h2>
-      <label htmlFor="email-login" className={styles.email_label}>
-        Email:
-        <input
-          onChange={(event) => {
-            onChangeEmail(event).catch(() => {});
-          }}
-          name={Email}
-          ref={refEmail}
-          id="email-login"
-          className={emailClass}
-          type="email"
-          placeholder="user@example.com"
-          aria-invalid={errors.email || !emailValue.isDirty ? 'true' : 'false'}
-        />
-      </label>
-      {errors.email && (
-        <span role="alert" className={styles.error}>
-          {errors.email.message}
-        </span>
-      )}
-      <div className={styles.password_block}>
-        <label htmlFor="password-login" className={styles.password_label}>
-          Password:
+    <main className={styles.main}>
+      <form
+        className={styles.login}
+        onSubmit={(event) => {
+          // handleSubmit(onSubmit)(event).catch((err) => console.log(err));
+          event.preventDefault();
+          handleLogin();
+          navigate(NavigationPaths.HOME);
+        }}
+      >
+        <h2 className={styles.login_title}>Login</h2>
+        <label htmlFor="email-login" className={styles.email_label}>
+          Email:
           <input
             onChange={(event) => {
-              onChangePassword(event).catch(() => {});
+              onChangeEmail(event).catch(() => {});
             }}
-            name={Password}
-            ref={refPassword}
-            id="password-login"
-            className={passwordClass}
-            type={revealPassword ? 'text' : 'password'}
-            placeholder="password"
-            aria-invalid={errors.password || !passwordValue.isDirty ? 'true' : 'false'}
+            name={Email}
+            ref={refEmail}
+            id="email-login"
+            className={emailClass}
+            type="email"
+            placeholder="user@example.com"
+            aria-invalid={errors.email || !emailValue.isDirty ? 'true' : 'false'}
           />
         </label>
-        <button
-          type="button"
-          className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
-          aria-label="Reveal"
-          onClick={() => setRevealPassword(!revealPassword)}
-        />
-      </div>
-      {errors.password && (
-        <span role="alert" className={styles.error}>
-          {errors.password.message}
-        </span>
-      )}
-      <button type="submit" className={!isValid ? `${styles.login_button} ${styles.disabled}` : styles.login_button}>
-        Log in
-      </button>
-      <p className={styles.registry_link}>
-        Haven’t registered yet? Sign up {/* <Link> */}here{/* </Link> */}
-      </p>
-    </form>
+        {errors.email && (
+          <span role="alert" className={styles.error}>
+            {errors.email.message}
+          </span>
+        )}
+        <div className={styles.password_block}>
+          <label htmlFor="password-login" className={styles.password_label}>
+            Password:
+            <input
+              onChange={(event) => {
+                onChangePassword(event).catch(() => {});
+              }}
+              name={Password}
+              ref={refPassword}
+              id="password-login"
+              className={passwordClass}
+              type={revealPassword ? 'text' : 'password'}
+              placeholder="password"
+              aria-invalid={errors.password || !passwordValue.isDirty ? 'true' : 'false'}
+            />
+          </label>
+          <button
+            type="button"
+            className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
+            aria-label="Reveal"
+            onClick={() => setRevealPassword(!revealPassword)}
+          />
+        </div>
+        {errors.password && (
+          <span role="alert" className={styles.error}>
+            {errors.password.message}
+          </span>
+        )}
+        <button type="submit" className={!isValid ? `${styles.login_button} ${styles.disabled}` : styles.login_button}>
+          Log in
+        </button>
+        <p className={styles.registry_link}>
+          Haven’t registered yet? Sign up
+          <Link to={ActionPaths.REGISTER} className={styles.link}>
+            {` here!`}
+          </Link>
+        </p>
+      </form>
+    </main>
   );
 }
