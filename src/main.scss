@@ -1,0 +1,24 @@
+:root {
+  --primary-color: #00215e;
+  --secondary-color: #0ed145;
+  --accent-color: #0ed14580;
+  --error-color: #fc4100;
+  --text-color: #ffffff;
+}
+
+.body {
+  width: 100dvw;
+  height: 100dvh;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.root {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+}

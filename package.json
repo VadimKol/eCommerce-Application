@@ -26,8 +26,8 @@
     "lint:fix": "eslint ./src --ext ts,tsx --fix",
     "ci:format": "prettier --check .",
     "format": "prettier --write .",
-    "stylelint": "stylelint ./src/**/*.scss",
-    "stylelint:fix": "stylelint ./src/**/*.scss --fix",
+    "stylelint": "stylelint ./src/**/*.{css,scss} --quiet-deprecation-warnings",
+    "stylelint:fix": "stylelint ./src/**/*.{css,scss} --fix --quiet-deprecation-warnings",
     "test": "jest",
     "prepare": "husky"
   },
@@ -57,7 +57,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "react-router-dom": "^6.23.1",
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.3",
@@ -81,6 +83,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
     "husky": "^9.0.11",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
