@@ -7,9 +7,8 @@
 }
 
 .body {
-  overflow-x: hidden;
-  width: 100svw;
-  height: 100svh;
+  width: 100dvw;
+  height: 100dvh;
   margin: 0;
   color: var(--primary-color);
 }
@@ -22,15 +21,4 @@
   width: 100%;
   min-height: 100%;
   margin: 0 auto;
-}
-
-.main {
-  display: flex;
-  flex: 1;
-  flex-flow: column nowrap;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-  background: url("../assets/images/theme.png");
-  background-size: 700px;
 }

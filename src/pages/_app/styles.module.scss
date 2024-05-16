@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  background: url("@/assets/images/theme.png");
+  background-size: 700px;
+}

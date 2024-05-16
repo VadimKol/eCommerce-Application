@@ -1,19 +1,27 @@
+import './main.scss';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { App } from './App';
+
+import appStyles from '@/pages/_app/styles.module.scss';
+
+import { ActionPaths, NavigationPaths } from './common/enums';
+import { Footer } from './components/footer/Footer';
 import { Header } from './components/header/Header';
+import { NonAuthRoute } from './components/non-auth-route/NonAuthRoute';
+import { AuthProvider } from './contexts/auth-context';
+import { App } from './pages/_app/App';
+import { About } from './pages/about/About';
+import { Catalog } from './pages/catalog/Catalog';
+import { ErrorPage } from './pages/error/Error';
 import { Home } from './pages/home/Home';
 import { Login } from './pages/login/Login';
-import { Register } from './pages/register/Register';
-import { Catalog } from './pages/catalog/Catalog';
-import { About } from './pages/about/About';
 import { NoMatch } from './pages/no-match/NoMatch';
-import { ErrorPage } from './pages/error/Error';
-import { LoginProvider } from './contexts/login-context';
-import './style/index.scss';
+import { Register } from './pages/register/Register';
 
 document.body.classList.add('body');
+
 const rootElement = document.createElement('div');
 
 rootElement.className = 'root';
@@ -25,17 +33,32 @@ export const routerConfig = [
     element: <App />,
     errorElement: (
       <>
-        <Header />,
+        <Header appStyles={appStyles.header} />
         <ErrorPage />
+        <Footer appStyles={appStyles.footer} />
       </>
     ),
     children: [
-      { path: '/', element: <Home /> },
-      { path: '/login', element: <Login /> },
-      { path: '/register', element: <Register /> },
-      { path: '/catalog', element: <Catalog /> },
-      { path: '/about', element: <About /> },
+      { path: NavigationPaths.HOME, element: <Home /> },
+      { path: NavigationPaths.CATALOG, element: <Catalog /> },
+      { path: NavigationPaths.ABOUT, element: <About /> },
       { path: '*', element: <NoMatch /> },
+      {
+        path: ActionPaths.LOGIN,
+        element: (
+          <NonAuthRoute>
+            <Login />
+          </NonAuthRoute>
+        ),
+      },
+      {
+        path: ActionPaths.REGISTER,
+        element: (
+          <NonAuthRoute>
+            <Register />
+          </NonAuthRoute>
+        ),
+      },
     ],
   },
 ];
@@ -44,8 +67,8 @@ const router = createBrowserRouter(routerConfig);
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <LoginProvider>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </LoginProvider>
+    </AuthProvider>
   </React.StrictMode>,
 );

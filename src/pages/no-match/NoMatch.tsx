@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useAppStyles } from '@/hooks/useAppStyles';
+
 export function NoMatch(): JSX.Element {
   const navigate = useNavigate();
+  const appStyles = useAppStyles();
 
   return (
-    <div id="error-page">
+    <main className={appStyles.main}>
       <h1>404</h1>
       <p>Sorry, page not found.</p>
       <button type="button" onClick={() => navigate(-1)}>
@@ -13,6 +16,6 @@ export function NoMatch(): JSX.Element {
       <button type="button" onClick={() => navigate('/')}>
         Home page
       </button>
-    </div>
+    </main>
   );
 }
