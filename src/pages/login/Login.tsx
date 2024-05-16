@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { ActionPaths, NavigationPaths } from '@/common/enums';
-// import { useAppStyles } from '@/hooks/useAppStyles';
+import { useAppStyles } from '@/hooks/useAppStyles';
 import { useAuth } from '@/hooks/useAuth';
 
 import styles from './login.module.scss';
@@ -31,7 +31,7 @@ type FormSchema = z.infer<typeof formSchema>;
 export function Login(): JSX.Element {
   const { handleLogin } = useAuth();
   const navigate = useNavigate();
-  // const appStyles = useAppStyles();
+  const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
   const {
     register,
@@ -60,7 +60,7 @@ export function Login(): JSX.Element {
   }
 
   return (
-    <main className={styles.main}>
+    <main className={appStyles.main}>
       <form
         className={styles.login}
         onSubmit={(event) => {
