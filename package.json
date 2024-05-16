@@ -26,8 +26,8 @@
     "lint:fix": "eslint ./src --ext ts,tsx --fix",
     "ci:format": "prettier --check .",
     "format": "prettier --write .",
-    "stylelint": "stylelint ./src/**/*.css",
-    "stylelint:fix": "stylelint ./src/**/*.css --fix",
+    "stylelint": "stylelint ./src/**/*.scss",
+    "stylelint:fix": "stylelint ./src/**/*.scss --fix",
     "test": "jest",
     "prepare": "husky"
   },

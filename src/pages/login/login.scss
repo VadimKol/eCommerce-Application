@@ -1,17 +1,135 @@
+.email-label,
+.password-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .login {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  box-sizing: border-box;
+  max-width: 400px;
+  height: fit-content;
   margin: auto;
+  padding: 20px 40px 10px;
+  color: #00215e;
+  background:
+    linear-gradient(#ffffff 0 0) padding-box,
+    linear-gradient(45deg, #00215e, #0ed145) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+
+  &-title {
+    margin-top: 0;
+    text-align: center;
+  }
 
   &-button {
     width: 60%;
+    height: 40px;
     margin: auto;
+    font-size: 16px;
+    color: #ffffff;
+    background: #00215e;
+    border: 1px solid #00215e;
+    border-radius: 6px;
+    transition: all 500ms;
+
+    &:hover {
+      box-shadow: -5px 5px 5px #00215e;
+      cursor: pointer;
+      transition: all 500ms;
+      transform: translateY(-2px);
+    }
+  }
+
+  & .email {
+    padding: 0 5px;
+  }
+
+  & .password {
+    padding: 0 30px 0 5px;
   }
 
   & .email,
-  & .password,
-  & .error {
-    margin-bottom: 10px;
+  & .password {
+    box-sizing: border-box;
+    width: 73%;
+    height: 30px;
+    border: 1px solid #00215e;
+    border-radius: 6px;
+
+    &:focus {
+      border: 1px solid #000000;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
   }
+
+  & .valid {
+    box-shadow: 0 0 7px #0ed145;
+  }
+
+  & .invalid {
+    box-shadow: 0 0 7px #ff0000;
+  }
+
+  & .error {
+    width: 100%;
+    margin-bottom: 20px;
+    color: #ff0000;
+  }
+
+  & .password-block {
+    position: relative;
+  }
+
+  & .reveal {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    background-image: url("/src/assets/images/hidden.svg");
+    background-size: cover;
+    border: none;
+
+
+    @media (hover: hover) {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  & .show {
+    background-image: url("/src/assets/images/show.svg");
+  }
+
+  @media screen and (width <= 440px) {
+    margin: auto 20px;
+    padding: 20px 20px 10px;
+  }
+}
+
+.registry-link {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.disabled {
+  background-color: #808080;
+  border-color: #808080;
+  pointer-events: none;
+  user-select: none;
 }
