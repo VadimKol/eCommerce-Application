@@ -16,7 +16,7 @@ import { About } from './pages/about/About';
 import { Catalog } from './pages/catalog/Catalog';
 import { ErrorPage } from './pages/error/Error';
 import { Home } from './pages/home/Home';
-import { Login } from './pages/login/login';
+import { Login } from './pages/login/Login';
 import { NoMatch } from './pages/no-match/NoMatch';
 import { Register } from './pages/register/Register';
 
