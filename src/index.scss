@@ -1,9 +1,17 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   --primary-color: #00215e;
   --secondary-color: #0ed145;
   --accent-color: #0ed14580;
   --error-color: #fc4100;
   --text-color: #ffffff;
+  --background-color: #ffffff;
+  --disabled-color: #808080;
 }
 
 .body {
@@ -21,4 +29,17 @@
   width: 100%;
   min-height: 100%;
   margin: 0 auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(100%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  white-space: nowrap;
+  border: 0;
 }
