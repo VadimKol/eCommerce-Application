@@ -46,7 +46,12 @@ const formSchema = z.object({
   cityShip: z
     .string()
     .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-  postcode: z
+  postcodeBill: z
+    .string()
+    .refine((val) => val === '1', 'Change placeholder 1')
+    .refine((val) => val === '2', 'Change placeholder 2')
+    .refine((val) => val === '3', 'Change placeholder 3'),
+  postcodeShip: z
     .string()
     .refine((val) => val === '1', 'Change placeholder 1')
     .refine((val) => val === '2', 'Change placeholder 2')
@@ -86,14 +91,36 @@ export function Register(): JSX.Element {
     name: StreetAdrressShip,
     ref: refStreetAdrressShip,
   } = register('streetShip');
-  const { onChange: onChangePostAdrressBill, name: PostAdrressBill, ref: refPostAdrressBill } = register('postcode');
-  const { onChange: onChangePostAdrressShip, name: PostAdrressShip, ref: refPostAdrressShip } = register('postcode');
+  const {
+    onChange: onChangePostAdrressBill,
+    name: PostAdrressBill,
+    ref: refPostAdrressBill,
+  } = register('postcodeBill');
+  const {
+    onChange: onChangePostAdrressShip,
+    name: PostAdrressShip,
+    ref: refPostAdrressShip,
+  } = register('postcodeShip');
 
   const emailValue = getFieldState('email');
   const passwordValue = getFieldState('password');
+  const nameValue = getFieldState('name');
+  const surnameValue = getFieldState('surname');
+  const ageValue = getFieldState('age');
+  const cityBillValue = getFieldState('cityBill');
+  const streetBillValue = getFieldState('streetBill');
+  const cityShipValue = getFieldState('cityShip');
+  const streetShipValue = getFieldState('streetShip');
 
   let emailClass = styles.input;
   let passwordClass = styles.input;
+  let nameClass = styles.input;
+  let surnameClass = styles.input;
+  let ageClass = styles.input;
+  let cityBillClass = styles.input;
+  let streetBillClass = styles.input;
+  let cityShipClass = styles.input;
+  let streetShipClass = styles.input;
 
   if (emailValue.isDirty) {
     emailClass += emailValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
@@ -101,6 +128,34 @@ export function Register(): JSX.Element {
 
   if (passwordValue.isDirty) {
     passwordClass += passwordValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (nameValue.isDirty) {
+    nameClass += nameValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (surnameValue.isDirty) {
+    surnameClass += surnameValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (ageValue.isDirty) {
+    ageClass += ageValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (cityBillValue.isDirty) {
+    cityBillClass += cityBillValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (streetBillValue.isDirty) {
+    streetBillClass += streetBillValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (cityShipValue.isDirty) {
+    cityShipClass += cityShipValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (streetShipValue.isDirty) {
+    streetShipClass += streetShipValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
   const firstCounrty = countries[0]?.code || 'US';
@@ -129,7 +184,7 @@ export function Register(): JSX.Element {
               <div className={styles.requiredTitle}>Name</div>
               <input
                 id="name"
-                className={styles.input}
+                className={nameClass}
                 onChange={(event) => {
                   onChangeName(event).catch(() => {});
                 }}
@@ -137,6 +192,7 @@ export function Register(): JSX.Element {
                 name={Name}
                 type="text"
                 placeholder="John"
+                aria-invalid={errors.name || !nameValue.isDirty ? 'true' : 'false'}
                 required
               />
             </label>
@@ -157,7 +213,8 @@ export function Register(): JSX.Element {
                 ref={refSurname}
                 name={Surname}
                 type="text"
-                className={styles.input}
+                className={surnameClass}
+                aria-invalid={errors.surname || !surnameValue.isDirty ? 'true' : 'false'}
                 placeholder="Smith"
                 required
               />
@@ -179,7 +236,8 @@ export function Register(): JSX.Element {
                 ref={refData}
                 name={Data}
                 type="date"
-                className={styles.input}
+                className={ageClass}
+                aria-invalid={errors.age || !ageValue.isDirty ? 'true' : 'false'}
                 required
               />
             </label>
@@ -205,7 +263,7 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_billing" className={styles.formInput}>
-              <div className={styles.requiredTitle}>Country</div>
+              Country
               <select
                 id="country_billing"
                 className={styles.input}
@@ -231,8 +289,9 @@ export function Register(): JSX.Element {
                 ref={refCityAdrressBill}
                 name={CityAdrressBill}
                 type="text"
-                className={styles.input}
+                className={cityBillClass}
                 placeholder="New York"
+                aria-invalid={errors.cityBill || !cityBillValue.isDirty ? 'true' : 'false'}
                 required
               />
             </label>
@@ -253,8 +312,9 @@ export function Register(): JSX.Element {
                 ref={refStreetAdrressBill}
                 name={StreetAdrressBill}
                 type="text"
-                className={styles.input}
+                className={streetBillClass}
                 placeholder="Clinton St"
+                aria-invalid={errors.streetBill || !streetBillValue.isDirty ? 'true' : 'false'}
                 required
               />
             </label>
@@ -279,20 +339,15 @@ export function Register(): JSX.Element {
                 placeholder="440"
               />
             </label>
-            {errors.postcode && (
-              <span role="alert" className={styles.errorMsg}>
-                {errors.postcode.message}
-              </span>
-            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_billing" className={styles.formInput}>
               <div className={styles.requiredTitle}>Postal code</div>
               <input id="postcode_billing" type="text" className={styles.input} placeholder="postcode" />
             </label>
-            {errors.postcode && (
+            {errors.postcodeBill && (
               <span role="alert" className={styles.errorMsg}>
-                {errors.postcode.message}
+                {errors.postcodeBill.message}
               </span>
             )}
           </div>
@@ -303,7 +358,7 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_shipping" className={styles.formInput}>
-              <div className={styles.requiredTitle}>Country</div>
+              Country
               <select
                 id="country_shipping"
                 className={styles.input}
@@ -329,8 +384,10 @@ export function Register(): JSX.Element {
                 ref={refCityAdrressShip}
                 name={CityAdrressShip}
                 type="text"
-                className={styles.input}
+                className={cityShipClass}
                 placeholder="New York"
+                aria-invalid={errors.cityShip || !cityShipValue.isDirty ? 'true' : 'false'}
+                required
               />
             </label>
             {errors.cityShip && (
@@ -350,8 +407,10 @@ export function Register(): JSX.Element {
                 ref={refStreetAdrressShip}
                 name={StreetAdrressShip}
                 type="text"
-                className={styles.input}
+                className={streetShipClass}
                 placeholder="Clinton St"
+                aria-invalid={errors.streetShip || !streetShipValue.isDirty ? 'true' : 'false'}
+                required
               />
             </label>
             {errors.streetShip && (
@@ -375,20 +434,15 @@ export function Register(): JSX.Element {
                 placeholder="440"
               />
             </label>
-            {errors.postcode && (
-              <span role="alert" className={styles.errorMsg}>
-                {errors.postcode.message}
-              </span>
-            )}{' '}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_shipping" className={styles.formInput}>
               <div className={styles.requiredTitle}>Postal code</div>
               <input id="postcode_shipping" type="text" className={styles.input} placeholder="postcode" required />
             </label>
-            {errors.postcode && (
+            {errors.postcodeShip && (
               <span role="alert" className={styles.errorMsg}>
-                {errors.postcode.message}
+                {errors.postcodeShip.message}
               </span>
             )}
           </div>
