@@ -4,12 +4,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ActionPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
 
+import { countries } from '../../constants/constants.ts';
 import styles from './styles.module.scss';
 
 export function Register(): JSX.Element {
   const navigate = useNavigate();
   const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
+
+  const firstCounrty = countries[0]?.code || 'US';
+
+  const [selectedBillingCountry, setSelectedBillingCountry] = useState(firstCounrty);
+  const [selectedShippingCountry, setSelectedShippingCountry] = useState(firstCounrty);
+
+  const handleCountryBillingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedBillingCountry(event.target.value);
+  };
+
+  const handleCountryShippingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedShippingCountry(event.target.value);
+  };
 
   return (
     <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
@@ -22,7 +36,6 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="name" className={styles.formInput}>
               <div className={styles.requiredTitle}>Name</div>
-
               <input id="name" className={styles.input} type="text" placeholder="John" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
@@ -30,7 +43,6 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="last" className={styles.formInput}>
               <div className={styles.requiredTitle}>Surname</div>
-
               <input id="last" type="text" className={styles.input} placeholder="Smith" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
@@ -46,7 +58,10 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="gender" className={styles.formInput}>
               Gender
-              <input id="gender" type="text" className={styles.input} placeholder="male" />
+              <select id="gender" className={styles.input}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
             </label>
           </div>
         </div>
@@ -57,7 +72,18 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_billing" className={styles.formInput}>
               <div className={styles.requiredTitle}>Country</div>
-              <input id="country_billing" type="text" className={styles.input} placeholder="US" required />
+              <select
+                id="country_billing"
+                className={styles.input}
+                value={selectedBillingCountry}
+                onChange={handleCountryBillingChange}
+              >
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.title}
+                  </option>
+                ))}
+              </select>
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
@@ -85,7 +111,7 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_billing" className={styles.formInput}>
               <div className={styles.requiredTitle}>Postal code</div>
-              <input id="postcode_billing" type="text" className={styles.input} placeholder="1****" />
+              <input id="postcode_billing" type="text" className={styles.input} placeholder="postcode" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
@@ -97,7 +123,18 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_shipping" className={styles.formInput}>
               <div className={styles.requiredTitle}>Country</div>
-              <input id="country_shipping" type="text" className={styles.input} placeholder="US" />
+              <select
+                id="country_shipping"
+                className={styles.input}
+                value={selectedShippingCountry}
+                onChange={handleCountryShippingChange}
+              >
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.title}
+                  </option>
+                ))}
+              </select>
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
@@ -125,7 +162,7 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_shipping" className={styles.formInput}>
               <div className={styles.requiredTitle}>Postal code</div>
-              <input id="postcode_shipping" type="text" className={styles.input} placeholder="1****" required />
+              <input id="postcode_shipping" type="text" className={styles.input} placeholder="postcode" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
