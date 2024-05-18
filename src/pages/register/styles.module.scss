@@ -120,6 +120,20 @@
   box-shadow: 0 0 7px var(--secondary-color);
 }
 
+.requiredTitle {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: start;
+  align-items: start;
+}
+
+.requiredTitle::after {
+  content: "*";
+  margin-left: 2px;
+  font-size: 12px;
+  color: var(--error-color);
+}
+
 @media (width <= 700px) {
   .form {
     padding: 0 20px 10px;
@@ -128,6 +142,33 @@
   .smallInput {
     width: 100%;
   }
+}
+
+.password_block {
+  position: relative;
+}
+
+.reveal {
+  position: absolute;
+  top: 28px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  background-image: url("/src/assets/images/hidden.svg");
+  background-size: cover;
+  border: none;
+
+
+  @media (hover: hover) {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.show {
+  background-image: url("/src/assets/images/show.svg");
 }
 
 .registry_link {

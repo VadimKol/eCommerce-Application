@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { ActionPaths } from '@/common/enums';
@@ -8,6 +9,7 @@ import styles from './styles.module.scss';
 export function Register(): JSX.Element {
   const navigate = useNavigate();
   const appStyles = useAppStyles();
+  const [revealPassword, setRevealPassword] = useState(false);
 
   return (
     <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
@@ -19,21 +21,24 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="name" className={styles.formInput}>
-              Name
+              <div className={styles.requiredTitle}>Name</div>
+
               <input id="name" className={styles.input} type="text" placeholder="John" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="last" className={styles.formInput}>
-              Surname
+              <div className={styles.requiredTitle}>Surname</div>
+
               <input id="last" type="text" className={styles.input} placeholder="Smith" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="date" className={styles.formInput}>
-              Birthday
+              <div className={styles.requiredTitle}>Birthday</div>
+
               <input id="date" type="date" className={styles.input} required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
@@ -51,22 +56,22 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_billing" className={styles.formInput}>
-              Country
+              <div className={styles.requiredTitle}>Country</div>
               <input id="country_billing" type="text" className={styles.input} placeholder="US" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="sity_billing" className={styles.formInput}>
-              City
-              <input id="sity_billing" type="text" className={styles.input} placeholder="New York" />
+              <div className={styles.requiredTitle}>City</div>
+              <input id="sity_billing" type="text" className={styles.input} placeholder="New York" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="street_billing" className={styles.formInput}>
-              Street
-              <input id="street_billing" type="text" className={styles.input} placeholder="Clinton St" />
+              <div className={styles.requiredTitle}>Street</div>
+              <input id="street_billing" type="text" className={styles.input} placeholder="Clinton St" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
@@ -79,7 +84,7 @@ export function Register(): JSX.Element {
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_billing" className={styles.formInput}>
-              Postal code
+              <div className={styles.requiredTitle}>Postal code</div>
               <input id="postcode_billing" type="text" className={styles.input} placeholder="1****" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
@@ -91,21 +96,21 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_shipping" className={styles.formInput}>
-              Country
+              <div className={styles.requiredTitle}>Country</div>
               <input id="country_shipping" type="text" className={styles.input} placeholder="US" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="sity_shipping" className={styles.formInput}>
-              City
+              <div className={styles.requiredTitle}>City</div>
               <input id="sity_shipping" type="text" className={styles.input} placeholder="New York" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="street_shipping" className={styles.formInput}>
-              Street
+              <div className={styles.requiredTitle}>Street</div>
               <input id="street_shipping" type="text" className={styles.input} placeholder="Clinton St" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
@@ -119,7 +124,7 @@ export function Register(): JSX.Element {
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_shipping" className={styles.formInput}>
-              Postal code
+              <div className={styles.requiredTitle}>Postal code</div>
               <input id="postcode_shipping" type="text" className={styles.input} placeholder="1****" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
@@ -131,7 +136,7 @@ export function Register(): JSX.Element {
         <div className={`${styles.groupSection}  ${styles.groupCenter}`}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="mail" className={styles.formInput}>
-              Email
+              <div className={styles.requiredTitle}>Email</div>
               <input
                 id="mail"
                 type="email"
@@ -144,17 +149,25 @@ export function Register(): JSX.Element {
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="password" className={styles.formInput}>
-              Password
-              <input
-                id="password"
-                type="password"
-                className={styles.input}
-                autoComplete="new-password"
-                placeholder="password"
-                required
+            <div className={styles.password_block}>
+              <label htmlFor="password" className={styles.formInput}>
+                <div className={styles.requiredTitle}>Password</div>
+                <input
+                  id="password"
+                  type={revealPassword ? 'text' : 'password'}
+                  className={styles.input}
+                  autoComplete="new-password"
+                  placeholder="password"
+                  required
+                />
+              </label>
+              <button
+                type="button"
+                className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
+                aria-label="Reveal"
+                onClick={() => setRevealPassword(!revealPassword)}
               />
-            </label>
+            </div>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <button type="button" id="toCatalog" className={styles.button} onClick={() => navigate('/')}>
