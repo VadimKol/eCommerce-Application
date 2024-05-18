@@ -12,7 +12,9 @@ export function Register(): JSX.Element {
     <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
       <form className={styles.form} action="">
         <h2 className={styles.formTitle}>Registration</h2>
-        <h3 className={styles.groupTitle}>Personal</h3>
+        <div className={styles.contextTitle}>
+          <h3 className={styles.groupTitle}>Personal</h3>
+        </div>
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="name" className={styles.formInput}>
@@ -42,7 +44,9 @@ export function Register(): JSX.Element {
             </label>
           </div>
         </div>
-        <h3 className={styles.groupTitle}>Billing address</h3>
+        <div className={styles.contextTitle}>
+          <h3 className={styles.groupTitle}>Billing address</h3>
+        </div>
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_billing" className={styles.formInput}>
@@ -80,7 +84,9 @@ export function Register(): JSX.Element {
             <span className={styles.errorMsg}>Only letters</span>
           </div>
         </div>
-        <h3 className={styles.groupTitle}>Shipping address</h3>
+        <div className={styles.contextTitle}>
+          <h3 className={styles.groupTitle}>Shipping address</h3>
+        </div>
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_shipping" className={styles.formInput}>
@@ -118,7 +124,9 @@ export function Register(): JSX.Element {
             <span className={styles.errorMsg}>Only letters</span>
           </div>
         </div>
-        <h3 className={styles.groupTitle}>Login info</h3>
+        <div className={styles.contextTitle}>
+          <h3 className={styles.groupTitle}>Login info</h3>
+        </div>
         <div className={`${styles.groupSection}  ${styles.groupCenter}`}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="mail" className={styles.formInput}>

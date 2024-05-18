@@ -26,27 +26,30 @@
   width: 100%;
 }
 
+.contextTitle {
+  position: relative;
+  width: 100%;
+  padding: 0 10px;
+  text-align: center;
+  background-color: var(--text-color);
+}
+
 .groupTitle {
   position: relative;
-  width: 200px;
-  text-align: center;
+  z-index: 5;
+  display: inline-block;
+  padding: 0 15px;
+  background: var(--text-color);
 }
 
-.groupTitle::before,
-.groupTitle::after {
+.contextTitle::before {
   content: "";
   position: absolute;
-  right: 200px;
-  bottom: 10px;
-  width: 15dvw;
-  max-width: 250px;
+  bottom: 35px;
+  left: 0;
+  width: 100%;
   height: 1px;
   background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-}
-
-.groupTitle::before {
-  left: 200px;
-  background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
 }
 
 .groupSection {
