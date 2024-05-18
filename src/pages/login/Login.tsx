@@ -2,13 +2,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
+import { getPasswordFlowApiRoot } from '@/api/build-client';
+import { login } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
 import { useAuth } from '@/hooks/useAuth';
 
-import styles from './login.module.scss';
+import { apiRoot } from '../_app/App';
+import styles from './styles.module.scss';
 
 const formSchema = z.object({
   email: z
@@ -36,27 +40,25 @@ export function Login(): JSX.Element {
   const {
     register,
     getFieldState,
+    getValues,
     formState: { errors, isValid },
   } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
   const { onChange: onChangePassword, name: Password, ref: refPassword } = register('password');
-  const emailValue = getFieldState('email');
-  const passwordValue = getFieldState('password');
+  const emailState = getFieldState('email');
+  const passwordState = getFieldState('password');
+  const email = getValues('email');
+  const password = getValues('password');
 
   let emailClass = styles.email;
   let passwordClass = styles.password;
 
-  /*   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
-    // reset();
-  }; */
-
-  if (emailValue.isDirty) {
-    emailClass += emailValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  if (emailState.isDirty) {
+    emailClass += emailState.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
-  if (passwordValue.isDirty) {
-    passwordClass += passwordValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  if (passwordState.isDirty) {
+    passwordClass += passwordState.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
   return (
@@ -64,10 +66,21 @@ export function Login(): JSX.Element {
       <form
         className={styles.login}
         onSubmit={(event) => {
-          // handleSubmit(onSubmit)(event).catch((err) => console.log(err));
           event.preventDefault();
-          handleLogin();
-          navigate(NavigationPaths.HOME);
+          login({ email, password })
+            .then((response) => {
+              apiRoot.api = getPasswordFlowApiRoot(email, password);
+              toast(`Hello ${response.body.customer.firstName}`, {
+                type: 'success',
+              });
+              handleLogin();
+              navigate(NavigationPaths.HOME);
+            })
+            .catch((error: Error) => {
+              toast(error.message, {
+                type: 'error',
+              });
+            });
         }}
       >
         <h2 className={styles.login_title}>Login</h2>
@@ -83,7 +96,7 @@ export function Login(): JSX.Element {
             className={emailClass}
             type="email"
             placeholder="user@example.com"
-            aria-invalid={errors.email || !emailValue.isDirty ? 'true' : 'false'}
+            aria-invalid={errors.email || !emailState.isDirty ? 'true' : 'false'}
           />
         </label>
         {errors.email && (
@@ -104,12 +117,12 @@ export function Login(): JSX.Element {
               className={passwordClass}
               type={revealPassword ? 'text' : 'password'}
               placeholder="password"
-              aria-invalid={errors.password || !passwordValue.isDirty ? 'true' : 'false'}
+              aria-invalid={errors.password || !passwordState.isDirty ? 'true' : 'false'}
             />
           </label>
           <button
             type="button"
-            className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
+            className={revealPassword ? `${styles.reveal} ${styles.hidden}` : styles.reveal}
             aria-label="Reveal"
             onClick={() => setRevealPassword(!revealPassword)}
           />
