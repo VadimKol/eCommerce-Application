@@ -96,6 +96,7 @@
 .button {
   width: 80px;
   height: 40px;
+  margin-top: 30px;
   font-size: 16px;
   color: var(--text-color);
   background: var(--primary-color);
@@ -117,7 +118,8 @@
 }
 
 .input:focus {
-  box-shadow: 0 0 7px var(--secondary-color);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 7px var(--primary-color);
 }
 
 .requiredTitle {
@@ -180,4 +182,25 @@
   font-weight: 600;
   text-decoration: none;
   color: var(--secondary-color);
+}
+
+.disabled {
+  background-color: var(--disabled-color);
+  border-color: var(--disabled-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.valid {
+  box-shadow: 0 0 7px var(--secondary-color);
+}
+
+.invalid {
+  box-shadow: 0 0 7px var(--error-color);
+}
+
+.error {
+  width: 100%;
+  margin-bottom: 20px;
+  color: var(--error-color);
 }

@@ -1,5 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 import { ActionPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
@@ -7,10 +10,49 @@ import { useAppStyles } from '@/hooks/useAppStyles';
 import { countries } from '../../constants/constants.ts';
 import styles from './styles.module.scss';
 
+const formSchema = z.object({
+  email: z
+    .string()
+    .email(`Email addresses must contain both a local part and a domain name separated by an '@' symbol.`),
+  password: z
+    .string()
+    .min(8, 'Minimum 8 characters')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one digit')
+    .refine(
+      (val) => val[0] !== ' ' && val[val.length - 1] !== ' ',
+      'Password must not contain leading or trailing whitespace.',
+    ),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
+
 export function Register(): JSX.Element {
   const navigate = useNavigate();
   const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
+
+  const {
+    register,
+    getFieldState,
+    formState: { errors, isValid },
+  } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
+  const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
+  const { onChange: onChangePassword, name: Password, ref: refPassword } = register('password');
+  const emailValue = getFieldState('email');
+  const passwordValue = getFieldState('password');
+
+  let emailClass = styles.input;
+  let passwordClass = styles.input;
+
+  if (emailValue.isDirty) {
+    emailClass += emailValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (passwordValue.isDirty) {
+    passwordClass += passwordValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
 
   const firstCounrty = countries[0]?.code || 'US';
 
@@ -175,26 +217,42 @@ export function Register(): JSX.Element {
             <label htmlFor="mail" className={styles.formInput}>
               <div className={styles.requiredTitle}>Email</div>
               <input
+                onChange={(event) => {
+                  onChangeEmail(event).catch(() => {});
+                }}
                 id="mail"
+                ref={refEmail}
                 type="email"
-                className={styles.input}
+                name={Email}
+                className={emailClass}
                 autoComplete="email"
                 placeholder="user@example.com"
+                aria-invalid={errors.email || !emailValue.isDirty ? 'true' : 'false'}
                 required
               />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.email && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.email.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <div className={styles.password_block}>
               <label htmlFor="password" className={styles.formInput}>
                 <div className={styles.requiredTitle}>Password</div>
                 <input
+                  onChange={(event) => {
+                    onChangePassword(event).catch(() => {});
+                  }}
                   id="password"
+                  ref={refPassword}
                   type={revealPassword ? 'text' : 'password'}
-                  className={styles.input}
+                  name={Password}
+                  className={passwordClass}
                   autoComplete="new-password"
                   placeholder="password"
+                  aria-invalid={errors.password || !passwordValue.isDirty ? 'true' : 'false'}
                   required
                 />
               </label>
@@ -205,9 +263,18 @@ export function Register(): JSX.Element {
                 onClick={() => setRevealPassword(!revealPassword)}
               />
             </div>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.password && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.password.message}
+              </span>
+            )}
           </div>
-          <button type="button" id="toCatalog" className={styles.button} onClick={() => navigate('/')}>
+          <button
+            type="submit"
+            id="toCatalog"
+            className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}
+            onClick={() => navigate('/')}
+          >
             Sign up
           </button>
         </div>
