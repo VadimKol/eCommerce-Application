@@ -16,29 +16,29 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="name" className={styles.formInput}>
-              Name:
-              <input id="name" className={`${styles.invalid} ${styles.input}`} type="text" />
+              Name
+              <input id="name" className={styles.input} type="text" placeholder="John" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="last" className={styles.formInput}>
-              Surname:
-              <input id="last" type="text" className={styles.input} />
+              Surname
+              <input id="last" type="text" className={styles.input} placeholder="Smith" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="date" className={styles.formInput}>
-              Birthday:
-              <input id="date" type="date" className={styles.input} />
+              Birthday
+              <input id="date" type="date" className={styles.input} required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="gender" className={styles.formInput}>
-              Gender:
-              <input id="gender" type="text" className={styles.input} />
+              Gender
+              <input id="gender" type="text" className={styles.input} placeholder="male" />
             </label>
           </div>
         </div>
@@ -46,36 +46,36 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_billing" className={styles.formInput}>
-              Country:
-              <input id="country_billing" type="text" className={styles.input} />
+              Country
+              <input id="country_billing" type="text" className={styles.input} placeholder="US" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="sity_billing" className={styles.formInput}>
-              City:
-              <input id="sity_billing" type="text" className={styles.input} />
+              City
+              <input id="sity_billing" type="text" className={styles.input} placeholder="New York" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="street_billing" className={styles.formInput}>
-              Street:
-              <input id="street_billing" type="text" className={styles.input} />
+              Street
+              <input id="street_billing" type="text" className={styles.input} placeholder="Clinton St" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_billing" className={styles.formInput}>
-              House number:
-              <input id="house_billing" type="text" className={styles.input} />
+              Apartment number
+              <input id="house_billing" type="text" className={styles.input} placeholder="440" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_billing" className={styles.formInput}>
-              Postal code:
-              <input id="postcode_billing" type="text" className={styles.input} />
+              Postal code
+              <input id="postcode_billing" type="text" className={styles.input} placeholder="1****" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
@@ -84,53 +84,67 @@ export function Register(): JSX.Element {
         <div className={styles.groupSection}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country_shipping" className={styles.formInput}>
-              Country:
-              <input id="country_shipping" type="text" className={styles.input} />
+              Country
+              <input id="country_shipping" type="text" className={styles.input} placeholder="US" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="sity_shipping" className={styles.formInput}>
-              City:
-              <input id="sity_shipping" type="text" className={styles.input} />
+              City
+              <input id="sity_shipping" type="text" className={styles.input} placeholder="New York" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="street_shipping" className={styles.formInput}>
-              Street:
-              <input id="street_shipping" type="text" className={styles.input} />
+              Street
+              <input id="street_shipping" type="text" className={styles.input} placeholder="Clinton St" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_shipping" className={styles.formInput}>
-              Apartament number:
-              <input id="house_shipping" type="text" className={styles.input} />
+              Apartment number
+              <input id="house_shipping" type="text" className={styles.input} placeholder="440" />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_shipping" className={styles.formInput}>
-              Postal code:
-              <input id="postcode_shipping" type="text" className={styles.input} />
+              Postal code
+              <input id="postcode_shipping" type="text" className={styles.input} placeholder="1****" required />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
         </div>
-        <h3 className={styles.groupTitle}>Login Info</h3>
-        <div className={styles.groupSection}>
+        <h3 className={styles.groupTitle}>Login info</h3>
+        <div className={`${styles.groupSection}  ${styles.groupCenter}`}>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="mail" className={styles.formInput}>
-              Email:
-              <input id="mail" type="email" className={styles.input} />
+              Email
+              <input
+                id="mail"
+                type="email"
+                className={styles.input}
+                autoComplete="email"
+                placeholder="user@example.com"
+                required
+              />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="password" className={styles.formInput}>
-              Password:
-              <input id="password" type="password" className={styles.input} />
+              Password
+              <input
+                id="password"
+                type="password"
+                className={styles.input}
+                autoComplete="new-password"
+                placeholder="password"
+                required
+              />
             </label>
             <span className={styles.errorMsg}>Only letters</span>
           </div>
