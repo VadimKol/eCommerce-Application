@@ -13,12 +13,9 @@
   padding: 0 50px 10px;
   font-size: 20px;
   color: var(--primary-color);
-  background: var(--text-color);
-  border-width: 5px;
-  border-style: solid;
-  border-radius: 15px;
-  border-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) 5;
-  border-image-slice: 1;
+  background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
 }
 
 .groupSection,
@@ -85,6 +82,7 @@
   font-size: 14px;
   text-align: right;
   color: var(--error-color);
+  visibility: hidden;
 }
 
 .bigInput {
@@ -130,4 +128,15 @@
   .smallInput {
     width: 100%;
   }
+}
+
+.registry_link {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.link {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--secondary-color);
 }

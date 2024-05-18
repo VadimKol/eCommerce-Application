@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { ActionPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
 
 import styles from './styles.module.scss';
@@ -160,6 +161,12 @@ export function Register(): JSX.Element {
             Sign up
           </button>
         </div>
+        <p className={styles.registry_link}>
+          Already registered? Sign in
+          <Link to={ActionPaths.LOGIN} className={styles.link}>
+            {` here!`}
+          </Link>
+        </p>
       </form>
     </main>
   );
