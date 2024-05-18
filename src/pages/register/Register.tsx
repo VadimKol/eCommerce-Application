@@ -10,6 +10,17 @@ import { useAppStyles } from '@/hooks/useAppStyles';
 import { countries } from '../../constants/constants.ts';
 import styles from './styles.module.scss';
 
+const calculateAge = (birthDate: string): boolean => {
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDifference = today.getMonth() - birth.getMonth();
+  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birth.getDate())) {
+    age -= 1;
+  }
+  return age >= 13;
+};
+
 const formSchema = z.object({
   email: z
     .string()
@@ -24,6 +35,26 @@ const formSchema = z.object({
       (val) => val[0] !== ' ' && val[val.length - 1] !== ' ',
       'Password must not contain leading or trailing whitespace.',
     ),
+  name: z.string().regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
+
+  surname: z.string().regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
+  streetBill: z.string().regex(/.+/, 'Must contain at least one character'),
+  streetShip: z.string().regex(/.+/, 'Must contain at least one character'),
+  cityBill: z
+    .string()
+    .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
+  cityShip: z
+    .string()
+    .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
+  postcode: z
+    .string()
+    .refine((val) => val === '1', 'Change placeholder 1')
+    .refine((val) => val === '2', 'Change placeholder 2')
+    .refine((val) => val === '3', 'Change placeholder 3'),
+  age: z
+    .string()
+    .refine((date) => !Number.isNaN(Date.parse(date)), 'Invalid date format')
+    .refine((date) => calculateAge(date), 'You must be at least 13 years old'),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -40,6 +71,24 @@ export function Register(): JSX.Element {
   } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
   const { onChange: onChangePassword, name: Password, ref: refPassword } = register('password');
+  const { onChange: onChangeName, name: Name, ref: refName } = register('name');
+  const { onChange: onChangeSurname, name: Surname, ref: refSurname } = register('surname');
+  const { onChange: onChangeData, name: Data, ref: refData } = register('age');
+  const { onChange: onChangeCityAdrressBill, name: CityAdrressBill, ref: refCityAdrressBill } = register('cityBill');
+  const { onChange: onChangeCityAdrressShip, name: CityAdrressShip, ref: refCityAdrressShip } = register('cityShip');
+  const {
+    onChange: onChangeStreetAdrressBill,
+    name: StreetAdrressBill,
+    ref: refStreetAdrressBill,
+  } = register('streetBill');
+  const {
+    onChange: onChangeStreetAdrressShip,
+    name: StreetAdrressShip,
+    ref: refStreetAdrressShip,
+  } = register('streetShip');
+  const { onChange: onChangePostAdrressBill, name: PostAdrressBill, ref: refPostAdrressBill } = register('postcode');
+  const { onChange: onChangePostAdrressShip, name: PostAdrressShip, ref: refPostAdrressShip } = register('postcode');
+
   const emailValue = getFieldState('email');
   const passwordValue = getFieldState('password');
 
@@ -78,24 +127,67 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="name" className={styles.formInput}>
               <div className={styles.requiredTitle}>Name</div>
-              <input id="name" className={styles.input} type="text" placeholder="John" required />
+              <input
+                id="name"
+                className={styles.input}
+                onChange={(event) => {
+                  onChangeName(event).catch(() => {});
+                }}
+                ref={refName}
+                name={Name}
+                type="text"
+                placeholder="John"
+                required
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.name && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.name.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="last" className={styles.formInput}>
               <div className={styles.requiredTitle}>Surname</div>
-              <input id="last" type="text" className={styles.input} placeholder="Smith" required />
+              <input
+                id="last"
+                onChange={(event) => {
+                  onChangeSurname(event).catch(() => {});
+                }}
+                ref={refSurname}
+                name={Surname}
+                type="text"
+                className={styles.input}
+                placeholder="Smith"
+                required
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.surname && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.surname.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="date" className={styles.formInput}>
               <div className={styles.requiredTitle}>Birthday</div>
-
-              <input id="date" type="date" className={styles.input} required />
+              <input
+                id="date"
+                onChange={(event) => {
+                  onChangeData(event).catch(() => {});
+                }}
+                ref={refData}
+                name={Data}
+                type="date"
+                className={styles.input}
+                required
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.age && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.age.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="gender" className={styles.formInput}>
@@ -127,35 +219,82 @@ export function Register(): JSX.Element {
                 ))}
               </select>
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="sity_billing" className={styles.formInput}>
               <div className={styles.requiredTitle}>City</div>
-              <input id="sity_billing" type="text" className={styles.input} placeholder="New York" required />
+              <input
+                id="sity_billing"
+                onChange={(event) => {
+                  onChangeCityAdrressBill(event).catch(() => {});
+                }}
+                ref={refCityAdrressBill}
+                name={CityAdrressBill}
+                type="text"
+                className={styles.input}
+                placeholder="New York"
+                required
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.cityBill && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.cityBill.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="street_billing" className={styles.formInput}>
               <div className={styles.requiredTitle}>Street</div>
-              <input id="street_billing" type="text" className={styles.input} placeholder="Clinton St" required />
+              <input
+                id="street_billing"
+                onChange={(event) => {
+                  onChangeStreetAdrressBill(event).catch(() => {});
+                }}
+                ref={refStreetAdrressBill}
+                name={StreetAdrressBill}
+                type="text"
+                className={styles.input}
+                placeholder="Clinton St"
+                required
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.streetBill && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.streetBill.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_billing" className={styles.formInput}>
               Apartment number
-              <input id="house_billing" type="text" className={styles.input} placeholder="440" />
+              <input
+                id="house_billing"
+                onChange={(event) => {
+                  onChangePostAdrressBill(event).catch(() => {});
+                }}
+                ref={refPostAdrressBill}
+                name={PostAdrressBill}
+                type="text"
+                className={styles.input}
+                placeholder="440"
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.postcode && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.postcode.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_billing" className={styles.formInput}>
               <div className={styles.requiredTitle}>Postal code</div>
               <input id="postcode_billing" type="text" className={styles.input} placeholder="postcode" />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.postcode && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.postcode.message}
+              </span>
+            )}
           </div>
         </div>
         <div className={styles.contextTitle}>
@@ -178,35 +317,80 @@ export function Register(): JSX.Element {
                 ))}
               </select>
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="sity_shipping" className={styles.formInput}>
               <div className={styles.requiredTitle}>City</div>
-              <input id="sity_shipping" type="text" className={styles.input} placeholder="New York" />
+              <input
+                id="sity_shipping"
+                onChange={(event) => {
+                  onChangeCityAdrressShip(event).catch(() => {});
+                }}
+                ref={refCityAdrressShip}
+                name={CityAdrressShip}
+                type="text"
+                className={styles.input}
+                placeholder="New York"
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.cityShip && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.cityShip.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="street_shipping" className={styles.formInput}>
               <div className={styles.requiredTitle}>Street</div>
-              <input id="street_shipping" type="text" className={styles.input} placeholder="Clinton St" />
+              <input
+                id="street_shipping"
+                onChange={(event) => {
+                  onChangeStreetAdrressShip(event).catch(() => {});
+                }}
+                ref={refStreetAdrressShip}
+                name={StreetAdrressShip}
+                type="text"
+                className={styles.input}
+                placeholder="Clinton St"
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.streetShip && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.streetShip.message}
+              </span>
+            )}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_shipping" className={styles.formInput}>
               Apartment number
-              <input id="house_shipping" type="text" className={styles.input} placeholder="440" />
+              <input
+                id="house_shipping"
+                onChange={(event) => {
+                  onChangePostAdrressShip(event).catch(() => {});
+                }}
+                ref={refPostAdrressShip}
+                name={PostAdrressShip}
+                type="text"
+                className={styles.input}
+                placeholder="440"
+              />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.postcode && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.postcode.message}
+              </span>
+            )}{' '}
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="postcode_shipping" className={styles.formInput}>
               <div className={styles.requiredTitle}>Postal code</div>
               <input id="postcode_shipping" type="text" className={styles.input} placeholder="postcode" required />
             </label>
-            <span className={styles.errorMsg}>Only letters</span>
+            {errors.postcode && (
+              <span role="alert" className={styles.errorMsg}>
+                {errors.postcode.message}
+              </span>
+            )}
           </div>
         </div>
         <div className={styles.contextTitle}>
