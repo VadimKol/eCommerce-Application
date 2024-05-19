@@ -132,7 +132,11 @@ export function Login(): JSX.Element {
             {errors.password.message}
           </span>
         )}
-        <button type="submit" className={!isValid ? `${styles.login_button} ${styles.disabled}` : styles.login_button}>
+        <button
+          type="submit"
+          className={!isValid ? `${styles.login_button} ${styles.disabled}` : styles.login_button}
+          disabled={!isValid}
+        >
           Log in
         </button>
         <p className={styles.registry_link}>
