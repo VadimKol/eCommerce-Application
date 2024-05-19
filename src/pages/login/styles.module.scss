@@ -95,7 +95,7 @@
     width: 20px;
     height: 20px;
     background-color: transparent;
-    background-image: url("/src/assets/images/hidden.svg");
+    background-image: url("/src/assets/images/show.svg");
     background-size: cover;
     border: none;
 
@@ -107,8 +107,8 @@
     }
   }
 
-  & .show {
-    background-image: url("/src/assets/images/show.svg");
+  & .hidden {
+    background-image: url("/src/assets/images/hidden.svg");
   }
 
   @media screen and (width <= 440px) {
