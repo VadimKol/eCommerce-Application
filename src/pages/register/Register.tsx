@@ -351,6 +351,19 @@ export function Register(): JSX.Element {
               </span>
             )}
           </div>
+          <div className={`${styles.containerRadioBtn}  ${styles.bigInput}`}>
+            <label htmlFor="billdefault" className={styles.container}>
+              <input
+                id="billdefault"
+                value="billdefault"
+                type="radio"
+                name="default"
+                className={styles.radioBtn}
+                checked
+              />
+              Set as default address
+            </label>
+          </div>
         </div>
         <div className={styles.contextTitle}>
           <h3 className={styles.groupTitle}>Shipping address</h3>
@@ -445,6 +458,12 @@ export function Register(): JSX.Element {
                 {errors.postcodeShip.message}
               </span>
             )}
+          </div>
+          <div className={`${styles.containerRadioBtn}  ${styles.bigInput}`}>
+            <label htmlFor="shipdefault" className={styles.container}>
+              <input id="default" value="shipDefault" type="radio" name="default" className={styles.radioBtn} />
+              Set as default address
+            </label>
           </div>
         </div>
         <div className={styles.contextTitle}>
