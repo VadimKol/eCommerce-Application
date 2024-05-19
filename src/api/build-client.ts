@@ -1,15 +1,14 @@
 import { type ByProjectKeyRequestBuilder, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import {
   type AnonymousAuthMiddlewareOptions,
-  // type AuthMiddlewareOptions,
   ClientBuilder,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
-  // type RefreshAuthMiddlewareOptions,
-  // type TokenCache,
+  type RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 
+import { CustomTokenCache } from '@/common/token-cache';
 import { type Credentials, type User } from '@/common/types';
 
 const host: string = import.meta.env.VITE_AUTH_URL;
@@ -25,72 +24,49 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
-// Client cridentials flow api root
-/* export const getClientCridentialsFlowApiRoot = (): ByProjectKeyRequestBuilder => {
-  const authMiddlewareOptions: AuthMiddlewareOptions = {
-    host,
-    projectKey,
-    credentials,
-    scopes,
-    fetch,
-  };
-
-  const client = new ClientBuilder()
-    .withClientCredentialsFlow(authMiddlewareOptions)
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware() // удалить скорее всего
-    .build();
-
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-}; */
+export const tokenCache = new CustomTokenCache();
 
 // Password flow api root
-export const getPasswordFlowApiRoot = (
-  email: string,
-  password: string,
-  // tokenCache: TokenCache,
-): ByProjectKeyRequestBuilder => {
+export const getPasswordFlowApiRoot = (email: string, password: string): ByProjectKeyRequestBuilder => {
   const user: User = { username: email, password };
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host,
     projectKey,
     credentials: { ...credentials, user },
     scopes,
-    // tokenCache,
+    tokenCache,
     fetch,
   };
 
   const client = new ClientBuilder()
     .withPasswordFlow(passwordAuthMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware() // удалить скорее всего
     .build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
 // Anonymous session flow api root
-export const getAnonymousFlowApiRoot = (/* tokenCache: TokenCache */): ByProjectKeyRequestBuilder => {
+export const getAnonymousFlowApiRoot = (): ByProjectKeyRequestBuilder => {
   const anonymousAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     host,
     projectKey,
     credentials,
     scopes,
-    // tokenCache,
+    tokenCache,
     fetch,
   };
 
   const client = new ClientBuilder()
     .withAnonymousSessionFlow(anonymousAuthMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware() // удалить скорее всего
     .build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
 // Refresh token flow api root
-/* export const getRefreshTokenFlowApiRoot = (refreshToken: string): ByProjectKeyRequestBuilder => {
+export const getRefreshTokenFlowApiRoot = (refreshToken: string): ByProjectKeyRequestBuilder => {
   const refreshAuthMiddlewareOptions: RefreshAuthMiddlewareOptions = {
     host,
     projectKey,
@@ -102,8 +78,11 @@ export const getAnonymousFlowApiRoot = (/* tokenCache: TokenCache */): ByProject
   const client = new ClientBuilder()
     .withRefreshTokenFlow(refreshAuthMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware() // удалить скорее всего
     .build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-}; */
+};
+
+const refreshToken = sessionStorage.getItem('geek-shop-token');
+
+export const apiRoot = refreshToken ? getRefreshTokenFlowApiRoot(refreshToken) : getAnonymousFlowApiRoot();

@@ -1,5 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
+import { logout } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -11,11 +13,18 @@ export function Header({ appStyles }: { appStyles: string | undefined }): JSX.El
   const navigate = useNavigate();
 
   const onLogoutClick = (): void => {
-    handleLogout();
+    logout()
+      .then(() => {
+        toast('Logout successfully', { type: 'success' });
+        handleLogout();
 
-    if (location.pathname !== String(NavigationPaths.HOME)) {
-      navigate(NavigationPaths.HOME);
-    }
+        if (location.pathname !== String(NavigationPaths.HOME)) {
+          navigate(NavigationPaths.HOME);
+        }
+      })
+      .catch(() => {
+        toast(`Failed to logout`, { type: 'error' });
+      });
   };
 
   const isCurrentLink = (path: NavigationPaths): boolean => location.pathname === String(path);

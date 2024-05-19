@@ -5,13 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
-import { getPasswordFlowApiRoot } from '@/api/build-client';
+import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
 import { useAuth } from '@/hooks/useAuth';
 
-import { apiRoot } from '../_app/App';
 import styles from './styles.module.scss';
 
 const formSchema = z.object({
@@ -69,17 +68,18 @@ export function Login(): JSX.Element {
           event.preventDefault();
           login({ email, password })
             .then((response) => {
-              apiRoot.api = getPasswordFlowApiRoot(email, password);
-              toast(`Hello ${response.body.customer.firstName}`, {
-                type: 'success',
-              });
+              sessionStorage.setItem('geek-shop-token', `${tokenCache.get().refreshToken}`);
+
+              // не даст выполнить запросы для анонима
+              // apiRoot.me().get().execute().then(console.log).catch(console.error);
+              // apiRoot.me().get().execute().then(console.log).catch(console.error);
+
+              toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
               handleLogin();
               navigate(NavigationPaths.HOME);
             })
             .catch((error: Error) => {
-              toast(error.message, {
-                type: 'error',
-              });
+              toast(error.message, { type: 'error' });
             });
         }}
       >
