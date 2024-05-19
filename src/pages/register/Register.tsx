@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import { ActionPaths } from '@/common/enums';
+import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
 
 import { countries } from '../../constants/constants.ts';
@@ -46,20 +46,19 @@ const formSchema = z.object({
   cityShip: z
     .string()
     .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-  postcodeBill: z
-    .string()
-    .refine((val) => val === '1', 'Change placeholder 1')
-    .refine((val) => val === '2', 'Change placeholder 2')
-    .refine((val) => val === '3', 'Change placeholder 3'),
-  postcodeShip: z
-    .string()
-    .refine((val) => val === '1', 'Change placeholder 1')
-    .refine((val) => val === '2', 'Change placeholder 2')
-    .refine((val) => val === '3', 'Change placeholder 3'),
+  postcodeBill: z.string().regex(/^\d{6}$/, 'It must be exactly 6 digits.'),
+  postcodeShip: z.string().regex(/^\d{6}$/, 'It must be exactly 6 digits.'),
   age: z
     .string()
     .refine((date) => !Number.isNaN(Date.parse(date)), 'Invalid date format')
     .refine((date) => calculateAge(date), 'You must be at least 13 years old'),
+  setAddress: z.boolean(),
+  billdefault: z.boolean(),
+  shipDefault: z.boolean(),
+  apartamentBill: z.string(),
+  apartamentShip: z.string(),
+  countryBill: z.string(),
+  countryShip: z.string(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -68,10 +67,13 @@ export function Register(): JSX.Element {
   const navigate = useNavigate();
   const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
+  const [isBlockVisible, setIsBlockVisible] = useState(false);
 
   const {
     register,
     getFieldState,
+    watch,
+    setValue,
     formState: { errors, isValid },
   } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
@@ -163,17 +165,63 @@ export function Register(): JSX.Element {
   const [selectedBillingCountry, setSelectedBillingCountry] = useState(firstCounrty);
   const [selectedShippingCountry, setSelectedShippingCountry] = useState(firstCounrty);
 
-  const handleCountryBillingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedBillingCountry(event.target.value);
-  };
-
   const handleCountryShippingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedShippingCountry(event.target.value);
   };
 
+  const countryBillValueWatch = watch('countryBill', 'US');
+  const cityBillValueWatch = watch('cityBill');
+  const streetBillValueWatch = watch('streetBill');
+  const apartamentBillValueWatch = watch('apartamentBill');
+  const postcodeBillValueWatch = watch('postcodeBill');
+  const checkboxValue = watch('setAddress', false);
+
+  const checkInputValues = (): void => {
+    console.log(countryBillValueWatch);
+
+    if (checkboxValue) {
+      setValue('countryShip', countryBillValueWatch);
+      setValue('cityShip', cityBillValueWatch);
+      setValue('streetShip', streetBillValueWatch);
+      setValue('apartamentShip', apartamentBillValueWatch);
+      setValue('postcodeShip', postcodeBillValueWatch);
+      setSelectedShippingCountry(selectedBillingCountry);
+    }
+  };
+
+  const handleCountryBillingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedBillingCountry(event.target.value);
+    if (checkboxValue) {
+      setValue('countryShip', event.target.value);
+      setSelectedShippingCountry(event.target.value);
+    }
+  };
+
+  useEffect(() => {
+    checkInputValues();
+  }, [
+    countryBillValueWatch,
+    cityBillValueWatch,
+    streetBillValueWatch,
+    apartamentBillValueWatch,
+    postcodeBillValueWatch,
+    checkboxValue,
+  ]);
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setIsBlockVisible(!isBlockVisible);
+    setValue('setAddress', event.target.checked);
+  };
+
   return (
     <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
-      <form className={styles.form} action="">
+      <form
+        className={styles.form}
+        onSubmit={(event) => {
+          event.preventDefault();
+          navigate(NavigationPaths.HOME);
+        }}
+      >
         <h2 className={styles.formTitle}>Registration</h2>
         <div className={styles.contextTitle}>
           <h3 className={styles.groupTitle}>Personal</h3>
@@ -327,8 +375,14 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_billing" className={styles.formInput}>
               Apartment number
+              <input id="house_billing" name="apartamentBill" type="text" className={styles.input} placeholder="440" />
+            </label>
+          </div>
+          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+            <label htmlFor="postcode_billing" className={styles.formInput}>
+              <div className={styles.requiredTitle}>Postal code</div>
               <input
-                id="house_billing"
+                id="postcode_billing"
                 onChange={(event) => {
                   onChangePostAdrressBill(event).catch(() => {});
                 }}
@@ -336,14 +390,8 @@ export function Register(): JSX.Element {
                 name={PostAdrressBill}
                 type="text"
                 className={styles.input}
-                placeholder="440"
+                placeholder="postcode"
               />
-            </label>
-          </div>
-          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="postcode_billing" className={styles.formInput}>
-              <div className={styles.requiredTitle}>Postal code</div>
-              <input id="postcode_billing" type="text" className={styles.input} placeholder="postcode" />
             </label>
             {errors.postcodeBill && (
               <span role="alert" className={styles.errorMsg}>
@@ -356,113 +404,143 @@ export function Register(): JSX.Element {
               <input
                 id="billdefault"
                 value="billdefault"
-                type="radio"
-                name="default"
+                type="checkbox"
+                name="billdefault"
                 className={styles.radioBtn}
-                checked
               />
-              Set as default address
+              Set default for Billing
             </label>
           </div>
         </div>
         <div className={styles.contextTitle}>
           <h3 className={styles.groupTitle}>Shipping address</h3>
         </div>
-        <div className={styles.groupSection}>
-          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="country_shipping" className={styles.formInput}>
-              Country
-              <select
-                id="country_shipping"
-                className={styles.input}
-                value={selectedShippingCountry}
-                onChange={handleCountryShippingChange}
-              >
-                {countries.map((country) => (
-                  <option key={country.code} value={country.code}>
-                    {country.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="sity_shipping" className={styles.formInput}>
-              <div className={styles.requiredTitle}>City</div>
-              <input
-                id="sity_shipping"
-                onChange={(event) => {
-                  onChangeCityAdrressShip(event).catch(() => {});
-                }}
-                ref={refCityAdrressShip}
-                name={CityAdrressShip}
-                type="text"
-                className={cityShipClass}
-                placeholder="New York"
-                aria-invalid={errors.cityShip || !cityShipValue.isDirty ? 'true' : 'false'}
-                required
-              />
-            </label>
-            {errors.cityShip && (
-              <span role="alert" className={styles.errorMsg}>
-                {errors.cityShip.message}
-              </span>
-            )}
-          </div>
-          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
-            <label htmlFor="street_shipping" className={styles.formInput}>
-              <div className={styles.requiredTitle}>Street</div>
-              <input
-                id="street_shipping"
-                onChange={(event) => {
-                  onChangeStreetAdrressShip(event).catch(() => {});
-                }}
-                ref={refStreetAdrressShip}
-                name={StreetAdrressShip}
-                type="text"
-                className={streetShipClass}
-                placeholder="Clinton St"
-                aria-invalid={errors.streetShip || !streetShipValue.isDirty ? 'true' : 'false'}
-                required
-              />
-            </label>
-            {errors.streetShip && (
-              <span role="alert" className={styles.errorMsg}>
-                {errors.streetShip.message}
-              </span>
-            )}
-          </div>
-          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="house_shipping" className={styles.formInput}>
-              Apartment number
-              <input
-                id="house_shipping"
-                onChange={(event) => {
-                  onChangePostAdrressShip(event).catch(() => {});
-                }}
-                ref={refPostAdrressShip}
-                name={PostAdrressShip}
-                type="text"
-                className={styles.input}
-                placeholder="440"
-              />
-            </label>
-          </div>
-          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="postcode_shipping" className={styles.formInput}>
-              <div className={styles.requiredTitle}>Postal code</div>
-              <input id="postcode_shipping" type="text" className={styles.input} placeholder="postcode" required />
-            </label>
-            {errors.postcodeShip && (
-              <span role="alert" className={styles.errorMsg}>
-                {errors.postcodeShip.message}
-              </span>
-            )}
-          </div>
-          <div className={`${styles.containerRadioBtn}  ${styles.bigInput}`}>
+        <div className={styles.optionShipping}>
+          {!isBlockVisible && (
+            <div className={styles.groupSection}>
+              <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+                <label htmlFor="country_shipping" className={styles.formInput}>
+                  Country
+                  <select
+                    id="country_shipping"
+                    className={styles.input}
+                    value={selectedShippingCountry}
+                    onChange={handleCountryShippingChange}
+                  >
+                    {countries.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+                <label htmlFor="sity_shipping" className={styles.formInput}>
+                  <div className={styles.requiredTitle}>City</div>
+                  <input
+                    id="sity_shipping"
+                    onChange={(event) => {
+                      onChangeCityAdrressShip(event).catch(() => {});
+                    }}
+                    ref={refCityAdrressShip}
+                    name={CityAdrressShip}
+                    type="text"
+                    className={cityShipClass}
+                    placeholder="New York"
+                    aria-invalid={errors.cityShip || !cityShipValue.isDirty ? 'true' : 'false'}
+                    required
+                  />
+                </label>
+                {errors.cityShip && (
+                  <span role="alert" className={styles.errorMsg}>
+                    {errors.cityShip.message}
+                  </span>
+                )}
+              </div>
+              <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+                <label htmlFor="street_shipping" className={styles.formInput}>
+                  <div className={styles.requiredTitle}>Street</div>
+                  <input
+                    id="street_shipping"
+                    onChange={(event) => {
+                      onChangeStreetAdrressShip(event).catch(() => {});
+                    }}
+                    ref={refStreetAdrressShip}
+                    name={StreetAdrressShip}
+                    type="text"
+                    className={streetShipClass}
+                    placeholder="Clinton St"
+                    aria-invalid={errors.streetShip || !streetShipValue.isDirty ? 'true' : 'false'}
+                    required
+                  />
+                </label>
+                {errors.streetShip && (
+                  <span role="alert" className={styles.errorMsg}>
+                    {errors.streetShip.message}
+                  </span>
+                )}
+              </div>
+              <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+                <label htmlFor="house_shipping" className={styles.formInput}>
+                  Apartment number
+                  <input
+                    id="house_shipping"
+                    name="apartamentShip"
+                    type="text"
+                    className={styles.input}
+                    placeholder="440"
+                  />
+                </label>
+              </div>
+              <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+                <label htmlFor="postcode_shipping" className={styles.formInput}>
+                  <div className={styles.requiredTitle}>Postal code</div>
+                  <input
+                    id="postcode_shipping"
+                    onChange={(event) => {
+                      onChangePostAdrressShip(event).catch(() => {});
+                    }}
+                    ref={refPostAdrressShip}
+                    name={PostAdrressShip}
+                    type="text"
+                    className={styles.input}
+                    placeholder="postcode"
+                    required
+                  />
+                </label>
+                {errors.postcodeShip && (
+                  <span role="alert" className={styles.errorMsg}>
+                    {errors.postcodeShip.message}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+          <div className={`${styles.containerRadioBtn}  ${styles.smallInput}`}>
             <label htmlFor="shipdefault" className={styles.container}>
-              <input id="default" value="shipDefault" type="radio" name="default" className={styles.radioBtn} />
-              Set as default address
+              <input
+                id="shipDefault"
+                value="shipDefault"
+                type="checkbox"
+                name="shipDefault"
+                className={styles.radioBtn}
+              />
+              Set default for Shipping
+            </label>
+          </div>
+          <div className={`${styles.containerCheckBtn}  ${styles.smallInput}`}>
+            <label htmlFor="useBillAdress" className={styles.container}>
+              <input
+                id="default"
+                checked={isBlockVisible}
+                onChange={handleCheckboxChange}
+                value="setAddress"
+                type="checkbox"
+                name="setAddress"
+                className={styles.checkBtn}
+              />
+              Set Shipping as Billing
             </label>
           </div>
         </div>
@@ -530,7 +608,6 @@ export function Register(): JSX.Element {
             type="submit"
             id="toCatalog"
             className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}
-            onClick={() => navigate('/')}
           >
             Sign up
           </button>

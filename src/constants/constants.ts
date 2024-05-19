@@ -2,19 +2,19 @@ export const countries = [
   {
     title: 'United States',
     code: 'US',
-    placeholder: '10000',
-    postcode: '10000',
+    errorMsg: 'It must be 5 digits or 5+4 digits',
+    postcode: /^\d{5}(-\d{4})?$/,
   },
   {
     title: 'Belarus',
     code: 'BY',
-    placeholder: '20000',
-    postcode: '20000',
+    errorMsg: 'It must be exactly 6 digits.',
+    postcode: /^\d{6}$/,
   },
   {
     title: 'Russia',
     code: 'RU',
-    placeholder: '30000',
-    postcode: '30000',
+    errorMsg: 'It must be exactly 6 digits.',
+    postcode: /^\d{6}$/,
   },
 ];
