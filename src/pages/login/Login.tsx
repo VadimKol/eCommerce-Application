@@ -68,7 +68,7 @@ export function Login(): JSX.Element {
           event.preventDefault();
           login({ email, password })
             .then((response) => {
-              sessionStorage.setItem('geek-shop-token', `${tokenCache.get().refreshToken}`);
+              sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
 
               // не даст выполнить запросы для анонима
               // apiRoot.me().get().execute().then(console.log).catch(console.error);

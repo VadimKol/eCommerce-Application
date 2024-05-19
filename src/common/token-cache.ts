@@ -2,7 +2,7 @@ import type { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 
 export class CustomTokenCache implements TokenCache {
   private tokenStore: TokenStore = {
-    token: '',
+    token: sessionStorage.getItem('geek-shop-token') ? (sessionStorage.getItem('geek-shop-token') as string) : '',
     expirationTime: 0,
     refreshToken: '',
   };

@@ -4,7 +4,6 @@ import {
   ClientBuilder,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
-  type RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 
@@ -65,24 +64,16 @@ export const getAnonymousFlowApiRoot = (): ByProjectKeyRequestBuilder => {
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-// Refresh token flow api root
-export const getRefreshTokenFlowApiRoot = (refreshToken: string): ByProjectKeyRequestBuilder => {
-  const refreshAuthMiddlewareOptions: RefreshAuthMiddlewareOptions = {
-    host,
-    projectKey,
-    credentials,
-    refreshToken,
-    fetch,
-  };
-
+// Existing access token flow api root
+export const getExistingTokenFlowApiRoot = (token: string): ByProjectKeyRequestBuilder => {
   const client = new ClientBuilder()
-    .withRefreshTokenFlow(refreshAuthMiddlewareOptions)
+    .withExistingTokenFlow(`Bearer ${token}`, {})
     .withHttpMiddleware(httpMiddlewareOptions)
     .build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-const refreshToken = sessionStorage.getItem('geek-shop-token');
+const accessToken = sessionStorage.getItem('geek-shop-token');
 
-export const apiRoot = refreshToken ? getRefreshTokenFlowApiRoot(refreshToken) : getAnonymousFlowApiRoot();
+export const apiRoot = accessToken ? getExistingTokenFlowApiRoot(accessToken) : getAnonymousFlowApiRoot();
