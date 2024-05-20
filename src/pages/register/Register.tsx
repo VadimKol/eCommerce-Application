@@ -37,7 +37,22 @@ const formSchema = z
   .object({
     email: z
       .string()
-      .email(`Email addresses must contain both a local part and a domain name separated by an '@' symbol.`),
+      .email('Email addresses must be properly formatted (e.g., user@example.com).')
+      .refine((value) => value.trim() === value, {
+        message: 'Email addresses must not contain leading or trailing whitespace.',
+      })
+      .refine(
+        (value) => {
+          const parts = value.split('@');
+          return parts.length === 2 && parts[1]?.includes('.');
+        },
+        {
+          message: 'Email addresses must contain a domain name (e.g., example.com).',
+        },
+      )
+      .refine((value) => value.includes('@'), {
+        message: 'Email addresses must contain an "@" symbol separating local part and domain name.',
+      }),
     password: z
       .string()
       .min(8, 'Minimum 8 characters')
@@ -695,7 +710,7 @@ export function Register(): JSX.Element {
                 }}
                 id="mail"
                 ref={refEmail}
-                type="email"
+                type="text"
                 name={Email}
                 className={emailClass}
                 autoComplete="email"
