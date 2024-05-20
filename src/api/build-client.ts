@@ -28,6 +28,7 @@ export const tokenCache = new CustomTokenCache();
 
 // Client cridentials flow api root
 export const getClientCridentialsFlowApiRoot = (): ByProjectKeyRequestBuilder => {
+  Object.assign(tokenCache, new CustomTokenCache());
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host,
     projectKey,
@@ -47,6 +48,7 @@ export const getClientCridentialsFlowApiRoot = (): ByProjectKeyRequestBuilder =>
 
 // Password flow api root
 export const getPasswordFlowApiRoot = (email: string, password: string): ByProjectKeyRequestBuilder => {
+  Object.assign(tokenCache, new CustomTokenCache());
   const user: User = { username: email, password };
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host,
@@ -67,6 +69,7 @@ export const getPasswordFlowApiRoot = (email: string, password: string): ByProje
 
 // Anonymous session flow api root
 export const getAnonymousFlowApiRoot = (): ByProjectKeyRequestBuilder => {
+  Object.assign(tokenCache, new CustomTokenCache());
   const anonymousAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     host,
     projectKey,
