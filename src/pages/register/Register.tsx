@@ -50,8 +50,6 @@ const formSchema = z.object({
   cityShip: z
     .string()
     .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-  postcodeBill: z.string().regex(/^\d{6}$/, 'It must be exactly 6 digits.'),
-  postcodeShip: z.string().regex(/^\d{6}$/, 'It must be exactly 6 digits.'),
   age: z
     .string()
     .refine((date) => !Number.isNaN(Date.parse(date)), 'Invalid date format')
@@ -61,8 +59,10 @@ const formSchema = z.object({
   shipdefault: z.boolean(),
   apartamentBill: z.string(),
   apartamentShip: z.string(),
-  countryBill: z.string(),
-  countryShip: z.string(),
+  countryBill: z.enum(['RU', 'BY', 'US']),
+  countryShip: z.enum(['RU', 'BY', 'US']),
+  postcodeBill: z.string(),
+  postcodeShip: z.string(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -205,7 +205,6 @@ export function Register(): JSX.Element {
   const handleCountryBillingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedBillingCountry(event.target.value);
     if (checkboxValue) {
-      setValue('countryShip', event.target.value);
       setSelectedShippingCountry(event.target.value);
     }
   };
@@ -226,11 +225,11 @@ export function Register(): JSX.Element {
     setValue('setAddress', event.target.checked);
   };
 
-  const email = getValues('email');
-  const password = getValues('password');
-  const firstName = getValues('name');
-  const lastName = getValues('surname');
-  const dateOfBirth = getValues('age');
+  const email: string = getValues('email');
+  const password: string = getValues('password');
+  const firstName: string = getValues('name');
+  const lastName: string = getValues('surname');
+  const dateOfBirth: string = getValues('age');
 
   const addresses = [
     {
@@ -254,10 +253,38 @@ export function Register(): JSX.Element {
   }
 
   const billingAddresses = [0];
-  const defaultBillingAddress = getValues('billdefault') ? 0 : NaN;
+  const defaultBillingAddress = getValues('billdefault') ? 0 : undefined;
   const shipAddressesIndex = checkboxValue ? 0 : 1;
   const shippingAddresses = [shipAddressesIndex];
-  const defaultShippingAddress = getValues('shipdefault') ? shipAddressesIndex : NaN;
+  const defaultShippingAddress = getValues('shipdefault') ? shipAddressesIndex : undefined;
+
+  const signUpAtForm = async (): Promise<void> => {
+    try {
+      await signup({
+        email,
+        password,
+        firstName,
+        lastName,
+        dateOfBirth,
+        addresses,
+        shippingAddresses,
+        defaultShippingAddress,
+        billingAddresses,
+        defaultBillingAddress,
+      });
+
+      const response = await login({ email, password });
+      sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+      toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
+      handleLogin();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast(error.message, { type: 'error' });
+      } else {
+        toast('An unknown error occurred.', { type: 'error' });
+      }
+    }
+  };
 
   return (
     <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
@@ -265,30 +292,7 @@ export function Register(): JSX.Element {
         className={styles.form}
         onSubmit={(event) => {
           event.preventDefault();
-          signup({
-            firstName,
-            lastName,
-            email,
-            password,
-            dateOfBirth,
-            addresses,
-            shippingAddresses,
-            billingAddresses,
-            defaultBillingAddress,
-            defaultShippingAddress,
-          })
-            .then(() => {
-              login({ email, password })
-                .then((response) => {
-                  sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
-
-                  toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
-                  handleLogin();
-                  // navigate(NavigationPaths.HOME);
-                })
-                .catch((error: Error) => toast(error.message, { type: 'error' }));
-            })
-            .catch((error: Error) => toast(error.message, { type: 'error' }));
+          signUpAtForm().catch(() => {});
         }}
       >
         <h2 className={styles.formTitle}>Registration</h2>
@@ -363,15 +367,6 @@ export function Register(): JSX.Element {
                 {errors.age.message}
               </span>
             )}
-          </div>
-          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="gender" className={styles.formInput}>
-              Gender
-              <select id="gender" className={styles.input}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </label>
           </div>
         </div>
         <div className={styles.contextTitle}>

@@ -1,4 +1,4 @@
-import type { BaseAddress, CustomFieldsDraft, StoreResourceIdentifier } from '@commercetools/platform-sdk';
+import type { BaseAddress } from '@commercetools/platform-sdk';
 
 export interface AuthContextInterface {
   isAuthenticated: boolean;
@@ -47,39 +47,9 @@ export interface GeekShopCustomerDraft {
    *
    *
    */
-  readonly middleName?: string;
-  /**
-   *	Title of the Customer, for example, 'Dr.'.
-   *
-   *
-   */
-  readonly title?: string;
-  /**
-   *	Salutation of the Customer, for example, 'Mr.' or 'Mrs.'.
-   *
-   *
-   */
-  readonly salutation?: string;
-  /**
-   *	Date of birth of the Customer.
-   *
-   *
-   */
   readonly dateOfBirth?: string;
   /**
    *	Company name of the Customer.
-   *
-   *
-   */
-  readonly companyName?: string;
-  /**
-   *	Individual VAT ID of the Customer.
-   *
-   *
-   */
-  readonly vatId?: string;
-  /**
-   *	Addresses of the Customer.
    *
    *
    */
@@ -117,17 +87,4 @@ export interface GeekShopCustomerDraft {
    *
    *
    */
-  readonly custom?: CustomFieldsDraft;
-  /**
-   *	Preferred language of the Customer. Must be one of the languages supported by the [Project](ctp:api:type:Project).
-   *
-   *
-   */
-  readonly locale?: string;
-  /**
-   *	Sets the [Stores](ctp:api:type:Store) for the Customer.
-   *
-   *
-   */
-  readonly stores?: StoreResourceIdentifier[];
 }
