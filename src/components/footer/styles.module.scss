@@ -3,9 +3,16 @@
   background: var(--primary-color);
 }
 
+.container {
+  display: flex;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding: 20px;
+}
+
 .footerItem {
-  margin: 40px 0 20px;
-  font-size: 21px;
+  margin: 0 auto;
+  font-size: 20px;
   text-align: center;
   color: var(--text-color);
 }

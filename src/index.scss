@@ -1,3 +1,19 @@
+@mixin font($font_name, $file_name, $weight, $style) {
+  @font-face {
+    font-family: $font_name;
+    font-style: $style;
+    font-weight: $weight;
+    src:
+      url("@/assets/fonts/#{$file_name}.woff2") format("woff2"),
+      url("@/assets/fonts/#{$file_name}.woff") format("woff");
+    font-display: swap;
+  }
+}
+
+@include font("Rubik", rubik-400, 400, normal);
+@include font("Rubik", rubik-700, 700, normal);
+@include font("Benguiat", benguiat-700, 700, normal);
+
 *,
 *::before,
 *::after {
@@ -7,17 +23,27 @@
 :root {
   --primary-color: #00215e;
   --secondary-color: #0ed145;
+  --tertiary-color: #fe9900;
   --accent-color: #0ed14580;
-  --error-color: #fc4100;
+  --error-color: #c42323;
   --text-color: #ffffff;
   --background-color: #ffffff;
   --disabled-color: #808080;
+
+  --primary-font: "Rubik", "Arial", sans-serif;
+  --secondary-font: "Benguiat", "Georgia", sans-serif;
+
+  --min-width: 380px;
+  --max-width: 1440px;
 }
 
 .body {
-  width: 100dvw;
+  min-width: var(--min-width);
   height: 100dvh;
   margin: 0;
+  font-family: var(--primary-font);
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--primary-color);
 }
 
@@ -29,6 +55,17 @@
   width: 100%;
   min-height: 100%;
   margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  background: url("@/assets/images/theme.png");
+  background-size: 1200px;
 }
 
 .visually-hidden {
