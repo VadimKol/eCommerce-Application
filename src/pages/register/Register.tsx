@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link /* , useNavigate */ } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
-import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
-
+import { ActionPaths } from '@/common/enums';
 import { useAuth } from '@/hooks/useAuth.ts';
 
 import { countries } from '../../constants/constants.ts';

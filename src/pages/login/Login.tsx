@@ -92,7 +92,6 @@ export function Login(): JSX.Element {
             id="email-login"
             className={emailClass}
             type="email"
-            autoComplete="email"
             placeholder="user@example.com"
             autoComplete="email"
             aria-invalid={errors.email || !emailState.isDirty ? 'true' : 'false'}
