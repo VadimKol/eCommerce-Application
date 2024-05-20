@@ -723,7 +723,7 @@ export function Register(): JSX.Element {
                   type={revealPassword ? 'text' : 'password'}
                   name={Password}
                   className={passwordClass}
-                  autoComplete="new-password"
+                  autoComplete="current-password"
                   placeholder="password"
                   aria-invalid={errors.password || !passwordValue.isDirty ? 'true' : 'false'}
                   required

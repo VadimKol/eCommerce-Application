@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link /* , useNavigate */ } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
-import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
+import { ActionPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/customButton';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -33,7 +33,6 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export function Login(): JSX.Element {
   const { handleLogin } = useAuth();
-  // const navigate = useNavigate();
   const [revealPassword, setRevealPassword] = useState(false);
   const {
     register,
@@ -75,7 +74,6 @@ export function Login(): JSX.Element {
 
               toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
               handleLogin();
-              // navigate(NavigationPaths.HOME);
             })
             .catch((error: Error) => toast(error.message, { type: 'error' }));
         }}
