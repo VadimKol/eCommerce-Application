@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link /* , useNavigate */ } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
-import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
+import { ActionPaths } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
 import { useAuth } from '@/hooks/useAuth.ts';
 
@@ -75,32 +75,31 @@ const formSchema = z
     postcodeBill: z.string(),
     postcodeShip: z.string(),
   })
-  .refine(
-    (data) => {
-      const billSchema = postalCodeSchemas[data.countryBill as Country];
-      return billSchema.safeParse(data.postcodeBill).success;
-    },
-    {
-      message: 'Incorrect',
-      path: ['postcodeBill'],
-    },
-  )
-  .refine(
-    (data) => {
-      const shipSchema = postalCodeSchemas[data.countryShip as Country];
-      return shipSchema.safeParse(data.postcodeShip).success;
-    },
-    {
-      message: 'Incorrect',
-      path: ['postcodeShip'],
-    },
-  );
+  .superRefine((data, ctx) => {
+    const billSchema = postalCodeSchemas[data.countryBill as Country];
+    if (!billSchema.safeParse(data.postcodeBill).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid postal code for billing country: ${data.countryBill}`,
+        path: ['postcodeBill'],
+      });
+    }
+
+    // Validate shipping postal code
+    const shipSchema = postalCodeSchemas[data.countryShip as Country];
+    if (!shipSchema.safeParse(data.postcodeShip).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid postal code for shipping country: ${data.countryShip}`,
+        path: ['postcodeShip'],
+      });
+    }
+  });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export function Register(): JSX.Element {
   const { handleLogin } = useAuth();
-  // const navigate = useNavigate();
   const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
   const [isBlockVisible, setIsBlockVisible] = useState(false);
@@ -111,6 +110,7 @@ export function Register(): JSX.Element {
     watch,
     setValue,
     getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
@@ -204,13 +204,14 @@ export function Register(): JSX.Element {
     streetShipClass += streetShipValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
-  const firstCounrty = countries[0]?.code || 'US';
+  const firstCounrty: Country = 'US';
 
-  const [selectedBillingCountry, setSelectedBillingCountry] = useState(firstCounrty);
-  const [selectedShippingCountry, setSelectedShippingCountry] = useState(firstCounrty);
+  const [selectedBillingCountry, setSelectedBillingCountry] = useState(firstCounrty as Country);
+  const [selectedShippingCountry, setSelectedShippingCountry] = useState(firstCounrty as Country);
 
-  const handleCountryShippingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedShippingCountry(event.target.value);
+  const handleCountryShippingChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
+    setSelectedShippingCountry(event.target.value as Country);
+    await trigger(['postcodeShip']);
   };
 
   const countryBillValueWatch = watch('countryBill', 'US');
@@ -220,7 +221,7 @@ export function Register(): JSX.Element {
   const postcodeBillValueWatch = watch('postcodeBill');
   const checkboxValue = watch('setAddress', false);
 
-  const checkInputValues = (): void => {
+  const checkInputValues = useCallback((): void => {
     if (checkboxValue) {
       setValue('countryShip', countryBillValueWatch);
       setValue('cityShip', cityBillValueWatch);
@@ -229,13 +230,23 @@ export function Register(): JSX.Element {
       setValue('postcodeShip', postcodeBillValueWatch);
       setSelectedShippingCountry(selectedBillingCountry);
     }
-  };
+  }, [
+    checkboxValue,
+    setValue,
+    countryBillValueWatch,
+    cityBillValueWatch,
+    streetBillValueWatch,
+    apartamentBillValueWatch,
+    postcodeBillValueWatch,
+    selectedBillingCountry,
+  ]);
 
-  const handleCountryBillingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedBillingCountry(event.target.value);
+  const handleCountryBillingChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
+    setSelectedBillingCountry(event.target.value as Country);
     if (checkboxValue) {
-      setSelectedShippingCountry(event.target.value);
+      setSelectedShippingCountry(event.target.value as Country);
     }
+    await trigger(['postcodeBill']);
   };
 
   useEffect(() => {
@@ -247,6 +258,7 @@ export function Register(): JSX.Element {
     apartamentBillValueWatch,
     postcodeBillValueWatch,
     checkboxValue,
+    checkInputValues,
   ]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -411,7 +423,7 @@ export function Register(): JSX.Element {
                 value={selectedBillingCountry}
                 onChange={(e) => {
                   onChangeCountryBill(e).catch(() => {});
-                  handleCountryBillingChange(e);
+                  handleCountryBillingChange(e).catch(() => {});
                 }}
                 name={CountryBill}
                 ref={refCountryBill}
@@ -538,7 +550,7 @@ export function Register(): JSX.Element {
                     value={selectedShippingCountry}
                     onChange={(e) => {
                       onChangeCountryShip(e).catch(() => {});
-                      handleCountryShippingChange(e);
+                      handleCountryShippingChange(e).catch(() => {});
                     }}
                     name={CountryShip}
                     ref={refCountryShip}
@@ -731,11 +743,7 @@ export function Register(): JSX.Element {
               </span>
             )}
           </div>
-          <button
-            type="submit"
-            id="toCatalog"
-            className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}
-          >
+          <button type="submit" className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}>
             Sign up
           </button>
         </div>
