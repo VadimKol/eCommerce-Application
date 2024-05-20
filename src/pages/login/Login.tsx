@@ -113,7 +113,7 @@ export function Login(): JSX.Element {
               className={passwordClass}
               type={revealPassword ? 'text' : 'password'}
               placeholder="password"
-              autoComplete="new-password"
+              autoComplete="current-password"
               aria-invalid={errors.password || !passwordState.isDirty ? 'true' : 'false'}
             />
           </label>
