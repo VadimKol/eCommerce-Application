@@ -483,7 +483,7 @@ export function Register(): JSX.Element {
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_billing" className={styles.formInput}>
-              Apartment number
+              Apartment
               <input
                 id="house_billing"
                 name={ApartamentBill}
@@ -610,7 +610,7 @@ export function Register(): JSX.Element {
               </div>
               <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
                 <label htmlFor="house_shipping" className={styles.formInput}>
-                  Apartment number
+                  Apartment
                   <input
                     id="house_shipping"
                     name={ApartamentShip}
