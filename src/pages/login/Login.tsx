@@ -1,22 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link /* , useNavigate */ } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
-import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
+import { ActionPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/customButton';
 import { useAuth } from '@/hooks/useAuth';
 
 import styles from './styles.module.scss';
 
 const formSchema = z.object({
-  email: z
-    .string()
-    .email(`Email addresses must contain both a local part and a domain name separated by an '@' symbol.`),
+  email: z.string().email('Email addresses must be properly formatted (e.g., user@example.com).'),
   password: z
     .string()
     .min(8, 'Minimum 8 characters')
@@ -33,7 +31,6 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export function Login(): JSX.Element {
   const { handleLogin } = useAuth();
-  // const navigate = useNavigate();
   const [revealPassword, setRevealPassword] = useState(false);
   const {
     register,
@@ -67,7 +64,7 @@ export function Login(): JSX.Element {
           event.preventDefault();
           login({ email, password })
             .then((response) => {
-              sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+              localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
 
               // не даст выполнить запросы для анонима
               // apiRoot.me().get().execute().then(console.log).catch(console.error);
@@ -75,7 +72,6 @@ export function Login(): JSX.Element {
 
               toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
               handleLogin();
-              // navigate(NavigationPaths.HOME);
             })
             .catch((error: Error) => toast(error.message, { type: 'error' }));
         }}
@@ -91,8 +87,7 @@ export function Login(): JSX.Element {
             ref={refEmail}
             id="email-login"
             className={emailClass}
-            type="email"
-            autoComplete="email"
+            type="text"
             placeholder="user@example.com"
             autoComplete="email"
             aria-invalid={errors.email || !emailState.isDirty ? 'true' : 'false'}
@@ -116,7 +111,7 @@ export function Login(): JSX.Element {
               className={passwordClass}
               type={revealPassword ? 'text' : 'password'}
               placeholder="password"
-              autoComplete="new-password"
+              autoComplete="current-password"
               aria-invalid={errors.password || !passwordState.isDirty ? 'true' : 'false'}
             />
           </label>

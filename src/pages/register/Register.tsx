@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link /* , useNavigate */ } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
-import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
-
+import { ActionPaths } from '@/common/enums';
 import { useAuth } from '@/hooks/useAuth.ts';
 
 import { countries } from '../../constants/constants.ts';
@@ -35,9 +35,7 @@ const postalCodeSchemas: Record<Country, z.ZodString> = {
 
 const formSchema = z
   .object({
-    email: z
-      .string()
-      .email(`Email addresses must contain both a local part and a domain name separated by an '@' symbol.`),
+    email: z.string().email('Email addresses must be properly formatted (e.g., user@example.com).'),
     password: z
       .string()
       .min(8, 'Minimum 8 characters')
@@ -314,7 +312,7 @@ export function Register(): JSX.Element {
       });
 
       const response = await login({ email, password });
-      sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+      localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
       toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
       handleLogin();
     } catch (error) {
@@ -327,7 +325,7 @@ export function Register(): JSX.Element {
   };
 
   return (
-    <main className={classNames('main', styles.registerMain)}>
+    <main className="main">
       <form
         className={styles.form}
         onSubmit={(event) => {
@@ -340,7 +338,7 @@ export function Register(): JSX.Element {
           <h3 className={styles.groupTitle}>Personal</h3>
         </div>
         <div className={styles.groupSection}>
-          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+          <div className={classNames(styles.inputWithError, styles.bigInput)}>
             <label htmlFor="name" className={styles.formInput}>
               <div className={styles.requiredTitle}>Name</div>
               <input
@@ -483,7 +481,7 @@ export function Register(): JSX.Element {
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_billing" className={styles.formInput}>
-              Apartment number
+              Apartment
               <input
                 id="house_billing"
                 name={ApartamentBill}
@@ -610,7 +608,7 @@ export function Register(): JSX.Element {
               </div>
               <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
                 <label htmlFor="house_shipping" className={styles.formInput}>
-                  Apartment number
+                  Apartment
                   <input
                     id="house_shipping"
                     name={ApartamentShip}
@@ -695,7 +693,7 @@ export function Register(): JSX.Element {
                 }}
                 id="mail"
                 ref={refEmail}
-                type="email"
+                type="text"
                 name={Email}
                 className={emailClass}
                 autoComplete="email"
