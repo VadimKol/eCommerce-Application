@@ -314,7 +314,7 @@ export function Register(): JSX.Element {
       });
 
       const response = await login({ email, password });
-      sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+      localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
       toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
       handleLogin();
     } catch (error) {

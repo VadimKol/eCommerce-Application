@@ -94,6 +94,6 @@ export const getExistingTokenFlowApiRoot = (token: string): ByProjectKeyRequestB
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-const accessToken = sessionStorage.getItem('geek-shop-token');
+const accessToken = localStorage.getItem('geek-shop-token');
 
 export const apiRoot = accessToken !== null ? getExistingTokenFlowApiRoot(accessToken) : getAnonymousFlowApiRoot();

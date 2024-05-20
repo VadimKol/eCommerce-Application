@@ -28,7 +28,7 @@ export function logout(): Promise<void> {
     });
 
     if (response.ok) {
-      sessionStorage.removeItem('geek-shop-token');
+      localStorage.removeItem('geek-shop-token');
       Object.assign(tokenCache, new CustomTokenCache());
       Object.assign(apiRoot, getAnonymousFlowApiRoot());
     } else {

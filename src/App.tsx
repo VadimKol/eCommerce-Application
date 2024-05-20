@@ -10,7 +10,7 @@ import { Header } from '@/components/header/Header.tsx';
 export function App(): JSX.Element {
   /*   const { handleLogin } = useAuth();
 
-  if (sessionStorage.getItem('geek-shop-token') !== null) {
+  if (localStorage.getItem('geek-shop-token') !== null) {
     // будет ли такой код вызывать каждый раз 2 рендер, нужно 1 раз залогинить, при входе в магазин, если токен в storage
     handleLogin();
   } */
