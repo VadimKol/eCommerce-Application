@@ -1,9 +1,4 @@
 [[redirects]]
-  from = "*/assets/*"
-  to = ":splat/assets/:splat"
-  status = 200
-
-[[redirects]]
   from = "/favicon.ico"
   to = "/favicon.ico"
   status = 200
@@ -12,5 +7,3 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-
