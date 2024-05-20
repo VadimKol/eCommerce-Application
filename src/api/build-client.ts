@@ -1,6 +1,7 @@
 import { type ByProjectKeyRequestBuilder, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import {
   type AnonymousAuthMiddlewareOptions,
+  type AuthMiddlewareOptions,
   ClientBuilder,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
@@ -24,6 +25,25 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 };
 
 export const tokenCache = new CustomTokenCache();
+
+// Client cridentials flow api root
+export const getClientCridentialsFlowApiRoot = (): ByProjectKeyRequestBuilder => {
+  const authMiddlewareOptions: AuthMiddlewareOptions = {
+    host,
+    projectKey,
+    credentials,
+    scopes,
+    tokenCache,
+    fetch,
+  };
+
+  const client = new ClientBuilder()
+    .withClientCredentialsFlow(authMiddlewareOptions)
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .build();
+
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+};
 
 // Password flow api root
 export const getPasswordFlowApiRoot = (email: string, password: string): ByProjectKeyRequestBuilder => {
@@ -76,4 +96,4 @@ export const getExistingTokenFlowApiRoot = (token: string): ByProjectKeyRequestB
 
 const accessToken = sessionStorage.getItem('geek-shop-token');
 
-export const apiRoot = accessToken ? getExistingTokenFlowApiRoot(accessToken) : getAnonymousFlowApiRoot();
+export const apiRoot = accessToken !== null ? getExistingTokenFlowApiRoot(accessToken) : getAnonymousFlowApiRoot();
