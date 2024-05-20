@@ -327,7 +327,7 @@ export function Register(): JSX.Element {
   };
 
   return (
-    <main className={classNames('main', styles.registerMain)}>
+    <main className="main">
       <form
         className={styles.form}
         onSubmit={(event) => {
@@ -340,7 +340,7 @@ export function Register(): JSX.Element {
           <h3 className={styles.groupTitle}>Personal</h3>
         </div>
         <div className={styles.groupSection}>
-          <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+          <div className={classNames(styles.inputWithError, styles.bigInput)}>
             <label htmlFor="name" className={styles.formInput}>
               <div className={styles.requiredTitle}>Name</div>
               <input
