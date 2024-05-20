@@ -1,77 +1,20 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
-import { logout } from '@/api/client-actions';
-import { ActionPaths, NavigationPaths } from '@/common/enums';
-import { useAuth } from '@/hooks/useAuth';
+import { NavigationPaths } from '@/common/enums';
 
+import { BurgerMenu } from './burger-menu/BurgerMenu';
+import { HeaderLinks } from './links/HeaderLinks';
 import styles from './styles.module.scss';
 
-export function Header({ appStyles }: { appStyles: string | undefined }): JSX.Element {
-  const { isAuthenticated, handleLogout } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const onLogoutClick = (): void => {
-    logout()
-      .then(() => {
-        toast('Logout successfully', { type: 'success' });
-        handleLogout();
-
-        if (location.pathname !== String(NavigationPaths.HOME)) {
-          navigate(NavigationPaths.HOME);
-        }
-      })
-      .catch(() => {
-        toast(`Failed to logout`, { type: 'error' });
-      });
-  };
-
-  const isCurrentLink = (path: NavigationPaths): boolean => location.pathname === String(path);
-  const shouldShowRegisterLink = location.pathname !== String(ActionPaths.REGISTER);
-  const shouldShowLoginLink = location.pathname !== String(ActionPaths.LOGIN);
-
+export function Header(): JSX.Element {
   return (
-    <header className={`${appStyles || ''} ${styles.header}`}>
-      <div className={styles.logo}>
-        <Link to={NavigationPaths.HOME}>
-          <img src="/logo.png" alt="Geek Store logo" />
+    <header className={styles.header}>
+      <BurgerMenu />
+      <div className={styles.container}>
+        <Link className={styles.wordmark} to={NavigationPaths.HOME}>
+          Geek store
         </Link>
-      </div>
-      <nav className={styles.navigation}>
-        <ul className={styles.navList}>
-          {Object.keys(NavigationPaths).map((path) => (
-            <li key={path}>
-              {isCurrentLink(NavigationPaths[path as keyof typeof NavigationPaths]) ? (
-                <span className={`${styles.navLink} ${styles.navLinkCurrent}`}>{path}</span>
-              ) : (
-                <Link className={styles.navLink} to={NavigationPaths[path as keyof typeof NavigationPaths]}>
-                  {path}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className={styles.actions}>
-        {isAuthenticated ? (
-          <button className={styles.logoutButton} type="button" onClick={onLogoutClick}>
-            Logout
-          </button>
-        ) : (
-          <>
-            {shouldShowLoginLink && (
-              <Link to={ActionPaths.LOGIN} className={styles.loginLink}>
-                Login
-              </Link>
-            )}
-            {shouldShowRegisterLink && (
-              <Link to={ActionPaths.REGISTER} className={styles.registerLink}>
-                Register
-              </Link>
-            )}
-          </>
-        )}
+        <HeaderLinks />
       </div>
     </header>
   );

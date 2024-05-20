@@ -1,21 +1,27 @@
+import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppStyles } from '@/hooks/useAppStyles';
+import { CustomButton } from '@/components/custom-button/customButton';
+
+import styles from './styles.module.scss';
 
 export function NoMatch(): JSX.Element {
   const navigate = useNavigate();
-  const appStyles = useAppStyles();
 
   return (
-    <main className={appStyles.main}>
-      <h1>404</h1>
-      <p>Sorry, page not found.</p>
-      <button type="button" onClick={() => navigate(-1)}>
-        Previous page
-      </button>
-      <button type="button" onClick={() => navigate('/')}>
-        Home page
-      </button>
+    <main className={classNames('main', styles.main)}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>404</h1>
+        <p className={styles.text}>The page you requested was not found.</p>
+        <div className={styles.buttons}>
+          <CustomButton variant="tertiary" onClick={() => navigate(-1)}>
+            Previous page
+          </CustomButton>
+          <CustomButton variant="tertiary" onClick={() => navigate('/')}>
+            Home page
+          </CustomButton>
+        </div>
+      </div>
     </main>
   );
 }

@@ -1,9 +1,11 @@
 import styles from './styles.module.scss';
 
-export function Footer({ appStyles }: { appStyles: string | undefined }): JSX.Element {
+export function Footer(): JSX.Element {
   return (
-    <footer className={`${appStyles || ''} ${styles.footer}`}>
-      <div className={styles.footerItem}>2024</div>
+    <footer className={styles.footer}>
+      <div className={styles.container}>
+        <p className={styles.footerItem}>Geek Store © 2024</p>
+      </div>
     </footer>
   );
 }

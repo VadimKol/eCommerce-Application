@@ -26,25 +26,6 @@
     text-align: center;
   }
 
-  &_button {
-    width: 60%;
-    height: 40px;
-    margin: auto;
-    font-size: 16px;
-    color: var(--text-color);
-    background: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 6px;
-    transition: all 500ms;
-
-    &:hover {
-      box-shadow: -5px 5px 5px var(--secondary-color);
-      cursor: pointer;
-      transition: all 500ms;
-      transform: translateY(-2px);
-    }
-  }
-
   & .email {
     padding: 0 5px;
   }
@@ -58,6 +39,7 @@
     box-sizing: border-box;
     width: 73%;
     height: 30px;
+    font-family: var(--primary-font);
     border: 1px solid var(--primary-color);
     border-radius: 6px;
 
@@ -125,11 +107,4 @@
   font-weight: 600;
   text-decoration: none;
   color: var(--secondary-color);
-}
-
-.disabled {
-  background-color: var(--disabled-color);
-  border-color: var(--disabled-color);
-  pointer-events: none;
-  user-select: none;
 }

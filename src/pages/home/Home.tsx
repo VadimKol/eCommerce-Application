@@ -1,23 +1,29 @@
-import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { ActionPaths } from '@/common/enums';
-import { useAppStyles } from '@/hooks/useAppStyles';
+import { CustomLink } from '@/components/custom-link/customLink';
+
+import styles from './styles.module.scss';
 
 export function Home(): JSX.Element {
-  const appStyles = useAppStyles();
-
   return (
-    <main className={appStyles.main}>
-      <h1>Home</h1>
-      <p>Temporary links for cross-check:</p>
-      <ul>
-        <li>
-          <Link to={ActionPaths.LOGIN}>Navigate to login page</Link>
-        </li>
-        <li>
-          <Link to={ActionPaths.REGISTER}>Navigate to registration page</Link>
-        </li>
-      </ul>
+    <main className={classNames('main', styles.main)}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Home/main page</h1>
+        <p className={styles.linksDesc}>Temporary links for cross-check:</p>
+        <ul className={styles.linksList}>
+          <li>
+            <CustomLink to={ActionPaths.LOGIN} variant="tertiary">
+              Navigate to login page
+            </CustomLink>
+          </li>
+          <li>
+            <CustomLink to={ActionPaths.REGISTER} variant="tertiary">
+              Navigate to registration pages
+            </CustomLink>
+          </li>
+        </ul>
+      </div>
     </main>
   );
 }

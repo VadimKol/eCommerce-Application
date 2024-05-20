@@ -29,7 +29,8 @@
     "stylelint": "stylelint ./src/**/*.{css,scss} --quiet-deprecation-warnings",
     "stylelint:fix": "stylelint ./src/**/*.{css,scss} --fix --quiet-deprecation-warnings",
     "test": "jest",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy-sprint-2": "npm run build && npx gh-pages -b netlify-sprint-2 -d dist"
   },
   "repository": {
     "type": "git",
@@ -58,8 +59,10 @@
     "@commercetools/platform-sdk": "^7.8.0",
     "@commercetools/sdk-client-v2": "^2.5.0",
     "@hookform/resolvers": "^3.3.4",
+    "classnames": "^2.5.1",
     "isomorphic-fetch": "^3.0.0",
     "react": "^18.2.0",
+    "react-burger-menu": "^3.0.9",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
     "react-router-dom": "^6.23.1",
@@ -72,6 +75,7 @@
     "@types/jest": "^29.5.12",
     "@types/node-fetch": "^2.6.11",
     "@types/react": "^18.2.66",
+    "@types/react-burger-menu": "^2.8.7",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
@@ -90,6 +94,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "eslint-plugin-simple-import-sort": "^12.1.0",
+    "gh-pages": "^6.1.1",
     "husky": "^9.0.11",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
