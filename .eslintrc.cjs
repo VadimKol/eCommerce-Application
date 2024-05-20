@@ -62,6 +62,8 @@ module.exports = {
         },
       },
     ],
+    'react/button-has-type': 'off',
+    'react/require-default-props': 'off',
   },
   overrides: [
     {

@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
 import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
-import { useAppStyles } from '@/hooks/useAppStyles';
+import { CustomButton } from '@/components/custom-button/customButton';
 import { useAuth } from '@/hooks/useAuth';
 
 import styles from './styles.module.scss';
@@ -34,7 +34,6 @@ type FormSchema = z.infer<typeof formSchema>;
 export function Login(): JSX.Element {
   const { handleLogin } = useAuth();
   // const navigate = useNavigate();
-  const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
   const {
     register,
@@ -61,7 +60,7 @@ export function Login(): JSX.Element {
   }
 
   return (
-    <main className={appStyles.main}>
+    <main className="main">
       <form
         className={styles.login}
         onSubmit={(event) => {
@@ -95,6 +94,7 @@ export function Login(): JSX.Element {
             type="email"
             autoComplete="email"
             placeholder="user@example.com"
+            autoComplete="email"
             aria-invalid={errors.email || !emailState.isDirty ? 'true' : 'false'}
           />
         </label>
@@ -132,13 +132,9 @@ export function Login(): JSX.Element {
             {errors.password.message}
           </span>
         )}
-        <button
-          type="submit"
-          className={!isValid ? `${styles.login_button} ${styles.disabled}` : styles.login_button}
-          disabled={!isValid}
-        >
+        <CustomButton type="submit" isDisabled={!isValid}>
           Log in
-        </button>
+        </CustomButton>
         <p className={styles.registry_link}>
           Haven’t registered yet? Sign up
           <Link to={ActionPaths.REGISTER} className={styles.link}>

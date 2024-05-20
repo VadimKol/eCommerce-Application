@@ -7,8 +7,8 @@ import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
-import { ActionPaths } from '@/common/enums';
-import { useAppStyles } from '@/hooks/useAppStyles';
+import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
+
 import { useAuth } from '@/hooks/useAuth.ts';
 
 import { countries } from '../../constants/constants.ts';
@@ -100,7 +100,6 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export function Register(): JSX.Element {
   const { handleLogin } = useAuth();
-  const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
   const [isBlockVisible, setIsBlockVisible] = useState(false);
 
@@ -328,7 +327,7 @@ export function Register(): JSX.Element {
   };
 
   return (
-    <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
+    <main className={classNames('main', styles.registerMain)}>
       <form
         className={styles.form}
         onSubmit={(event) => {

@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { routerConfig } from '@/index.tsx';
+import { routerConfig } from '@/router/router-config.tsx';
 
 test('demo', () => {
   expect(true).toBe(true);

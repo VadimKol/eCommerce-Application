@@ -1,0 +1,104 @@
+.navigation {
+  display: flex;
+  justify-content: center;
+
+  @media (width <= 768px) {
+    display: none;
+  }
+}
+
+.insideMenu.navigation {
+  @media (width <= 768px) {
+    display: flex;
+    margin-bottom: 20px;
+  }
+}
+
+.navList {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (width <= 768px) {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-top: 10px;
+      background-color: var(--text-color);
+    }
+  }
+}
+
+.actionsList {
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (width <= 768px) {
+    display: none;
+  }
+}
+
+.insideMenu.actionsList {
+  @media (width <= 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.logoutButton {
+  font-size: inherit;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.loginLink,
+.registerLink,
+.logoutButton,
+.navLink {
+  padding: 5px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: color 0.6s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+    }
+  }
+}
+
+.navLinkCurrent {
+  text-decoration: underline;
+  pointer-events: none;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--text-color);
+}
+
+.actionsItem:not(:last-child) {
+  &::after {
+    content: "|";
+    margin-left: 10px;
+
+    @media (width <= 768px) {
+      content: none;
+    }
+  }
+}
