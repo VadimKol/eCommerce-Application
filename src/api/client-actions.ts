@@ -1,8 +1,15 @@
 import type { ClientResponse, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
 
 import { CustomTokenCache } from '@/common/token-cache';
+import type { GeekShopCustomerDraft } from '@/common/types';
 
-import { apiRoot, getAnonymousFlowApiRoot, getPasswordFlowApiRoot, tokenCache } from './build-client';
+import {
+  apiRoot,
+  getAnonymousFlowApiRoot,
+  getClientCridentialsFlowApiRoot,
+  getPasswordFlowApiRoot,
+  tokenCache,
+} from './build-client';
 
 export function login(customerSignin: CustomerSignin): Promise<ClientResponse<CustomerSignInResult>> {
   Object.assign(apiRoot, getPasswordFlowApiRoot(customerSignin.email, customerSignin.password));
@@ -30,4 +37,10 @@ export function logout(): Promise<void> {
   };
 
   return revokeToken();
+}
+
+export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
+  Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
+  return apiRoot.me().signup().post({ body: myCustomerDraft }).execute();
+  // return apiRoot.customers().post({ body: myCustomerDraft }).execute(); // с анонима можно
 }

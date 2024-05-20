@@ -1,11 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link /* , useNavigate */ } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
-import { ActionPaths, NavigationPaths } from '@/common/enums';
+import { tokenCache } from '@/api/build-client.ts';
+import { login, signup } from '@/api/client-actions.ts';
+import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
 import { useAppStyles } from '@/hooks/useAppStyles';
+import { useAuth } from '@/hooks/useAuth.ts';
 
 import { countries } from '../../constants/constants.ts';
 import styles from './styles.module.scss';
@@ -54,7 +58,7 @@ const formSchema = z.object({
     .refine((date) => calculateAge(date), 'You must be at least 13 years old'),
   setAddress: z.boolean(),
   billdefault: z.boolean(),
-  shipDefault: z.boolean(),
+  shipdefault: z.boolean(),
   apartamentBill: z.string(),
   apartamentShip: z.string(),
   countryBill: z.string(),
@@ -64,7 +68,8 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export function Register(): JSX.Element {
-  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
+  // const navigate = useNavigate();
   const appStyles = useAppStyles();
   const [revealPassword, setRevealPassword] = useState(false);
   const [isBlockVisible, setIsBlockVisible] = useState(false);
@@ -74,6 +79,7 @@ export function Register(): JSX.Element {
     getFieldState,
     watch,
     setValue,
+    getValues,
     formState: { errors, isValid },
   } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
@@ -103,6 +109,13 @@ export function Register(): JSX.Element {
     name: PostAdrressShip,
     ref: refPostAdrressShip,
   } = register('postcodeShip');
+  const { onChange: onChangeBillDefault, name: BillDefault, ref: refBillDefault } = register('billdefault');
+  const { onChange: onChangeShipDefault, name: ShipDefault, ref: refShipDefault } = register('shipdefault');
+  const { onChange: onChangeApartamentBill, name: ApartamentBill, ref: refApartamentBill } = register('apartamentBill');
+  const { onChange: onChangeApartamentShip, name: ApartamentShip, ref: refApartamentShip } = register('apartamentShip');
+  const { onChange: onChangeSetAddress, name: SetAddress, ref: refSetAddress } = register('setAddress');
+  const { onChange: onChangeCountryBill, name: CountryBill, ref: refCountryBill } = register('countryBill');
+  const { onChange: onChangeCountryShip, name: CountryShip, ref: refCountryShip } = register('countryShip');
 
   const emailValue = getFieldState('email');
   const passwordValue = getFieldState('password');
@@ -177,7 +190,7 @@ export function Register(): JSX.Element {
   const checkboxValue = watch('setAddress', false);
 
   const checkInputValues = (): void => {
-    console.log(countryBillValueWatch);
+    // console.log(countryBillValueWatch);
 
     if (checkboxValue) {
       setValue('countryShip', countryBillValueWatch);
@@ -213,13 +226,69 @@ export function Register(): JSX.Element {
     setValue('setAddress', event.target.checked);
   };
 
+  const email = getValues('email');
+  const password = getValues('password');
+  const firstName = getValues('name');
+  const lastName = getValues('surname');
+  const dateOfBirth = getValues('age');
+
+  const addresses = [
+    {
+      country: selectedBillingCountry,
+      city: getValues('cityBill'),
+      streetName: getValues('streetBill'),
+      postalCode: getValues('postcodeBill'),
+      apartment: getValues('apartamentBill'),
+    },
+    {
+      country: selectedShippingCountry,
+      city: getValues('cityShip'),
+      streetName: getValues('streetShip'),
+      postalCode: getValues('postcodeShip'),
+      apartment: getValues('apartamentShip'),
+    },
+  ];
+
+  if (checkboxValue) {
+    addresses.pop();
+  }
+
+  const billingAddresses = [0];
+  const defaultBillingAddress = getValues('billdefault') ? 0 : NaN;
+  const shipAddressesIndex = checkboxValue ? 0 : 1;
+  const shippingAddresses = [shipAddressesIndex];
+  const defaultShippingAddress = getValues('shipdefault') ? shipAddressesIndex : NaN;
+
   return (
     <main className={`${appStyles.main || ''} ${styles.registerMain}`}>
       <form
         className={styles.form}
         onSubmit={(event) => {
           event.preventDefault();
-          navigate(NavigationPaths.HOME);
+          signup({
+            firstName,
+            lastName,
+            email,
+            password,
+            dateOfBirth,
+            addresses,
+            shippingAddresses,
+            billingAddresses,
+            defaultBillingAddress,
+            defaultShippingAddress,
+          })
+            .then(() => {
+              login({ email, password })
+                .then((response) => {
+                  sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+
+                  toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
+                  handleLogin();
+                  // navigate(NavigationPaths.HOME);
+                })
+                .catch((error: Error) => toast(error.message, { type: 'error' }));
+            })
+            .catch((error: Error) => toast(error.message, { type: 'error' }));
         }}
       >
         <h2 className={styles.formTitle}>Registration</h2>
@@ -316,7 +385,12 @@ export function Register(): JSX.Element {
                 id="country_billing"
                 className={styles.input}
                 value={selectedBillingCountry}
-                onChange={handleCountryBillingChange}
+                onChange={(e) => {
+                  onChangeCountryBill(e).catch(() => {});
+                  handleCountryBillingChange(e);
+                }}
+                name={CountryBill}
+                ref={refCountryBill}
               >
                 {countries.map((country) => (
                   <option key={country.code} value={country.code}>
@@ -375,7 +449,17 @@ export function Register(): JSX.Element {
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
             <label htmlFor="house_billing" className={styles.formInput}>
               Apartment number
-              <input id="house_billing" name="apartamentBill" type="text" className={styles.input} placeholder="440" />
+              <input
+                id="house_billing"
+                name={ApartamentBill}
+                type="text"
+                className={styles.input}
+                placeholder="440"
+                onChange={(event) => {
+                  onChangeApartamentBill(event).catch(() => {});
+                }}
+                ref={refApartamentBill}
+              />
             </label>
           </div>
           <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
@@ -403,10 +487,13 @@ export function Register(): JSX.Element {
             <label htmlFor="billdefault" className={styles.container}>
               <input
                 id="billdefault"
-                value="billdefault"
                 type="checkbox"
-                name="billdefault"
+                name={BillDefault}
                 className={styles.radioBtn}
+                onChange={(e) => {
+                  onChangeBillDefault(e).catch(() => {});
+                }}
+                ref={refBillDefault}
               />
               Set default for Billing
             </label>
@@ -425,7 +512,12 @@ export function Register(): JSX.Element {
                     id="country_shipping"
                     className={styles.input}
                     value={selectedShippingCountry}
-                    onChange={handleCountryShippingChange}
+                    onChange={(e) => {
+                      onChangeCountryShip(e).catch(() => {});
+                      handleCountryShippingChange(e);
+                    }}
+                    name={CountryShip}
+                    ref={refCountryShip}
                   >
                     {countries.map((country) => (
                       <option key={country.code} value={country.code}>
@@ -486,10 +578,14 @@ export function Register(): JSX.Element {
                   Apartment number
                   <input
                     id="house_shipping"
-                    name="apartamentShip"
+                    name={ApartamentShip}
                     type="text"
                     className={styles.input}
                     placeholder="440"
+                    onChange={(event) => {
+                      onChangeApartamentShip(event).catch(() => {});
+                    }}
+                    ref={refApartamentShip}
                   />
                 </label>
               </div>
@@ -520,11 +616,14 @@ export function Register(): JSX.Element {
           <div className={`${styles.containerRadioBtn}  ${styles.smallInput}`}>
             <label htmlFor="shipdefault" className={styles.container}>
               <input
-                id="shipDefault"
-                value="shipDefault"
+                id="shipdefault"
                 type="checkbox"
-                name="shipDefault"
+                name={ShipDefault}
                 className={styles.radioBtn}
+                onChange={(e) => {
+                  onChangeShipDefault(e).catch(() => {});
+                }}
+                ref={refShipDefault}
               />
               Set default for Shipping
             </label>
@@ -534,11 +633,15 @@ export function Register(): JSX.Element {
               <input
                 id="default"
                 checked={isBlockVisible}
-                onChange={handleCheckboxChange}
+                onChange={(e) => {
+                  onChangeSetAddress(e).catch(() => {});
+                  handleCheckboxChange(e);
+                }}
                 value="setAddress"
                 type="checkbox"
-                name="setAddress"
+                name={SetAddress}
                 className={styles.checkBtn}
+                ref={refSetAddress}
               />
               Set Shipping as Billing
             </label>
