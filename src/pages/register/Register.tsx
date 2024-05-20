@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link /* , useNavigate */ } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,6 +8,7 @@ import { z } from 'zod';
 import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths /* , NavigationPaths */ } from '@/common/enums';
+
 import { useAuth } from '@/hooks/useAuth.ts';
 
 import { countries } from '../../constants/constants.ts';
@@ -25,51 +25,81 @@ const calculateAge = (birthDate: string): boolean => {
   return age >= 13;
 };
 
-const formSchema = z.object({
-  email: z
-    .string()
-    .email(`Email addresses must contain both a local part and a domain name separated by an '@' symbol.`),
-  password: z
-    .string()
-    .min(8, 'Minimum 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one digit')
-    .refine(
-      (val) => val[0] !== ' ' && val[val.length - 1] !== ' ',
-      'Password must not contain leading or trailing whitespace.',
-    ),
-  name: z.string().regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
+type Country = 'RU' | 'BY' | 'US';
 
-  surname: z.string().regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
-  streetBill: z.string().regex(/.+/, 'Must contain at least one character'),
-  streetShip: z.string().regex(/.+/, 'Must contain at least one character'),
-  cityBill: z
-    .string()
-    .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-  cityShip: z
-    .string()
-    .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-  postcodeBill: z.string().regex(/^\d{6}$/, 'It must be exactly 6 digits.'),
-  postcodeShip: z.string().regex(/^\d{6}$/, 'It must be exactly 6 digits.'),
-  age: z
-    .string()
-    .refine((date) => !Number.isNaN(Date.parse(date)), 'Invalid date format')
-    .refine((date) => calculateAge(date), 'You must be at least 13 years old'),
-  setAddress: z.boolean(),
-  billdefault: z.boolean(),
-  shipdefault: z.boolean(),
-  apartamentBill: z.string(),
-  apartamentShip: z.string(),
-  countryBill: z.string(),
-  countryShip: z.string(),
-});
+const postalCodeSchemas: Record<Country, z.ZodString> = {
+  RU: z.string().regex(/^\d{6}$/, 'Invalid postal code for Russia'),
+  BY: z.string().regex(/^\d{6}$/, 'Invalid postal code for Belarus'),
+  US: z.string().regex(/^\d{5}(-\d{4})?$/, 'Invalid postal code for the USA'),
+};
+
+const formSchema = z
+  .object({
+    email: z
+      .string()
+      .email(`Email addresses must contain both a local part and a domain name separated by an '@' symbol.`),
+    password: z
+      .string()
+      .min(8, 'Minimum 8 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one digit')
+      .refine(
+        (val) => val[0] !== ' ' && val[val.length - 1] !== ' ',
+        'Password must not contain leading or trailing whitespace.',
+      ),
+    name: z.string().regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
+
+    surname: z
+      .string()
+      .regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
+    streetBill: z.string().regex(/.+/, 'Must contain at least one character'),
+    streetShip: z.string().regex(/.+/, 'Must contain at least one character'),
+    cityBill: z
+      .string()
+      .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
+    cityShip: z
+      .string()
+      .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
+    age: z
+      .string()
+      .refine((date) => !Number.isNaN(Date.parse(date)), 'Invalid date format')
+      .refine((date) => calculateAge(date), 'You must be at least 13 years old'),
+    setAddress: z.boolean(),
+    billdefault: z.boolean(),
+    shipdefault: z.boolean(),
+    apartamentBill: z.string(),
+    apartamentShip: z.string(),
+    countryBill: z.enum(['RU', 'BY', 'US']),
+    countryShip: z.enum(['RU', 'BY', 'US']),
+    postcodeBill: z.string(),
+    postcodeShip: z.string(),
+  })
+  .superRefine((data, ctx) => {
+    const billSchema = postalCodeSchemas[data.countryBill as Country];
+    if (!billSchema.safeParse(data.postcodeBill).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid postal code for billing country: ${data.countryBill}`,
+        path: ['postcodeBill'],
+      });
+    }
+
+    // Validate shipping postal code
+    const shipSchema = postalCodeSchemas[data.countryShip as Country];
+    if (!shipSchema.safeParse(data.postcodeShip).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid postal code for shipping country: ${data.countryShip}`,
+        path: ['postcodeShip'],
+      });
+    }
+  });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export function Register(): JSX.Element {
   const { handleLogin } = useAuth();
-  // const navigate = useNavigate();
   const [revealPassword, setRevealPassword] = useState(false);
   const [isBlockVisible, setIsBlockVisible] = useState(false);
 
@@ -79,6 +109,7 @@ export function Register(): JSX.Element {
     watch,
     setValue,
     getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
@@ -172,13 +203,14 @@ export function Register(): JSX.Element {
     streetShipClass += streetShipValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
-  const firstCounrty = countries[0]?.code || 'US';
+  const firstCounrty: Country = 'US';
 
-  const [selectedBillingCountry, setSelectedBillingCountry] = useState(firstCounrty);
-  const [selectedShippingCountry, setSelectedShippingCountry] = useState(firstCounrty);
+  const [selectedBillingCountry, setSelectedBillingCountry] = useState(firstCounrty as Country);
+  const [selectedShippingCountry, setSelectedShippingCountry] = useState(firstCounrty as Country);
 
-  const handleCountryShippingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedShippingCountry(event.target.value);
+  const handleCountryShippingChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
+    setSelectedShippingCountry(event.target.value as Country);
+    await trigger(['postcodeShip']);
   };
 
   const countryBillValueWatch = watch('countryBill', 'US');
@@ -188,9 +220,7 @@ export function Register(): JSX.Element {
   const postcodeBillValueWatch = watch('postcodeBill');
   const checkboxValue = watch('setAddress', false);
 
-  const checkInputValues = (): void => {
-    // console.log(countryBillValueWatch);
-
+  const checkInputValues = useCallback((): void => {
     if (checkboxValue) {
       setValue('countryShip', countryBillValueWatch);
       setValue('cityShip', cityBillValueWatch);
@@ -199,14 +229,23 @@ export function Register(): JSX.Element {
       setValue('postcodeShip', postcodeBillValueWatch);
       setSelectedShippingCountry(selectedBillingCountry);
     }
-  };
+  }, [
+    checkboxValue,
+    setValue,
+    countryBillValueWatch,
+    cityBillValueWatch,
+    streetBillValueWatch,
+    apartamentBillValueWatch,
+    postcodeBillValueWatch,
+    selectedBillingCountry,
+  ]);
 
-  const handleCountryBillingChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedBillingCountry(event.target.value);
+  const handleCountryBillingChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
+    setSelectedBillingCountry(event.target.value as Country);
     if (checkboxValue) {
-      setValue('countryShip', event.target.value);
-      setSelectedShippingCountry(event.target.value);
+      setSelectedShippingCountry(event.target.value as Country);
     }
+    await trigger(['postcodeBill']);
   };
 
   useEffect(() => {
@@ -218,6 +257,7 @@ export function Register(): JSX.Element {
     apartamentBillValueWatch,
     postcodeBillValueWatch,
     checkboxValue,
+    checkInputValues,
   ]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -225,11 +265,11 @@ export function Register(): JSX.Element {
     setValue('setAddress', event.target.checked);
   };
 
-  const email = getValues('email');
-  const password = getValues('password');
-  const firstName = getValues('name');
-  const lastName = getValues('surname');
-  const dateOfBirth = getValues('age');
+  const email: string = getValues('email');
+  const password: string = getValues('password');
+  const firstName: string = getValues('name');
+  const lastName: string = getValues('surname');
+  const dateOfBirth: string = getValues('age');
 
   const addresses = [
     {
@@ -253,10 +293,38 @@ export function Register(): JSX.Element {
   }
 
   const billingAddresses = [0];
-  const defaultBillingAddress = getValues('billdefault') ? 0 : NaN;
+  const defaultBillingAddress = getValues('billdefault') ? 0 : undefined;
   const shipAddressesIndex = checkboxValue ? 0 : 1;
   const shippingAddresses = [shipAddressesIndex];
-  const defaultShippingAddress = getValues('shipdefault') ? shipAddressesIndex : NaN;
+  const defaultShippingAddress = getValues('shipdefault') ? shipAddressesIndex : undefined;
+
+  const signUpAtForm = async (): Promise<void> => {
+    try {
+      await signup({
+        email,
+        password,
+        firstName,
+        lastName,
+        dateOfBirth,
+        addresses,
+        shippingAddresses,
+        defaultShippingAddress,
+        billingAddresses,
+        defaultBillingAddress,
+      });
+
+      const response = await login({ email, password });
+      sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+      toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
+      handleLogin();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast(error.message, { type: 'error' });
+      } else {
+        toast('An unknown error occurred.', { type: 'error' });
+      }
+    }
+  };
 
   return (
     <main className={classNames('main', styles.registerMain)}>
@@ -264,30 +332,7 @@ export function Register(): JSX.Element {
         className={styles.form}
         onSubmit={(event) => {
           event.preventDefault();
-          signup({
-            firstName,
-            lastName,
-            email,
-            password,
-            dateOfBirth,
-            addresses,
-            shippingAddresses,
-            billingAddresses,
-            defaultBillingAddress,
-            defaultShippingAddress,
-          })
-            .then(() => {
-              login({ email, password })
-                .then((response) => {
-                  sessionStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
-
-                  toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
-                  handleLogin();
-                  // navigate(NavigationPaths.HOME);
-                })
-                .catch((error: Error) => toast(error.message, { type: 'error' }));
-            })
-            .catch((error: Error) => toast(error.message, { type: 'error' }));
+          signUpAtForm().catch(() => {});
         }}
       >
         <h2 className={styles.formTitle}>Registration</h2>
@@ -363,15 +408,6 @@ export function Register(): JSX.Element {
               </span>
             )}
           </div>
-          <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
-            <label htmlFor="gender" className={styles.formInput}>
-              Gender
-              <select id="gender" className={styles.input}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </label>
-          </div>
         </div>
         <div className={styles.contextTitle}>
           <h3 className={styles.groupTitle}>Billing address</h3>
@@ -386,7 +422,7 @@ export function Register(): JSX.Element {
                 value={selectedBillingCountry}
                 onChange={(e) => {
                   onChangeCountryBill(e).catch(() => {});
-                  handleCountryBillingChange(e);
+                  handleCountryBillingChange(e).catch(() => {});
                 }}
                 name={CountryBill}
                 ref={refCountryBill}
@@ -513,7 +549,7 @@ export function Register(): JSX.Element {
                     value={selectedShippingCountry}
                     onChange={(e) => {
                       onChangeCountryShip(e).catch(() => {});
-                      handleCountryShippingChange(e);
+                      handleCountryShippingChange(e).catch(() => {});
                     }}
                     name={CountryShip}
                     ref={refCountryShip}
@@ -706,11 +742,7 @@ export function Register(): JSX.Element {
               </span>
             )}
           </div>
-          <button
-            type="submit"
-            id="toCatalog"
-            className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}
-          >
+          <button type="submit" className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}>
             Sign up
           </button>
         </div>
