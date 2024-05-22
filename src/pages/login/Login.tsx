@@ -3,31 +3,15 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
-import { CustomButton } from '@/components/custom-button/customButton';
+import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useAuth } from '@/hooks/useAuth';
 
+import { type LoginSchema, loginSchema } from './login-schema';
 import styles from './styles.module.scss';
-
-const formSchema = z.object({
-  email: z.string().email('Email addresses must be properly formatted (e.g., user@example.com).'),
-  password: z
-    .string()
-    .min(8, 'Minimum 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one digit')
-    .refine(
-      (val) => val[0] !== ' ' && val[val.length - 1] !== ' ',
-      'Password must not contain leading or trailing whitespace.',
-    ),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
 
 export function Login(): JSX.Element {
   const { handleLogin } = useAuth();
@@ -35,15 +19,15 @@ export function Login(): JSX.Element {
   const {
     register,
     getFieldState,
-    getValues,
+    watch,
     formState: { errors, isValid },
-  } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
+  } = useForm<LoginSchema>({ mode: 'onChange', resolver: zodResolver(loginSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
   const { onChange: onChangePassword, name: Password, ref: refPassword } = register('password');
   const emailState = getFieldState('email');
   const passwordState = getFieldState('password');
-  const email = getValues('email');
-  const password = getValues('password');
+  const email = watch('email');
+  const password = watch('password');
 
   let emailClass = styles.email;
   let passwordClass = styles.password;
@@ -62,18 +46,22 @@ export function Login(): JSX.Element {
         className={styles.login}
         onSubmit={(event) => {
           event.preventDefault();
-          login({ email, password })
-            .then((response) => {
-              localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+          if (isValid) {
+            login({ email, password })
+              .then((response) => {
+                localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
 
-              // не даст выполнить запросы для анонима
-              // apiRoot.me().get().execute().then(console.log).catch(console.error);
-              // apiRoot.me().get().execute().then(console.log).catch(console.error);
+                // не даст выполнить запросы для анонима
+                // apiRoot.me().get().execute().then(console.log).catch(console.error);
+                // apiRoot.me().get().execute().then(console.log).catch(console.error);
 
-              toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
-              handleLogin();
-            })
-            .catch((error: Error) => toast(error.message, { type: 'error' }));
+                toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
+                handleLogin();
+              })
+              .catch((error: Error) => toast(error.message, { type: 'error' }));
+          } else {
+            toast('Validation error', { type: 'error' });
+          }
         }}
       >
         <h2 className={styles.login_title}>Login</h2>

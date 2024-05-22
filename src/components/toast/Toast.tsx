@@ -1,6 +1,6 @@
 import { Flip, ToastContainer } from 'react-toastify';
 
-export default function Toast(): JSX.Element {
+export function Toast(): JSX.Element {
   return (
     <div className="Toast">
       <ToastContainer

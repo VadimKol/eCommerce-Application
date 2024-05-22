@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <header
+    class="header"
+  >
+    <div>
+      <div
+        class="bm-overlay"
+        style="position: fixed; z-index: 1000; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); opacity: 0; transform: translate3d(100%, 0, 0); transition: opacity 0.3s, transform 0s 0.3s;"
+      />
+      <div>
+        <div
+          class="bm-burger-button"
+          style="z-index: 1000;"
+        >
+          <button
+            id="react-burger-menu-btn"
+            style="position: absolute; left: 0px; top: 0px; z-index: 1; width: 100%; height: 100%; margin: 0px; padding: 0px; font-size: 0px; background: transparent; cursor: pointer;"
+            type="button"
+          >
+            Open Menu
+          </button>
+          <span>
+            <span
+              class="bm-burger-bars"
+              style="position: absolute; height: 20%; left: 0px; right: 0px; top: 0%; opacity: 1;"
+            />
+            <span
+              class="bm-burger-bars"
+              style="position: absolute; height: 20%; left: 0px; right: 0px; top: 40%; opacity: 1;"
+            />
+            <span
+              class="bm-burger-bars"
+              style="position: absolute; height: 20%; left: 0px; right: 0px; top: 80%; opacity: 1;"
+            />
+          </span>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="bm-menu-wrap"
+        id=""
+        style="position: fixed; right: 0px; z-index: 1100; width: 280px; height: 100%; transform: translate3d(100%, 0, 0); transition: all 0.5s;"
+      >
+        <div
+          class="bm-menu"
+          style="height: 100%; box-sizing: border-box; overflow: auto;"
+        >
+          <div
+            class="bm-item-list"
+            style="height: 100%;"
+          >
+            <nav
+              class=""
+            >
+              <ul>
+                <li>
+                  <span
+                    class=""
+                  >
+                    HOME
+                  </span>
+                </li>
+                <li>
+                  <a
+                    href="/catalog"
+                  >
+                    CATALOG
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/about"
+                  >
+                    ABOUT
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <ul
+              class=""
+            >
+              <li>
+                <a
+                  class=""
+                  href="/login"
+                >
+                  Login
+                </a>
+              </li>
+              <li>
+                <a
+                  class=""
+                  href="/register"
+                >
+                  Register
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div
+            class="bm-cross-button"
+            style="position: absolute; width: 24px; height: 24px; right: 8px; top: 8px;"
+          >
+            <button
+              id="react-burger-cross-btn"
+              style="position: absolute; left: 0px; top: 0px; z-index: 1; width: 100%; height: 100%; margin: 0px; padding: 0px; font-size: 0px; background: transparent; cursor: pointer;"
+              tabindex="-1"
+              type="button"
+            >
+              Close Menu
+            </button>
+            <span
+              style="position: absolute; top: 6px; right: 14px;"
+            >
+              <span
+                class="bm-cross"
+                style="position: absolute; width: 3px; height: 14px; transform: rotate(45deg);"
+              />
+              <span
+                class="bm-cross"
+                style="position: absolute; width: 3px; height: 14px; transform: rotate(-45deg);"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <a
+        class="wordmark"
+        href="/"
+      >
+        Geek store
+      </a>
+      <nav
+        class=""
+      >
+        <ul>
+          <li>
+            <span
+              class=""
+            >
+              HOME
+            </span>
+          </li>
+          <li>
+            <a
+              href="/catalog"
+            >
+              CATALOG
+            </a>
+          </li>
+          <li>
+            <a
+              href="/about"
+            >
+              ABOUT
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <ul
+        class=""
+      >
+        <li>
+          <a
+            class=""
+            href="/login"
+          >
+            Login
+          </a>
+        </li>
+        <li>
+          <a
+            class=""
+            href="/register"
+          >
+            Register
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+</DocumentFragment>
+`;
