@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
-import { CustomButton } from '@/components/custom-button/customButton';
+import { CustomButton } from '@/components/custom-button/СustomButton';
 
 import styles from './styles.module.scss';
 

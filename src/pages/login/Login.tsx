@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
-import { CustomButton } from '@/components/custom-button/customButton';
+import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useAuth } from '@/hooks/useAuth';
 
 import { type LoginSchema, loginSchema } from './login-schema';

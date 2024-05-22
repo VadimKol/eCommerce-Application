@@ -12,7 +12,7 @@ const postalCodeSchemas: Record<Country, z.ZodString> = {
 
 export const registerSchema = z
   .object({
-    email: z.string().email('Email addresses must be properly formatted (e.g., user@example.com).'),
+    email: z.string().email('Email address must be properly formatted (e.g., user@example.com)'),
     password: z
       .string()
       .min(8, 'Minimum 8 characters')

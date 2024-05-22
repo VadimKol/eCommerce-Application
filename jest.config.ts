@@ -39,5 +39,5 @@ export default {
   },
   collectCoverage: true,
   collectCoverageFrom: ['**/*.{ts,tsx}', '!**/node_modules/**', '!jest.config.ts', '!vite.config.ts', '!**/*.d.ts'],
-  coverageReporters: ['text'],
+  coverageReporters: ['text', 'text-summary'],
 };

@@ -1,19 +1,46 @@
 import '@testing-library/jest-dom';
 
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { routerConfig } from '@/router/router-config.tsx';
+import { App } from '@/App';
 
-test('demo', () => {
-  expect(true).toBe(true);
-});
+// Mocking the components used in App
+jest.mock('@/components/footer/Footer.tsx', () => ({
+  Footer: (): JSX.Element => <div data-testid="footer">Footer</div>,
+}));
 
-test('Renders the main page', () => {
+jest.mock('@/components/header/Header.tsx', () => ({
+  Header: (): JSX.Element => <div data-testid="header">Header</div>,
+}));
+
+jest.mock('@/components/toast/Toast.tsx', () => ({
+  Toast: (): JSX.Element => <div data-testid="toast">Toast</div>,
+}));
+
+test('renders the App component with Header, Outlet, Footer, and Toast', () => {
+  const routerConfig = [
+    {
+      path: '/',
+      element: <App />,
+      children: [
+        {
+          path: '/',
+          element: <div data-testid="outlet">Main Content</div>,
+        },
+      ],
+    },
+  ];
+
   const router = createMemoryRouter(routerConfig, {
     initialEntries: ['/'],
   });
 
   render(<RouterProvider router={router} />);
-  expect(true).toBeTruthy();
+
+  // Check if Header, Footer, Toast, and Outlet components are rendered
+  expect(screen.getByTestId('header')).toBeInTheDocument();
+  expect(screen.getByTestId('footer')).toBeInTheDocument();
+  expect(screen.getByTestId('toast')).toBeInTheDocument();
+  expect(screen.getByTestId('outlet')).toBeInTheDocument();
 });

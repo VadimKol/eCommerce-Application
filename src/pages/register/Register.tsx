@@ -231,7 +231,7 @@ export function Register(): JSX.Element {
 
       const response = await login({ email, password });
       localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
-      toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
+      toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
     } catch (error) {
       if (error instanceof Error) {

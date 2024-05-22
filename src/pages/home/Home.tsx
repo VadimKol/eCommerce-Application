@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { ActionPaths } from '@/common/enums';
-import { CustomLink } from '@/components/custom-link/customLink';
+import { CustomLink } from '@/components/custom-link/СustomLink';
 
 import styles from './styles.module.scss';
 
