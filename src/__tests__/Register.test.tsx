@@ -1,3 +1,7 @@
+import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+
+import { Register } from '@/pages/register/Register';
 import { registerSchema } from '@/pages/register/register-schema';
 
 test('Register test with good values', () => {
@@ -48,4 +52,13 @@ test('Register test with bad age', () => {
       postcodeShip: '12345',
     }),
   ).toThrow();
+});
+
+it('renders correctly', () => {
+  const { container } = render(
+    <BrowserRouter>
+      <Register />
+    </BrowserRouter>,
+  );
+  expect(container).toMatchSnapshot();
 });

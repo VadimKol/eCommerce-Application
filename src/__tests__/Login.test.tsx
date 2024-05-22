@@ -1,3 +1,7 @@
+import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+
+import { Login } from '@/pages/login/Login';
 import { loginSchema } from '@/pages/login/login-schema';
 
 test('Login test with good email and password', () => {
@@ -14,4 +18,13 @@ test('Login test with good email and invalid password', () => {
 
 test('Login test with invalid email and password', () => {
   expect(() => loginSchema.parse({ email: ' user@example.com ', password: 'asdfasdf1' })).toThrow();
+});
+
+it('renders correctly', () => {
+  const { container } = render(
+    <BrowserRouter>
+      <Login />
+    </BrowserRouter>,
+  );
+  expect(container).toMatchSnapshot();
 });
