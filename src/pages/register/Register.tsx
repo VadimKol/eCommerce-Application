@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { z } from 'zod';
 
 import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
@@ -12,89 +11,8 @@ import { ActionPaths } from '@/common/enums';
 import { useAuth } from '@/hooks/useAuth.ts';
 
 import { countries } from '../../constants/constants.ts';
+import { type Country, type RegisterSchema, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
-
-const calculateAge = (birthDate: string): boolean => {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDifference = today.getMonth() - birth.getMonth();
-  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birth.getDate())) {
-    age -= 1;
-  }
-  return age >= 13;
-};
-
-type Country = 'RU' | 'BY' | 'US';
-
-const postalCodeSchemas: Record<Country, z.ZodString> = {
-  RU: z.string().regex(/^\d{6}$/, 'Invalid postal code for Russia'),
-  BY: z.string().regex(/^\d{6}$/, 'Invalid postal code for Belarus'),
-  US: z.string().regex(/^\d{5}(-\d{4})?$/, 'Invalid postal code for the USA'),
-};
-
-const formSchema = z
-  .object({
-    email: z.string().email('Email addresses must be properly formatted (e.g., user@example.com).'),
-    password: z
-      .string()
-      .min(8, 'Minimum 8 characters')
-      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-      .regex(/[0-9]/, 'Password must contain at least one digit')
-      .refine(
-        (val) => val[0] !== ' ' && val[val.length - 1] !== ' ',
-        'Password must not contain leading or trailing whitespace.',
-      ),
-    name: z.string().regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
-
-    surname: z
-      .string()
-      .regex(/^[A-Za-z]+$/, 'Must contain at least one character and no special characters or numbers'),
-    streetBill: z.string().regex(/.+/, 'Must contain at least one character'),
-    streetShip: z.string().regex(/.+/, 'Must contain at least one character'),
-    cityBill: z
-      .string()
-      .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-    cityShip: z
-      .string()
-      .regex(/^[A-Za-z\s]+$/, 'Must contain at least one character and no special characters or numbers'),
-    age: z
-      .string()
-      .refine((date) => !Number.isNaN(Date.parse(date)), 'Invalid date format')
-      .refine((date) => calculateAge(date), 'You must be at least 13 years old'),
-    setAddress: z.boolean(),
-    billdefault: z.boolean(),
-    shipdefault: z.boolean(),
-    apartamentBill: z.string(),
-    apartamentShip: z.string(),
-    countryBill: z.enum(['RU', 'BY', 'US']),
-    countryShip: z.enum(['RU', 'BY', 'US']),
-    postcodeBill: z.string(),
-    postcodeShip: z.string(),
-  })
-  .superRefine((data, ctx) => {
-    const billSchema = postalCodeSchemas[data.countryBill as Country];
-    if (!billSchema.safeParse(data.postcodeBill).success) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Invalid postal code for billing country: ${data.countryBill}`,
-        path: ['postcodeBill'],
-      });
-    }
-
-    // Validate shipping postal code
-    const shipSchema = postalCodeSchemas[data.countryShip as Country];
-    if (!shipSchema.safeParse(data.postcodeShip).success) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Invalid postal code for shipping country: ${data.countryShip}`,
-        path: ['postcodeShip'],
-      });
-    }
-  });
-
-type FormSchema = z.infer<typeof formSchema>;
 
 export function Register(): JSX.Element {
   const { handleLogin } = useAuth();
@@ -109,7 +27,7 @@ export function Register(): JSX.Element {
     getValues,
     trigger,
     formState: { errors, isValid },
-  } = useForm<FormSchema>({ mode: 'onChange', resolver: zodResolver(formSchema) });
+  } = useForm<RegisterSchema>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
   const { onChange: onChangePassword, name: Password, ref: refPassword } = register('password');
   const { onChange: onChangeName, name: Name, ref: refName } = register('name');
