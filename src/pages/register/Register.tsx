@@ -24,7 +24,6 @@ export function Register(): JSX.Element {
     getFieldState,
     watch,
     setValue,
-    getValues,
     trigger,
     formState: { errors, isValid },
   } = useForm<RegisterSchema>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
@@ -181,26 +180,26 @@ export function Register(): JSX.Element {
     setValue('setAddress', event.target.checked);
   };
 
-  const email: string = getValues('email');
-  const password: string = getValues('password');
-  const firstName: string = getValues('name');
-  const lastName: string = getValues('surname');
-  const dateOfBirth: string = getValues('age');
+  const email: string = watch('email');
+  const password: string = watch('password');
+  const firstName: string = watch('name');
+  const lastName: string = watch('surname');
+  const dateOfBirth: string = watch('age');
 
   const addresses = [
     {
       country: selectedBillingCountry,
-      city: getValues('cityBill'),
-      streetName: getValues('streetBill'),
-      postalCode: getValues('postcodeBill'),
-      apartment: getValues('apartamentBill'),
+      city: watch('cityBill'),
+      streetName: watch('streetBill'),
+      postalCode: watch('postcodeBill'),
+      apartment: watch('apartamentBill'),
     },
     {
       country: selectedShippingCountry,
-      city: getValues('cityShip'),
-      streetName: getValues('streetShip'),
-      postalCode: getValues('postcodeShip'),
-      apartment: getValues('apartamentShip'),
+      city: watch('cityShip'),
+      streetName: watch('streetShip'),
+      postalCode: watch('postcodeShip'),
+      apartment: watch('apartamentShip'),
     },
   ];
 
@@ -209,10 +208,10 @@ export function Register(): JSX.Element {
   }
 
   const billingAddresses = [0];
-  const defaultBillingAddress = getValues('billdefault') ? 0 : undefined;
+  const defaultBillingAddress = watch('billdefault') ? 0 : undefined;
   const shipAddressesIndex = checkboxValue ? 0 : 1;
   const shippingAddresses = [shipAddressesIndex];
-  const defaultShippingAddress = getValues('shipdefault') ? shipAddressesIndex : undefined;
+  const defaultShippingAddress = watch('shipdefault') ? shipAddressesIndex : undefined;
 
   const signUpAtForm = async (): Promise<void> => {
     try {
@@ -248,7 +247,11 @@ export function Register(): JSX.Element {
         className={styles.form}
         onSubmit={(event) => {
           event.preventDefault();
-          signUpAtForm().catch(() => {});
+          if (isValid) {
+            signUpAtForm().catch(() => {});
+          } else {
+            toast('Validation error', { type: 'error' });
+          }
         }}
       >
         <h2 className={styles.formTitle}>Registration</h2>

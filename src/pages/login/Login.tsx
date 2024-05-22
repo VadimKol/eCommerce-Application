@@ -19,15 +19,15 @@ export function Login(): JSX.Element {
   const {
     register,
     getFieldState,
-    getValues,
+    watch,
     formState: { errors, isValid },
   } = useForm<LoginSchema>({ mode: 'onChange', resolver: zodResolver(loginSchema) });
   const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
   const { onChange: onChangePassword, name: Password, ref: refPassword } = register('password');
   const emailState = getFieldState('email');
   const passwordState = getFieldState('password');
-  const email = getValues('email');
-  const password = getValues('password');
+  const email = watch('email');
+  const password = watch('password');
 
   let emailClass = styles.email;
   let passwordClass = styles.password;
@@ -46,18 +46,22 @@ export function Login(): JSX.Element {
         className={styles.login}
         onSubmit={(event) => {
           event.preventDefault();
-          login({ email, password })
-            .then((response) => {
-              localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+          if (isValid) {
+            login({ email, password })
+              .then((response) => {
+                localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
 
-              // не даст выполнить запросы для анонима
-              // apiRoot.me().get().execute().then(console.log).catch(console.error);
-              // apiRoot.me().get().execute().then(console.log).catch(console.error);
+                // не даст выполнить запросы для анонима
+                // apiRoot.me().get().execute().then(console.log).catch(console.error);
+                // apiRoot.me().get().execute().then(console.log).catch(console.error);
 
-              toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
-              handleLogin();
-            })
-            .catch((error: Error) => toast(error.message, { type: 'error' }));
+                toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
+                handleLogin();
+              })
+              .catch((error: Error) => toast(error.message, { type: 'error' }));
+          } else {
+            toast('Validation error', { type: 'error' });
+          }
         }}
       >
         <h2 className={styles.login_title}>Login</h2>
