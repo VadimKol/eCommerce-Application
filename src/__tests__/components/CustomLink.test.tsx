@@ -7,7 +7,6 @@ import { BrowserRouter } from 'react-router-dom';
 import type { LinkProps } from '@/components/custom-link/types';
 import { CustomLink } from '@/components/custom-link/СustomLink';
 
-// Mock styles to prevent CSS class issues in tests
 jest.mock('./styles.module.scss', () => ({
   link: 'link',
   'link--primary': 'link--primary',
