@@ -5,7 +5,6 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { App } from '@/App';
 
-// Mocking the components used in App
 jest.mock('@/components/footer/Footer.tsx', () => ({
   Footer: (): JSX.Element => <div data-testid="footer">Footer</div>,
 }));
@@ -38,7 +37,6 @@ test('renders the App component with Header, Outlet, Footer, and Toast', () => {
 
   render(<RouterProvider router={router} />);
 
-  // Check if Header, Footer, Toast, and Outlet components are rendered
   expect(screen.getByTestId('header')).toBeInTheDocument();
   expect(screen.getByTestId('footer')).toBeInTheDocument();
   expect(screen.getByTestId('toast')).toBeInTheDocument();

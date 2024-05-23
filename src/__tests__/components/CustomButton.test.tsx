@@ -6,7 +6,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import type { ButtonProps } from '@/components/custom-button/types';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 
-// Mock styles to prevent CSS class issues in tests
 jest.mock('./styles.module.scss', () => ({
   button: 'button',
   'button--primary': 'button--primary',
