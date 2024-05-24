@@ -1,0 +1,110 @@
+.email_label,
+.password_label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  max-width: 400px;
+  margin: auto;
+  padding: 20px 40px 10px;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+
+  &_title {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  & .email {
+    padding: 0 5px;
+  }
+
+  & .password {
+    padding: 0 30px 0 5px;
+  }
+
+  & .email,
+  & .password {
+    box-sizing: border-box;
+    width: 73%;
+    height: 30px;
+    font-family: var(--primary-font);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+
+    &:focus {
+      border: 1px solid #000000;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  & .valid {
+    box-shadow: 0 0 7px var(--secondary-color);
+  }
+
+  & .invalid {
+    box-shadow: 0 0 7px var(--error-color);
+  }
+
+  & .error {
+    width: 100%;
+    margin-bottom: 20px;
+    color: var(--error-color);
+  }
+
+  & .password_block {
+    position: relative;
+  }
+
+  & .reveal {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    background-image: url("/src/assets/images/show.svg");
+    background-size: cover;
+    border: none;
+
+
+    @media (hover: hover) {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  & .hidden {
+    background-image: url("/src/assets/images/hidden.svg");
+  }
+
+  @media screen and (width <= 440px) {
+    padding: 20px 20px 10px;
+  }
+}
+
+.registry_link {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.link {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--secondary-color);
+}

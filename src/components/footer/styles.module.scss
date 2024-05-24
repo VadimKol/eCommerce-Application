@@ -1,0 +1,18 @@
+.footer {
+  width: 100%;
+  background: var(--primary-color);
+}
+
+.container {
+  display: flex;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding: 20px;
+}
+
+.footerItem {
+  margin: 0 auto;
+  font-size: 20px;
+  text-align: center;
+  color: var(--text-color);
+}
