@@ -30,9 +30,9 @@ export function Breadcrumbs(): JSX.Element {
   return (
     <nav>
       <ol className={styles.breadcrumbs}>
-        {breadcrumbs.map((crumb) => (
+        {breadcrumbs.map((crumb, index) => (
           <li key={crumb.label} className={styles.crumb}>
-            <Link to={crumb.path}>{crumb.label}</Link>
+            {index === breadcrumbs.length - 1 ? <span>{crumb.label}</span> : <Link to={crumb.path}>{crumb.label}</Link>}
           </li>
         ))}
       </ol>
