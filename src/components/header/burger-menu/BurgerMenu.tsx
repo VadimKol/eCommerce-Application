@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import { useLocation } from 'react-router-dom';
 
-import { HeaderLinks } from '../links/HeaderLinks';
+import { HeaderLinks } from '@/components/header/links/HeaderLinks';
 
 export function BurgerMenu(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
