@@ -1,0 +1,186 @@
+[
+  {
+    "id": "collectibles",
+    "name": "Collectibles",
+    "subcategories": [
+      {
+        "id": "figures",
+        "name": "Figures",
+        "products": [
+          {
+            "id": "funko-pop",
+            "name": "Funko Pop",
+            "description": "Collectible Funko Pop vinyl figures.",
+            "categoryId": "collectibles",
+            "subcategoryId": "figures"
+          },
+          {
+            "id": "action-figures",
+            "name": "Action Figures",
+            "description": "Detailed action figures from various franchises.",
+            "categoryId": "collectibles",
+            "subcategoryId": "figures"
+          }
+        ]
+      },
+      {
+        "id": "statues",
+        "name": "Statues",
+        "products": [
+          {
+            "id": "batman-statue",
+            "name": "Batman Statue",
+            "description": "High-quality statue of Batman.",
+            "categoryId": "collectibles",
+            "subcategoryId": "statues"
+          },
+          {
+            "id": "wonder-woman-statue",
+            "name": "Wonder Woman Statue",
+            "description": "High-quality statue of Wonder Woman.",
+            "categoryId": "collectibles",
+            "subcategoryId": "statues"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "books",
+    "name": "Books",
+    "subcategories": [
+      {
+        "id": "comics",
+        "name": "Comics",
+        "products": [
+          {
+            "id": "batman-comic",
+            "name": "Batman Comic",
+            "description": "Latest issue of Batman comic series.",
+            "categoryId": "books",
+            "subcategoryId": "comics"
+          },
+          {
+            "id": "spiderman-comic",
+            "name": "Spider-Man Comic",
+            "description": "Latest issue of Spider-Man comic series.",
+            "categoryId": "books",
+            "subcategoryId": "comics"
+          }
+        ]
+      },
+      {
+        "id": "novels",
+        "name": "Novels",
+        "products": [
+          {
+            "id": "dune",
+            "name": "Dune",
+            "description": "Science fiction novel by Frank Herbert.",
+            "categoryId": "books",
+            "subcategoryId": "novels"
+          },
+          {
+            "id": "foundation",
+            "name": "Foundation",
+            "description": "Science fiction novel by Isaac Asimov.",
+            "categoryId": "books",
+            "subcategoryId": "novels"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "apparel",
+    "name": "Apparel",
+    "subcategories": [
+      {
+        "id": "t-shirts",
+        "name": "T-Shirts",
+        "products": [
+          {
+            "id": "superhero-tshirt",
+            "name": "Superhero T-Shirt",
+            "description": "T-shirt with superhero logo.",
+            "categoryId": "apparel",
+            "subcategoryId": "t-shirts"
+          },
+          {
+            "id": "gaming-tshirt",
+            "name": "Gaming T-Shirt",
+            "description": "T-shirt with gaming theme.",
+            "categoryId": "apparel",
+            "subcategoryId": "t-shirts"
+          }
+        ]
+      },
+      {
+        "id": "hoodies",
+        "name": "Hoodies",
+        "products": [
+          {
+            "id": "star-wars-hoodie",
+            "name": "Star Wars Hoodie",
+            "description": "Hoodie with Star Wars design.",
+            "categoryId": "apparel",
+            "subcategoryId": "hoodies"
+          },
+          {
+            "id": "harry-potter-hoodie",
+            "name": "Harry Potter Hoodie",
+            "description": "Hoodie with Harry Potter design.",
+            "categoryId": "apparel",
+            "subcategoryId": "hoodies"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gadgets",
+    "name": "Gadgets",
+    "subcategories": [
+      {
+        "id": "smart-home",
+        "name": "Smart Home",
+        "products": [
+          {
+            "id": "smart-light",
+            "name": "Smart Light",
+            "description": "Voice-controlled smart light.",
+            "categoryId": "gadgets",
+            "subcategoryId": "smart-home"
+          },
+          {
+            "id": "smart-speaker",
+            "name": "Smart Speaker",
+            "description": "Voice-controlled smart speaker.",
+            "categoryId": "gadgets",
+            "subcategoryId": "smart-home"
+          }
+        ]
+      },
+      {
+        "id": "wearables",
+        "name": "Wearables",
+        "products": [
+          {
+            "id": "smart-watch",
+            "name": "Smart Watch",
+            "description": "Wearable smart watch with fitness tracking.",
+            "categoryId": "gadgets",
+            "subcategoryId": "wearables"
+          },
+          {
+            "id": "fitness-band",
+            "name": "Fitness Band",
+            "description": "Wearable fitness band with health monitoring.",
+            "categoryId": "gadgets",
+            "subcategoryId": "wearables"
+          }
+        ]
+      }
+    ]
+  }
+]

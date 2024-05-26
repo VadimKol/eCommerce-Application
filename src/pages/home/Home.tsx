@@ -9,7 +9,7 @@ export function Home(): JSX.Element {
   return (
     <main className={classNames('main', styles.main)}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Home/main page</h1>
+        <h1 className={styles.title}>Home page</h1>
         <p className={styles.linksDesc}>Temporary links for cross-check:</p>
         <ul className={styles.linksList}>
           <li>

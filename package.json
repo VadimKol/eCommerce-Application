@@ -30,7 +30,7 @@
     "stylelint:fix": "stylelint ./src/**/*.{css,scss} --fix --quiet-deprecation-warnings",
     "test": "jest",
     "prepare": "husky",
-    "deploy-sprint-2": "npm run build && npx gh-pages -b netlify-sprint-2 -d dist"
+    "deploy-sprint-3": "npm run build && npx gh-pages -b netlify-sprint-3 -d dist"
   },
   "repository": {
     "type": "git",
