@@ -131,3 +131,38 @@ export interface GeekShopCustomerDraft {
    */
   readonly stores?: StoreResourceIdentifier[];
 }
+
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  categoryId: string;
+  subcategoryId: string;
+};
+
+export type Subcategory = {
+  id: string;
+  name: string;
+  products: Product[];
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  subcategories: Subcategory[];
+};
+
+export type CategoriesData = Category[];
+
+export type UrlParams = {
+  categoryName?: string;
+  subcategoryName?: string;
+  productName?: string;
+};
+
+export type LoaderData = {
+  category?: Category;
+  subcategory?: Subcategory;
+  product?: Product;
+};

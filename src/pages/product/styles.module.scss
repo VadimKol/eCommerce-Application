@@ -1,0 +1,19 @@
+.main {
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 100%;
+  margin: auto;
+  padding: 28px 40px 30px;
+  text-align: center;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+}

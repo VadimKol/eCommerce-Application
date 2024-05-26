@@ -1,0 +1,46 @@
+.categoriesContainer {
+  position: relative;
+  padding: 20px;
+}
+
+.categoriesList {
+  display: flex;
+  gap: 30px;
+}
+
+.categoriesList,
+.subcategoriesList {
+  padding: 0;
+  list-style-type: none;
+}
+
+.categoryItem {
+  position: relative;
+  margin: 10px 0;
+}
+
+.categoryLink,
+.subcategoryItem a {
+  text-decoration: none;
+}
+
+.categoryLink:hover,
+.subcategoryItem:hover a {
+  text-decoration: underline;
+}
+
+.subcategoriesList {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 1;
+  display: none;
+  padding: 10px;
+  background-color: #537a55;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+  transform: translateX(-50%);
+}
+
+.categoryItem:hover .subcategoriesList {
+  display: block;
+}
