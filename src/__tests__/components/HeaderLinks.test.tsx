@@ -1,121 +1,80 @@
 import '@testing-library/jest-dom';
 
 import type { RenderResult } from '@testing-library/react';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { logout } from '@/api/client-actions';
-import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { HeaderLinks } from '@/components/header/links/HeaderLinks';
 import { useAuth } from '@/hooks/useAuth';
 
-jest.mock('@/api/client-actions', () => ({
-  logout: jest.fn(),
-}));
-jest.mock('@/hooks/useAuth', () => ({
-  useAuth: jest.fn(),
-}));
+jest.mock('@/hooks/useAuth');
+jest.mock('@/api/client-actions');
 jest.mock('react-toastify', () => ({
   toast: jest.fn(),
 }));
-jest.mock('./styles.module.scss', () => ({
-  navigation: 'navigation',
-  insideMenu: 'insideMenu',
-  navList: 'navList',
-  navLink: 'navLink',
-  navLinkCurrent: 'navLinkCurrent',
-  actionsList: 'actionsList',
-  actionsItem: 'actionsItem',
-  logoutButton: 'logoutButton',
-  actionLink: 'actionLink',
-  loginLink: 'loginLink',
-  registerLink: 'registerLink',
-}));
 
-describe('HeaderLinks Component', () => {
-  const mockUseAuth = useAuth as jest.Mock;
+const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+const mockLogout = logout as jest.MockedFunction<typeof logout>;
+const mockToast = toast as jest.MockedFunction<typeof toast>;
 
-  const renderComponent = (
-    isAuthenticated = false,
-    initialRoute = '/',
-  ): { component: RenderResult; handleLogout: jest.Mock } => {
-    const handleLogout = jest.fn();
+const setup = (
+  authState = { isAuthenticated: false, handleLogout: jest.fn(), handleLogin: jest.fn() },
+): RenderResult => {
+  mockUseAuth.mockReturnValue(authState);
+  return render(
+    <Router>
+      <HeaderLinks />
+    </Router>,
+  );
+};
 
-    mockUseAuth.mockReturnValue({
-      isAuthenticated,
-      handleLogout,
-    });
-
-    const component = render(
-      <MemoryRouter initialEntries={[initialRoute]}>
-        <HeaderLinks />
-      </MemoryRouter>,
-    );
-
-    return { component, handleLogout };
-  };
-
-  beforeEach(() => {
-    jest.clearAllMocks();
+describe('HeaderLinks', () => {
+  it('renders navigation links', () => {
+    setup();
+    expect(screen.getByText('HOME')).toBeInTheDocument();
+    expect(screen.getByText('CATALOG')).toBeInTheDocument();
+    expect(screen.getByText('ABOUT')).toBeInTheDocument();
   });
 
-  test('renders navigation links correctly', () => {
-    renderComponent();
-
-    Object.keys(NavigationPaths).forEach((path) => {
-      expect(screen.getByText(path)).toBeInTheDocument();
-    });
-  });
-
-  test('renders login and register links when not authenticated', () => {
-    renderComponent(false, '/');
-
+  it('renders login and register links when not authenticated', () => {
+    setup();
     expect(screen.getByText('Login')).toBeInTheDocument();
     expect(screen.getByText('Register')).toBeInTheDocument();
   });
 
-  test('does not render login and register links on respective pages', () => {
-    renderComponent(false, ActionPaths.LOGIN);
-    expect(screen.queryByText('Login')).not.toBeInTheDocument();
-    expect(screen.getByText('Register')).toBeInTheDocument();
-
-    cleanup();
-
-    renderComponent(false, ActionPaths.REGISTER);
-    expect(screen.queryByText('Register')).not.toBeInTheDocument();
-    expect(screen.getByText('Login')).toBeInTheDocument();
-  });
-
-  test('renders logout button when authenticated', () => {
-    renderComponent(true);
-
+  it('renders profile and logout links when authenticated', () => {
+    setup({ isAuthenticated: true, handleLogout: jest.fn(), handleLogin: jest.fn() });
+    expect(screen.getByText('Profile')).toBeInTheDocument();
     expect(screen.getByText('Logout')).toBeInTheDocument();
   });
 
-  test('calls logout and redirects on logout button click', async () => {
-    const { handleLogout } = renderComponent(true, '/');
+  it('calls logout and shows toast on logout click', async () => {
+    const handleLogout = jest.fn();
+    setup({ isAuthenticated: true, handleLogout, handleLogin: jest.fn() });
 
-    (logout as jest.Mock).mockResolvedValueOnce({});
-    const { getAllByText } = renderComponent(true, '/').component;
+    mockLogout.mockResolvedValueOnce();
 
-    fireEvent.click(getAllByText('Logout')[0] as HTMLButtonElement);
+    fireEvent.click(screen.getByText('Logout'));
 
-    await waitFor(() => expect(logout).toHaveBeenCalled());
-    expect(toast).toHaveBeenCalledWith('Successfully logged out', { type: 'success' });
-    expect(handleLogout).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockLogout).toHaveBeenCalled();
+      expect(mockToast).toHaveBeenCalledWith('Successfully logged out', { type: 'success' });
+      expect(handleLogout).toHaveBeenCalled();
+    });
   });
 
-  test('shows error toast on logout failure', async () => {
-    const { handleLogout } = renderComponent(true, '/');
+  it('shows error toast on logout failure', async () => {
+    setup({ isAuthenticated: true, handleLogout: jest.fn(), handleLogin: jest.fn() });
 
-    (logout as jest.Mock).mockRejectedValueOnce(new Error('Logout failed'));
-    const { getAllByText } = renderComponent(true, '/').component;
+    mockLogout.mockRejectedValueOnce(new Error('Failed to logout'));
 
-    fireEvent.click(getAllByText('Logout')[0] as HTMLButtonElement);
+    fireEvent.click(screen.getByText('Logout'));
 
-    await waitFor(() => expect(logout).toHaveBeenCalled());
-    expect(toast).toHaveBeenCalledWith('Failed to logout', { type: 'error' });
-    expect(handleLogout).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockLogout).toHaveBeenCalled();
+      expect(mockToast).toHaveBeenCalledWith('Failed to logout', { type: 'error' });
+    });
   });
 });

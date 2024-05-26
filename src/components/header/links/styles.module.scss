@@ -60,38 +60,6 @@
   }
 }
 
-.logoutButton {
-  font-size: inherit;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.loginLink,
-.registerLink,
-.logoutButton,
-.navLink {
-  padding: 5px;
-  text-decoration: none;
-  color: var(--text-color);
-  transition: color 0.6s ease-in-out;
-
-  &:hover,
-  &:focus-visible {
-    @media (hover: hover) {
-      color: var(--tertiary-color);
-    }
-  }
-}
-
-.navLinkCurrent {
-  text-decoration: underline;
-  pointer-events: none;
-  text-underline-offset: 10px;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--text-color);
-}
-
 .actionsItem:not(:last-child) {
   &::after {
     content: "|";
@@ -99,6 +67,26 @@
 
     @media (width <= 768px) {
       content: none;
+    }
+  }
+}
+
+.logoutButton {
+  padding: 5px;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  color: var(--text-color);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.6s ease-in-out, text-decoration-color 0.6s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
     }
   }
 }

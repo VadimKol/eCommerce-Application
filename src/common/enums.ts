@@ -7,4 +7,5 @@ export enum NavigationPaths {
 export enum ActionPaths {
   LOGIN = '/login',
   REGISTER = '/register',
+  PROFILE = '/profile',
 }
