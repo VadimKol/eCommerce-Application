@@ -8,3 +8,31 @@ export const calculateAge = (birthDate: string): boolean => {
   }
   return age >= 13;
 };
+
+export const sortingTypes = [
+  'Alphabetically, A-Z',
+  'Alphabetically, Z-A',
+  'Price, low to high',
+  'Price, high to low',
+  'Date, old to new',
+  'Date, new to old',
+];
+
+export const fandoms = [
+  'Genshin',
+  'Disney',
+  'Cyberpunk',
+  'Avengers',
+  'Batman',
+  'Doctor Who',
+  'Star Wars',
+  'Iron Man',
+  'Beetlejuice',
+  'Marvel',
+  'One Piece',
+  'Harry Potter',
+  'Stranger Things',
+  'Rick and Morty',
+  'Supernatural',
+  'Aladdin',
+];
