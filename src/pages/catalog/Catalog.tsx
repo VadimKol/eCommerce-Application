@@ -36,9 +36,11 @@ export function Catalog(): JSX.Element {
 
   return (
     <main className={classNames('main', styles.main)}>
+      <div className={styles.topContainer}>
+        <CategoriesList parentClass={styles.categoriesList} />
+      </div>
+      <Breadcrumbs parentClass={styles.breadcrumbs} />
       <div className={styles.container}>
-        <CategoriesList />
-        <Breadcrumbs />
         <h1>{title}</h1>
         <ul>
           {products.map((product) => (

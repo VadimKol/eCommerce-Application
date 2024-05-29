@@ -15,7 +15,7 @@ export default defineConfig({
     checker({
       typescript: true,
       stylelint: {
-        lintCommand: 'stylelint ./src/**/*.{css,scss}',
+        lintCommand: 'stylelint ./src/**/*.{css,scss} --quiet-deprecation-warnings',
       },
       eslint: {
         lintCommand: 'eslint "./src/**/*.{ts,tsx}"',

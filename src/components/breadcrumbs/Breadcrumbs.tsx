@@ -5,7 +5,7 @@ import type { LoaderData } from '@/common/types';
 
 import styles from './styles.module.scss';
 
-export function Breadcrumbs(): JSX.Element {
+export function Breadcrumbs({ parentClass }: { parentClass?: string }): JSX.Element {
   const data = useLoaderData() as LoaderData;
   const breadcrumbs = [{ path: NavigationPaths.CATALOG as string, label: 'Catalog' }];
 
@@ -28,11 +28,17 @@ export function Breadcrumbs(): JSX.Element {
   }
 
   return (
-    <nav>
+    <nav className={parentClass || ''}>
       <ol className={styles.breadcrumbs}>
         {breadcrumbs.map((crumb, index) => (
           <li key={crumb.label} className={styles.crumb}>
-            {index === breadcrumbs.length - 1 ? <span>{crumb.label}</span> : <Link to={crumb.path}>{crumb.label}</Link>}
+            {index === breadcrumbs.length - 1 ? (
+              <span>{crumb.label}</span>
+            ) : (
+              <Link className={styles.crumbLink} to={crumb.path}>
+                {crumb.label}
+              </Link>
+            )}
           </li>
         ))}
       </ol>

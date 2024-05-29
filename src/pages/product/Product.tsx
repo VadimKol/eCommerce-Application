@@ -11,9 +11,11 @@ export function Product(): JSX.Element {
 
   return (
     <main className="main">
+      <div className={styles.topContainer}>
+        <CategoriesList parentClass={styles.categoriesList} />
+      </div>
+      <Breadcrumbs parentClass={styles.breadcrumbs} />
       <div className={styles.container}>
-        <CategoriesList />
-        <Breadcrumbs />
         <div>
           {product && <h2>{product.name}</h2>}
           {product && <p>{product.description}</p>}

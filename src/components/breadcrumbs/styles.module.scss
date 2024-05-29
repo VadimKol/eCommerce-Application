@@ -1,17 +1,38 @@
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 0;
   padding: 0;
+  font-size: 22px;
   list-style: none;
 }
 
 .crumb {
   display: flex;
   gap: 10px;
+  background-color: var(--background-color);
+  border-radius: 5px;
 }
 
 .crumb:not(:last-child)::after,
 .crumb:first-child::after {
   content: "/";
+}
+
+.crumbLink {
+  text-decoration: underline;
+  color: var(--primary-color);
+  transition: color 0.6s ease-in-out, text-decoration-color 0.6s ease-in-out;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--primary-color);
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
+    }
+  }
 }
