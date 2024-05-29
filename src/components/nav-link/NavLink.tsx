@@ -8,9 +8,10 @@ interface NavLinkProps {
   label: string;
   className?: string;
   setIsCurrent?: boolean;
+  onClick?: React.MouseEventHandler;
 }
 
-export function NavLink({ to, label, className, setIsCurrent = false }: NavLinkProps): JSX.Element {
+export function NavLink({ to, label, className, setIsCurrent = false, onClick }: NavLinkProps): JSX.Element {
   const location = useLocation();
   const isCurrentLink = location.pathname === to;
 
@@ -19,7 +20,11 @@ export function NavLink({ to, label, className, setIsCurrent = false }: NavLinkP
   }
 
   return (
-    <Link className={classNames(className, styles.link, { [styles.linkCurrent!]: setIsCurrent })} to={to}>
+    <Link
+      className={classNames(className, styles.link, { [styles.linkCurrent!]: setIsCurrent })}
+      to={to}
+      onClick={onClick}
+    >
       {label}
     </Link>
   );

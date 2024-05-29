@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { logout } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
-import { NavLink } from '@/components/header/links/nav-link/NavLink';
+import { NavLink } from '@/components/nav-link/NavLink';
 import { useAuth } from '@/hooks/useAuth';
 
 import styles from './styles.module.scss';

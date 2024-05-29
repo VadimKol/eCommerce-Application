@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { NavigationPaths } from '@/common/enums';
 import type { CategoriesData } from '@/common/types';
+import { NavLink } from '@/components/nav-link/NavLink';
 import categoriesData from '@/router/mock-products.json';
 
 import styles from './styles.module.scss';
@@ -20,11 +21,7 @@ export function CategoriesList({ parentClass, isInsideBurgerMenu = false }: Prop
   const menuRef = useRef<HTMLUListElement | null>(null);
 
   const handleCategoryClick = (evt: React.MouseEvent, categoryId: string): void => {
-    if (isInsideBurgerMenu) {
-      evt.preventDefault();
-    } else {
-      navigate(`${NavigationPaths.CATALOG}/${categoryId}`);
-    }
+    evt.preventDefault();
 
     if (openCategoryId === categoryId) {
       setOpenCategoryId(null);
@@ -78,15 +75,14 @@ export function CategoriesList({ parentClass, isInsideBurgerMenu = false }: Prop
                     location.pathname.includes(`${subcategory.id}/`) || location.pathname.endsWith(subcategory.id);
                   return (
                     <li key={subcategory.id} className={styles.subcategoryItem}>
-                      <Link
+                      <NavLink
                         to={`${NavigationPaths.CATALOG}/${category.id}/${subcategory.id}`}
+                        label={subcategory.name}
                         className={classNames(styles.subcategoryLink, {
                           [styles.subcategoryLinkCurrent!]: isCurrentSubcategory,
                         })}
                         onClick={() => setOpenCategoryId(null)}
-                      >
-                        {subcategory.name}
-                      </Link>
+                      />
                     </li>
                   );
                 })}
