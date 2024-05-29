@@ -1,5 +1,30 @@
 .main {
-  padding: 20px;
+  padding-bottom: 20px;
+}
+
+.topContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-image: linear-gradient(to bottom, #df7830, #ffa601);
+}
+
+.categoriesList {
+  max-width: var(--max-width);
+  margin-inline: auto;
+}
+
+.breadcrumbs {
+  align-self: flex-start;
+  width: fit-content;
+  margin-inline: calc(((100% - var(--max-width)) / 2) + 10px);
+  margin-block: 10px;
+
+  @media (width <= 1440px) {
+    & {
+      margin-inline: 10px;
+    }
+  }
 }
 
 .container {

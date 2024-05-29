@@ -1,46 +1,195 @@
-.categoriesContainer {
-  position: relative;
-  padding: 20px;
-}
-
-.categoriesList {
-  display: flex;
-  gap: 30px;
-}
-
 .categoriesList,
 .subcategoriesList {
+  margin: 0;
   padding: 0;
   list-style-type: none;
 }
 
-.categoryItem {
-  position: relative;
-  margin: 10px 0;
-}
+.categoriesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: fit-content;
+  padding: 10px;
+  font-size: 20px;
+  color: var(--primary-color);
 
-.categoryLink,
-.subcategoryItem a {
-  text-decoration: none;
-}
+  @media (width <= 768px) {
+    display: none;
+  }
 
-.categoryLink:hover,
-.subcategoryItem:hover a {
-  text-decoration: underline;
+  &.insideMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    text-align: center;
+    color: var(--text-color);
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-block: 10px;
+      background-color: var(--text-color);
+    }
+  }
 }
 
 .subcategoriesList {
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 50%;
   z-index: 1;
   display: none;
-  padding: 10px;
-  background-color: #537a55;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 50px 10px 10px;
+  background-image: linear-gradient(45deg, #1e801e, var(--secondary-color));
+  border-radius: 15px;
+  box-shadow: 0 2px 6px 6px rgb(0 0 0 / 10%);
   transform: translateX(-50%);
+
+  .insideMenu & {
+    left: calc(0%);
+    z-index: 10000;
+    width: fit-content;
+    min-width: 140px;
+    padding: 15px 0;
+    background-image: linear-gradient(45deg, #07531d, #0a9230);
+    transform: translate(calc(-100% + 40px), -8px);
+  }
 }
 
-.categoryItem:hover .subcategoriesList {
-  display: block;
+.categoryLink {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  border-radius: 15px;
+  transition: color 0.6s ease-in-out, text-decoration-color 0.6s ease-in-out;
+
+  .insideMenu & {
+    padding: 10px;
+    font-size: 18px;
+    color: var(--text-color);
+  }
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+
+      .insideMenu & {
+        text-decoration: none;
+        color: var(--tertiary-color);
+        text-decoration-color: var(--tertiary-color);
+      }
+    }
+  }
+}
+
+.categoryItem {
+  position: relative;
+  border-radius: 15px;
+
+  .insideMenu & {
+    margin-inline: -40px;
+    padding-inline: 40px;
+  }
+
+  &:hover {
+    .categoryLink {
+      z-index: 2;
+    }
+
+    & .subcategoriesList {
+      display: flex;
+    }
+  }
+}
+
+.subcategoryLink {
+  display: inline-block;
+  padding: 4px 10px;
+  line-height: 1.2;
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.6s ease-in-out, text-decoration-color 0.6s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+
+      .insideMenu & {
+        text-decoration: none;
+        color: var(--tertiary-color);
+      }
+    }
+  }
+
+  .insideMenu & {
+    padding: 4px;
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--text-color);
+  }
+}
+
+.subcategoryLinkCurrent {
+  text-decoration: underline;
+  cursor: default;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--primary-color);
+
+  &:hover {
+    @media (hover: hover) {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      text-decoration-thickness: 2px;
+
+      .insideMenu & {
+        text-decoration: underline;
+        color: var(--tertiary-color);
+        text-underline-offset: 10px;
+        text-decoration-thickness: 2px;
+        text-decoration-color: var(--tertiary-color);
+      }
+    }
+  }
+
+  .insideMenu & {
+    text-decoration-color: var(--text-color);
+    text-underline-offset: 10px;
+  }
+}
+
+
+.categoryLink.categoryLinkCurrent {
+  background-image: linear-gradient(180deg, #b67a0b, var(--tertiary-color));
+  box-shadow: 2px 0 3px 2px #b67a0b;
+
+  .insideMenu & {
+    text-decoration: underline;
+    background-image: none;
+    box-shadow: none;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--text-color);
+
+    &:hover,
+    &:focus-visible {
+      @media (hover: hover) {
+        text-decoration-color: var(--tertiary-color);
+      }
+    }
+  }
 }
