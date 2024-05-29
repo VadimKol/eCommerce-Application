@@ -31,7 +31,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
       });
   };
 
-  const isCatalogPath = location.pathname.startsWith(NavigationPaths.CATALOG);
+  const isCatalogPath = location.pathname.startsWith(`${NavigationPaths.CATALOG}/`);
 
   return (
     <>

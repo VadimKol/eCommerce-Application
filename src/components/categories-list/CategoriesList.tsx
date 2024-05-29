@@ -53,7 +53,8 @@ export function CategoriesList({ parentClass, isInsideBurgerMenu = false }: Prop
       ref={menuRef}
     >
       {(categoriesData as CategoriesData).map((category) => {
-        const isCurrentCategory = location.pathname.includes(category.id);
+        const isCurrentCategory =
+          location.pathname.includes(`${category.id}/`) || location.pathname.endsWith(category.id);
         const isOpen = openCategoryId === category.id;
 
         return (
@@ -73,7 +74,8 @@ export function CategoriesList({ parentClass, isInsideBurgerMenu = false }: Prop
             {isOpen && (
               <ul className={styles.subcategoriesList}>
                 {category.subcategories.map((subcategory) => {
-                  const isCurrentSubcategory = location.pathname.includes(subcategory.id);
+                  const isCurrentSubcategory =
+                    location.pathname.includes(`${subcategory.id}/`) || location.pathname.endsWith(subcategory.id);
                   return (
                     <li key={subcategory.id} className={styles.subcategoryItem}>
                       <Link
