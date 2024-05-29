@@ -6,8 +6,7 @@
 }
 
 .accordeon {
-  border: 1px solid var(--primary-color);
-  border-radius: 6px;
+  margin-bottom: 20px;
 }
 
 .range,
@@ -20,8 +19,15 @@
 
 .range {
   &_active {
-    max-height: 36px;
+    max-height: 78px;
   }
+}
+
+.prices {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.83em;
+  font-weight: 100;
 }
 
 .checkboxesList {
@@ -75,4 +81,8 @@
       cursor: pointer;
     }
   }
+}
+
+.apply {
+  padding: 0.3em 1.2em;
 }

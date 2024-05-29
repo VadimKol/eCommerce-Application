@@ -16,7 +16,7 @@ export function CustomButton({
 
   return (
     <button
-      className={classNames(className, styles.button, optionClass)}
+      className={classNames(styles.button, optionClass, className)}
       type={type}
       onClick={onClick}
       disabled={isDisabled}
