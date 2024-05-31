@@ -136,20 +136,33 @@ export type Product = {
   id: string;
   name: string;
   description: string;
-  price: number;
+  slug: string;
+  key: string;
+  sku: string;
+  quantity: number;
+  price: string;
+  images: string[];
   categoryId: string;
+  slugCategory: string;
+  keyCategory: string;
   subcategoryId: string;
+  slugSubCategory: string;
+  keySubCategory: string;
 };
 
 export type Subcategory = {
   id: string;
   name: string;
+  slug: string;
+  key: string;
   products: Product[];
 };
 
 export type Category = {
   id: string;
   name: string;
+  slug: string;
+  key: string;
   subcategories: Subcategory[];
 };
 

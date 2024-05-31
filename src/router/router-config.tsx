@@ -1,5 +1,6 @@
 import { createRoutesFromElements, Route } from 'react-router-dom';
 
+import { getCategories } from '@/api/client-actions';
 import { App } from '@/App';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { NonAuthRoute } from '@/components/non-auth-route/NonAuthRoute';
@@ -12,23 +13,23 @@ import { NoMatch } from '@/pages/no-match/NoMatch';
 import { Product } from '@/pages/product/Product';
 import { Register } from '@/pages/register/Register';
 
-import { loadCategories, loadCategory, loadProduct, loadSubcategory } from './loaders';
+// import { loadCategories, loadCategory, loadProduct, loadSubcategory } from './loaders';
 
 export const routerConfig = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
     <Route errorElement={<ErrorPage />}>
       <Route index element={<Home />} />
-      <Route path={NavigationPaths.CATALOG} element={<Catalog />} loader={loadCategories} />
-      <Route path={`${NavigationPaths.CATALOG}/:categoryName`} element={<Catalog />} loader={loadCategory} />
+      <Route path={NavigationPaths.CATALOG} element={<Catalog />} loader={getCategories} />
+      <Route path={`${NavigationPaths.CATALOG}/:categoryName`} element={<Catalog />} loader={getCategories} />
       <Route
         path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName`}
         element={<Catalog />}
-        loader={loadSubcategory}
+        loader={getCategories}
       />
       <Route
         path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName/:productName`}
         element={<Product />}
-        loader={loadProduct}
+        loader={getCategories}
       />
       <Route path={NavigationPaths.ABOUT} element={<About />} />
       <Route

@@ -36,3 +36,5 @@ export const fandoms = [
   'Supernatural',
   'Aladdin',
 ];
+
+export const QUERY_LIMIT = 12;

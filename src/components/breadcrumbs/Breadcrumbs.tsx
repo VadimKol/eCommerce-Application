@@ -1,29 +1,39 @@
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { NavigationPaths } from '@/common/enums';
-import type { LoaderData } from '@/common/types';
 
 import styles from './styles.module.scss';
 
 export function Breadcrumbs(): JSX.Element {
-  const data = useLoaderData() as LoaderData;
   const breadcrumbs = [{ path: NavigationPaths.CATALOG as string, label: 'Catalog' }];
 
-  if (data?.category) {
-    breadcrumbs.push({ path: `${NavigationPaths.CATALOG}/${data.category.id}`, label: data.category.name });
+  const { categoryName, subcategoryName, productName } = useParams<{
+    categoryName?: string;
+    subcategoryName?: string;
+    productName?: string;
+  }>();
+
+  if (categoryName) {
+    let name = categoryName.replace(/-/g, ' ');
+    name = name.slice(0, 1).toUpperCase() + name.slice(1, name.length);
+    breadcrumbs.push({ path: `${NavigationPaths.CATALOG}/${categoryName}`, label: name });
   }
 
-  if (data?.subcategory) {
+  if (subcategoryName) {
+    let name = subcategoryName.replace(/-/g, ' ');
+    name = name.slice(0, 1).toUpperCase() + name.slice(1, name.length);
     breadcrumbs.push({
-      path: `${NavigationPaths.CATALOG}/${data.category?.id}/${data.subcategory.id}`,
-      label: data.subcategory.name,
+      path: `${NavigationPaths.CATALOG}/${categoryName}/${subcategoryName}`,
+      label: name,
     });
   }
 
-  if (data?.product) {
+  if (productName) {
+    let name = productName.replace(/-/g, ' ');
+    name = name.slice(0, 1).toUpperCase() + name.slice(1, name.length);
     breadcrumbs.push({
-      path: `${NavigationPaths.CATALOG}/${data.category?.id}/${data.subcategory?.id}/${data.product.id}`,
-      label: data.product.name,
+      path: `${NavigationPaths.CATALOG}/${categoryName}/${subcategoryName}/${productName}`,
+      label: name,
     });
   }
 

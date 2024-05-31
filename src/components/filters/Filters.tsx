@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// import { apiRoot } from '@/api/build-client';
 import { fandoms } from '@/common/utils';
 
 import { CustomButton } from '../custom-button/СustomButton';
@@ -60,3 +61,5 @@ export function Filters(): JSX.Element {
     </>
   );
 }
+
+// apiRoot.products().get().execute().then(console.log).catch(console.error);
