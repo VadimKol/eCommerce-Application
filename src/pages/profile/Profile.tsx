@@ -1,10 +1,12 @@
-import type { ClientResponse, Customer } from '@commercetools/platform-sdk';
+import type { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import Select from 'react-select';
 
 import { profile } from '@/api/client-actions.ts';
 
 import styles from './styles.module.scss';
+import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
 
 export function Profile(): JSX.Element {
   const [personStatus, setPersonStatus] = useState(true);
@@ -16,13 +18,6 @@ export function Profile(): JSX.Element {
     setShippingStatus(shipping);
     setBillingStatus(billing);
   };
-  interface CustomerProfile {
-    firstName: string;
-    lastName: string;
-    dateOfBirth: string;
-    email: string;
-    password: string;
-  }
 
   const [personInfo, setPersonInfo] = useState<CustomerProfile>({
     firstName: '',
@@ -30,27 +25,65 @@ export function Profile(): JSX.Element {
     dateOfBirth: '',
     email: '',
     password: '',
+    defaultShippingAddressId: 'you may choose',
+    defaultBillingAddressId: 'you may choose',
+    billingAddressIds: [],
+    shippingAddressIds: [],
   });
+
+  const addressToString = (address: Address): string => `${address.streetName}, ${address.city}, ${address.country}`;
+
+  const findAddress = (addresses: Address[], id: string): string => {
+    const result = (addresses as AddressCustom[]).find((address) => address.id === id);
+    return result ? addressToString(result) : 'you may choose';
+  };
+
+  const findAllAddressForOptions = (addresses: Address[], addressIds: string[]): AddressOption[] => {
+    const addressOptions: AddressOption[] = [];
+    addressIds.forEach((addressId: string) => {
+      const address: string = findAddress(addresses, addressId);
+
+      const option: AddressOption = {
+        value: addressId,
+        label: address,
+      };
+      addressOptions.push(option);
+    });
+    return addressOptions;
+  };
+
+  const [addressesShip, setAddressesShip] = useState<AddressOption[]>([]);
+  const [addressesBill, setAddressesBill] = useState<AddressOption[]>([]);
+  const [selectedOptionShip, setSelectedOptionShip] = useState<AddressOption | null>(null);
+  const [selectedOptionBill, setSelectedOptionBill] = useState<AddressOption | null>(null);
 
   useEffect(() => {
     const fetchProfile = async (): Promise<void> => {
       try {
-        const token: string | null = localStorage.getItem('geek-shop-token');
-        if (!token) {
-          throw new Error('Token not found');
-        }
-
-        const response: ClientResponse<Customer> = await profile(token);
+        const response: ClientResponse<Customer> = await profile();
         const customer: Customer = response?.body;
 
         if (customer) {
+          const defaultShip = findAddress(customer.addresses, customer.defaultShippingAddressId || '');
+          const defaultBill = findAddress(customer.addresses, customer.defaultBillingAddressId || '');
+
           setPersonInfo({
             firstName: customer.firstName || '',
             lastName: customer.lastName || '',
             dateOfBirth: customer.dateOfBirth || '',
             email: customer.email || '',
             password: customer.password || '',
+            defaultShippingAddressId: defaultShip,
+            defaultBillingAddressId: defaultBill,
+            billingAddressIds: customer.billingAddressIds || [],
+            shippingAddressIds: customer.shippingAddressIds || [],
           });
+
+          const addressOptionsBill = findAllAddressForOptions(customer.addresses, customer.billingAddressIds || []);
+          const addressOptionsShip = findAllAddressForOptions(customer.addresses, customer.shippingAddressIds || []);
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         } else {
           throw new Error('Customer data not available');
         }
@@ -139,112 +172,15 @@ export function Profile(): JSX.Element {
             {shippingStatus && (
               <div className={styles.detailShipping}>
                 <h2>Shipping addresses</h2>
-                <table className={styles.table}>
-                  <thead className={styles.thead}>
-                    <tr>
-                      <th id="shipping_id">Id</th>
-                      <th id="shipping_country">Country</th>
-                      <th id="shipping_city">City</th>
-                      <th id="shipping_address">Address</th>
-                      <th id="shipping_postal">Postal code</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>US</td>
-                      <td>New York City</td>
-                      <td>Second Street 15</td>
-                      <td>10001</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>US</td>
-                      <td>Durham</td>
-                      <td>South Road</td>
-                      <td>27517</td>
-                    </tr>
-                    <tr>
-                      <td>+</td>
-                      <td>
-                        <label htmlFor="new-country-profile">
-                          <span className="visually-hidden">New country Profile</span>
-                          <input id="new-country-profile" />
-                        </label>
-                      </td>
-                      <td>
-                        <label htmlFor="new-city-profile">
-                          <span className="visually-hidden">New city Profile</span>
-                          <input id="new-city-profile" />
-                        </label>
-                      </td>
-                      <td>
-                        <label htmlFor="new-street-profile">
-                          <span className="visually-hidden">New street Profile</span>
-                          <input id="new-street-profile" />
-                        </label>
-                      </td>
-                      <td>
-                        <label htmlFor="new-postal-profile">
-                          <span className="visually-hidden">New postal code Profile</span>
-                          <input id="new-postal-profile" />
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div>Default shipping address : {personInfo.defaultShippingAddressId}</div>
+                <Select options={addressesShip} defaultValue={selectedOptionShip} onChange={setSelectedOptionShip} />
               </div>
             )}
             {billingStatus && (
               <div className={styles.detailBilling}>
                 <h2>Billing addresses</h2>
-                <table className={styles.table}>
-                  <thead>
-                    <tr>
-                      <th id="shipping_id">Id</th>
-                      <th id="shipping_country">Country</th>
-                      <th id="shipping_city">City</th>
-                      <th id="shipping_address">Address</th>
-                      <th id="shipping_postal">Postal code</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>US</td>
-                      <td>New York City</td>
-                      <td>Second Street 15</td>
-                      <td>10001</td>
-                    </tr>
-                    <tr>
-                      <td>+</td>
-                      <td>
-                        <label htmlFor="new-country-profile">
-                          <span className="visually-hidden">New country Profile</span>
-                          <input id="new-country-profile" className={styles.newInput} />
-                        </label>
-                      </td>
-                      <td>
-                        <label htmlFor="new-city-profile">
-                          <span className="visually-hidden">New city Profile</span>
-                          <input id="new-city-profile" className={styles.newInput} />
-                        </label>
-                      </td>
-                      <td>
-                        <label htmlFor="new-street-profile">
-                          <span className="visually-hidden">New street Profile</span>
-                          <input id="new-street-profile" className={styles.newInput} />
-                        </label>
-                      </td>
-                      <td>
-                        <label htmlFor="new-postal-profile">
-                          <span className="visually-hidden">New postal code Profile</span>
-                          <input id="new-postal-profile" className={styles.newInput} />
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div>Default billing address : {personInfo.defaultBillingAddressId}</div>
+                <Select options={addressesBill} defaultValue={selectedOptionBill} onChange={setSelectedOptionBill} />
               </div>
             )}
           </div>

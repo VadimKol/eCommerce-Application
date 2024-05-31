@@ -45,11 +45,6 @@ export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientRe
   // return apiRoot.customers().post({ body: myCustomerDraft }).execute(); // с анонима можно
 }
 
-export function profile(token: string): Promise<ClientResponse<Customer>> {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
-  Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
-  return apiRoot.me().get({ headers }).execute();
+export function profile(): Promise<ClientResponse<Customer>> {
+  return apiRoot.me().get().execute();
 }
