@@ -1,4 +1,4 @@
-import type { ClientResponse, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
+import type { ClientResponse, Customer, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
 
 import { CustomTokenCache } from '@/common/token-cache';
 import type { GeekShopCustomerDraft } from '@/common/types';
@@ -43,4 +43,13 @@ export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientRe
   Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
   return apiRoot.me().signup().post({ body: myCustomerDraft }).execute();
   // return apiRoot.customers().post({ body: myCustomerDraft }).execute(); // с анонима можно
+}
+
+export function profile(token: string): Promise<ClientResponse<Customer>> {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
+  return apiRoot.me().get({ headers }).execute();
 }
