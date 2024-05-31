@@ -11,15 +11,28 @@
             "id": "funko-pop",
             "name": "Funko Pop",
             "description": "Collectible Funko Pop vinyl figures.",
+            "price": 14.99,
+            "salePrice": 12.99,
             "categoryId": "collectibles",
-            "subcategoryId": "figures"
+            "subcategoryId": "figures",
+            "images": [
+              "funko-pop-1.jpg",
+              "funko-pop-2.jpg",
+              "funko-pop-3.jpg"
+            ]
           },
           {
             "id": "action-figures",
             "name": "Action Figures",
             "description": "Detailed action figures from various franchises.",
+            "price": 29.99,
             "categoryId": "collectibles",
-            "subcategoryId": "figures"
+            "subcategoryId": "figures",
+            "images": [
+              "action-figures-1.jpg",
+              "action-figures-2.jpg",
+              "action-figures-3.jpg"
+            ]
           }
         ]
       },
@@ -31,15 +44,28 @@
             "id": "batman-statue",
             "name": "Batman Statue",
             "description": "High-quality statue of Batman.",
+            "price": 99.99,
+            "salePrice": 89.99,
             "categoryId": "collectibles",
-            "subcategoryId": "statues"
+            "subcategoryId": "statues",
+            "images": [
+              "batman-statue-1.jpg",
+              "batman-statue-2.jpg",
+              "batman-statue-3.jpg"
+            ]
           },
           {
             "id": "wonder-woman-statue",
             "name": "Wonder Woman Statue",
             "description": "High-quality statue of Wonder Woman.",
+            "price": 99.99,
             "categoryId": "collectibles",
-            "subcategoryId": "statues"
+            "subcategoryId": "statues",
+            "images": [
+              "wonder-woman-statue-1.jpg",
+              "wonder-woman-statue-2.jpg",
+              "wonder-woman-statue-3.jpg"
+            ]
           }
         ]
       }
@@ -57,15 +83,28 @@
             "id": "batman-comic",
             "name": "Batman Comic",
             "description": "Latest issue of Batman comic series.",
+            "price": 4.99,
+            "salePrice": 3.99,
             "categoryId": "books",
-            "subcategoryId": "comics"
+            "subcategoryId": "comics",
+            "images": [
+              "batman-comic-1.jpg",
+              "batman-comic-2.jpg",
+              "batman-comic-3.jpg"
+            ]
           },
           {
             "id": "spiderman-comic",
             "name": "Spider-Man Comic",
             "description": "Latest issue of Spider-Man comic series.",
+            "price": 4.99,
             "categoryId": "books",
-            "subcategoryId": "comics"
+            "subcategoryId": "comics",
+            "images": [
+              "spiderman-comic-1.jpg",
+              "spiderman-comic-2.jpg",
+              "spiderman-comic-3.jpg"
+            ]
           }
         ]
       },
@@ -77,15 +116,28 @@
             "id": "dune",
             "name": "Dune",
             "description": "Science fiction novel by Frank Herbert.",
+            "price": 9.99,
+            "salePrice": 7.99,
             "categoryId": "books",
-            "subcategoryId": "novels"
+            "subcategoryId": "novels",
+            "images": [
+              "dune-1.jpg",
+              "dune-2.jpg",
+              "dune-3.jpg"
+            ]
           },
           {
             "id": "foundation",
             "name": "Foundation",
             "description": "Science fiction novel by Isaac Asimov.",
+            "price": 9.99,
             "categoryId": "books",
-            "subcategoryId": "novels"
+            "subcategoryId": "novels",
+            "images": [
+              "foundation-1.jpg",
+              "foundation-2.jpg",
+              "foundation-3.jpg"
+            ]
           }
         ]
       }
@@ -103,15 +155,28 @@
             "id": "superhero-tshirt",
             "name": "Superhero T-Shirt",
             "description": "T-shirt with superhero logo.",
+            "price": 19.99,
+            "salePrice": 14.99,
             "categoryId": "apparel",
-            "subcategoryId": "t-shirts"
+            "subcategoryId": "t-shirts",
+            "images": [
+              "superhero-tshirt-1.jpg",
+              "superhero-tshirt-2.jpg",
+              "superhero-tshirt-3.jpg"
+            ]
           },
           {
             "id": "gaming-tshirt",
             "name": "Gaming T-Shirt",
             "description": "T-shirt with gaming theme.",
+            "price": 19.99,
             "categoryId": "apparel",
-            "subcategoryId": "t-shirts"
+            "subcategoryId": "t-shirts",
+            "images": [
+              "gaming-tshirt-1.jpg",
+              "gaming-tshirt-2.jpg",
+              "gaming-tshirt-3.jpg"
+            ]
           }
         ]
       },
@@ -123,15 +188,28 @@
             "id": "star-wars-hoodie",
             "name": "Star Wars Hoodie",
             "description": "Hoodie with Star Wars design.",
+            "price": 39.99,
+            "salePrice": 29.99,
             "categoryId": "apparel",
-            "subcategoryId": "hoodies"
+            "subcategoryId": "hoodies",
+            "images": [
+              "star-wars-hoodie-1.jpg",
+              "star-wars-hoodie-2.jpg",
+              "star-wars-hoodie-3.jpg"
+            ]
           },
           {
             "id": "harry-potter-hoodie",
             "name": "Harry Potter Hoodie",
             "description": "Hoodie with Harry Potter design.",
+            "price": 39.99,
             "categoryId": "apparel",
-            "subcategoryId": "hoodies"
+            "subcategoryId": "hoodies",
+            "images": [
+              "harry-potter-hoodie-1.jpg",
+              "harry-potter-hoodie-2.jpg",
+              "harry-potter-hoodie-3.jpg"
+            ]
           }
         ]
       }
@@ -149,15 +227,28 @@
             "id": "smart-light",
             "name": "Smart Light",
             "description": "Voice-controlled smart light.",
+            "price": 24.99,
+            "salePrice": 19.99,
             "categoryId": "gadgets",
-            "subcategoryId": "smart-home"
+            "subcategoryId": "smart-home",
+            "images": [
+              "smart-light-1.jpg",
+              "smart-light-2.jpg",
+              "smart-light-3.jpg"
+            ]
           },
           {
             "id": "smart-speaker",
             "name": "Smart Speaker",
             "description": "Voice-controlled smart speaker.",
+            "price": 49.99,
             "categoryId": "gadgets",
-            "subcategoryId": "smart-home"
+            "subcategoryId": "smart-home",
+            "images": [
+              "smart-speaker-1.jpg",
+              "smart-speaker-2.jpg",
+              "smart-speaker-3.jpg"
+            ]
           }
         ]
       },
@@ -169,15 +260,28 @@
             "id": "smart-watch",
             "name": "Smart Watch",
             "description": "Wearable smart watch with fitness tracking.",
+            "price": 199.99,
+            "salePrice": 179.99,
             "categoryId": "gadgets",
-            "subcategoryId": "wearables"
+            "subcategoryId": "wearables",
+            "images": [
+              "smart-watch-1.jpg",
+              "smart-watch-2.jpg",
+              "smart-watch-3.jpg"
+            ]
           },
           {
             "id": "fitness-band",
             "name": "Fitness Band",
             "description": "Wearable fitness band with health monitoring.",
+            "price": 59.99,
             "categoryId": "gadgets",
-            "subcategoryId": "wearables"
+            "subcategoryId": "wearables",
+            "images": [
+              "fitness-band-1.jpg",
+              "fitness-band-2.jpg",
+              "fitness-band-3.jpg"
+            ]
           }
         ]
       }

@@ -1,0 +1,140 @@
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.productImage {
+  display: block;
+  object-fit: contain;
+  width: calc(100% - 80px);
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.imageSlider {
+  flex: 1;
+  width: calc(100% - 20px);
+  max-height: 400px;
+}
+
+.productInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.productName {
+  margin-block: 0;
+  font-size: 2rem;
+}
+
+.productDescription {
+  margin-block: 0;
+}
+
+.productPrice {
+  display: flex;
+  align-items: baseline;
+
+  .salePrice {
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+
+  .originalPrice {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: var(--disabled-color);
+  }
+
+  .price {
+    font-size: 1.5rem;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: rgb(0 0 0 / 60%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.modalContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: calc(100% - 40px);
+  max-height: calc(100% - 40px);
+  padding: 1rem;
+  background: var(--background-color);
+  border-radius: 0.5rem;
+
+  @media (width <= 768px) {
+    & {
+      max-width: calc(100% - 20px);
+      max-height: calc(100% - 20px);
+    }
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      background-color: #007aff;
+      transition: background-color 0.5s ease-in-out;
+      mask-image: url("@/assets/images/cross.svg");
+      mask-repeat: no-repeat;
+      mask-size: cover;
+    }
+
+    @media (hover: hover) {
+      &:hover,
+      &:focus-visible {
+        &::after {
+          background-color: var(--tertiary-color);
+        }
+      }
+    }
+  }
+
+  .modalImage {
+    display: block;
+    object-fit: contain;
+    max-width: 100%;
+    height: 100%;
+    margin: auto;
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+.modalOpaque {
+  opacity: 1;
+  pointer-events: auto;
+}
