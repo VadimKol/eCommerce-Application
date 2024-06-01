@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 
-import { changePassword, profile } from '@/api/client-actions.ts';
+import { tokenCache } from '@/api/build-client';
+import { changePassword, login, profile } from '@/api/client-actions.ts';
 
 import styles from './styles.module.scss';
 import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
@@ -97,27 +98,35 @@ export function Profile(): JSX.Element {
     fetchProfile().catch(() => {});
   }, []);
 
-  const changePasswordHandle = async (): Promise<void> => {
-    const myCustomerChangePassword: MyCustomerChangePassword = {
-      version: 2,
-      currentPassword: 'aaaaaaaaA1!',
-      newPassword: 'j5CztCY57qp6Rbn',
-    };
-    console.log('change', myCustomerChangePassword);
+  const myCustomerChangePassword: MyCustomerChangePassword = {
+    version: 4,
+    currentPassword: 'aaaaaaaaA1!',
+    newPassword: 'j5CztCY57qp6Rbn',
+  };
 
-    try {
-      const response: ClientResponse<Customer> = await changePassword(myCustomerChangePassword);
+  const changePasswordHandle = (): void => {
+    changePassword(myCustomerChangePassword)
+      .then((response: ClientResponse<Customer>) => {
+        if (response) {
+          toast('Previous password entered correctly', { type: 'success' });
+        }
+      })
+      .then(() => {
+        const password = myCustomerChangePassword.newPassword;
+        const email = 'allugovskova@mail.ru';
 
-      if (response) {
-        console.log('response', response);
-        toast('Password change was successful', { type: 'success' });
-      } else {
-        toast('Password error', { type: 'error' });
-      }
-    } catch (err) {
-      console.error('Error changing password', err);
-      toast('Password error', { type: 'error' });
-    }
+        login({ email, password })
+          .then(() => {
+            localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+            toast(`Password change was successful`, { type: 'success' });
+          })
+          .catch(() => {
+            toast('An error occurred when changing your password, please try again', { type: 'error' });
+          });
+      })
+      .catch((err: Error) => {
+        toast(`Password error ${err.message}`, { type: 'error' });
+      });
   };
 
   return (
@@ -240,13 +249,7 @@ export function Profile(): JSX.Element {
                     className={styles.input}
                   />
                 </label>
-                <button
-                  onClick={() => {
-                    changePasswordHandle().catch((err) => console.error(err));
-                  }}
-                  type="button"
-                  className={styles.changeInfo}
-                >
+                <button onClick={changePasswordHandle} type="button" className={styles.changeInfo}>
                   Change
                 </button>
               </div>
