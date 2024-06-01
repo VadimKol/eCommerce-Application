@@ -1,11 +1,95 @@
-.button {
-  display: inline-block;
-  padding: 0.5em 1.2em;
 
-  &:disabled {
-    color: var(--text-color);
-    background-color: var(--disabled-color);
-    box-shadow: none;
-    cursor: default;
-  }
+.form {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 0 50px 10px;
+  font-size: 16px;
+  color: var(--primary-color);
+}
+
+
+.inputWithError {
+  padding-bottom: 10px;
+}
+
+.formInput {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 30px;
+  padding: 0 5px;
+  font-family: var(--primary-font);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+.errorMsg {
+  width: 100%;
+  margin: -20px 0 -10px;
+  font-size: 14px;
+  text-align: right;
+  color: var(--error-color);
+}
+
+.changeInfo {
+  width: 80px;
+  height: 40px;
+  margin-top: 30px;
+  font-size: 1em;
+  color: var(--text-color);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 500ms;
+}
+
+.changeInfo:hover {
+  box-shadow: -5px 5px 5px var(--secondary-color);
+  transition: all 500ms;
+  transform: translateY(-2px);
+}
+
+.invalid,
+.input.invalid:focus {
+  box-shadow: 0 0 7px var(--error-color);
+}
+
+.input:focus {
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 7px var(--primary-color);
+}
+
+.disabled {
+  background-color: var(--disabled-color);
+  border-color: var(--disabled-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.valid {
+  box-shadow: 0 0 7px var(--secondary-color);
+}
+
+.invalid {
+  box-shadow: 0 0 7px var(--error-color);
+}
+
+.error {
+  width: 100%;
+  margin-bottom: 20px;
+  color: var(--error-color);
 }

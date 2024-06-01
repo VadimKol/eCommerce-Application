@@ -1,16 +1,46 @@
 import type { ClientResponse, Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk';
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { tokenCache } from '@/api/build-client';
 import { changePassword, login } from '@/api/client-actions.ts';
 
+import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { FormChangePasswordProps } from './types.ts';
 
 export function FormChangePassword({ email, version }: FormChangePasswordProps): JSX.Element {
-  const [currentPassword, setCurrentPassword] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
+  const {
+    register,
+    getFieldState,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<FormValues>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
+
+  const {
+    onChange: onChangeCurrentPassword,
+    name: CurrentPassword,
+    ref: refCurrentPassword,
+  } = register('currentPassword');
+  const { onChange: onChangeNewPassword, name: NewPassword, ref: refNewPassword } = register('newPassword');
+
+  const currentPasswordValue = getFieldState('currentPassword');
+  const newPasswordValue = getFieldState('newPassword');
+
+  let currentPasswordClass = styles.input;
+  let newPasswordClass = styles.input;
+
+  if (currentPasswordValue.isDirty) {
+    currentPasswordClass += currentPasswordValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (newPasswordValue.isDirty) {
+    newPasswordClass += newPasswordValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  const currentPassword = watch('currentPassword');
+  const newPassword = watch('newPassword');
 
   const changePasswordHandle = (): void => {
     const myCustomerChangePassword: MyCustomerChangePassword = {
@@ -42,37 +72,71 @@ export function FormChangePassword({ email, version }: FormChangePasswordProps):
   };
 
   return (
-    <div className={styles.blockPassword}>
-      <h2>Change password</h2>
-      <div>
-        To change your password, enter your current password and the new one. Once the current password has been
-        successfully verified, it will be replaced with a new password.
+    <form
+      className={styles.form}
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (isValid) {
+          changePasswordHandle();
+        } else {
+          toast('Validation error', { type: 'error' });
+        }
+      }}
+    >
+      <div className={styles.blockPassword}>
+        <h2>Change password</h2>
+        <div>
+          To change your password, enter your current password and the new one. Once the current password has been
+          successfully verified, it will be replaced with a new password.
+        </div>
+        <div className={styles.inputWithError}>
+          <label htmlFor="password-was-login" className={styles.formInput}>
+            Current password:
+            <input
+              onChange={(event) => {
+                onChangeCurrentPassword(event).catch(() => {});
+              }}
+              id="current-password"
+              placeholder="password"
+              autoComplete="current-password"
+              className={currentPasswordClass}
+              ref={refCurrentPassword}
+              aria-invalid={errors.currentPassword || !currentPasswordValue.isDirty ? 'true' : 'false'}
+              name={CurrentPassword}
+            />
+          </label>
+          {errors.currentPassword && (
+            <span role="alert" className={styles.errorMsg}>
+              {errors.currentPassword.message}
+            </span>
+          )}
+        </div>
+        <div className={styles.inputWithError}>
+          <label htmlFor="password-login" className={styles.formInput}>
+            New password:
+            <input
+              onChange={(event) => {
+                onChangeNewPassword(event).catch(() => {});
+              }}
+              id="new-password"
+              placeholder="new password"
+              autoComplete="new-password"
+              className={newPasswordClass}
+              ref={refNewPassword}
+              aria-invalid={errors.currentPassword || !newPasswordValue.isDirty ? 'true' : 'false'}
+              name={NewPassword}
+            />
+          </label>
+          {errors.newPassword && (
+            <span role="alert" className={styles.errorMsg}>
+              {errors.newPassword.message}
+            </span>
+          )}
+        </div>
+        <button type="submit" className={!isValid ? `${styles.changeInfo} ${styles.disabled}` : styles.changeInfo}>
+          Change
+        </button>
       </div>
-      <label htmlFor="password-was-login" className={styles.formInput}>
-        Current password:
-        <input
-          id="password-was-login"
-          placeholder="password"
-          autoComplete="current-password"
-          className={styles.input}
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-      </label>
-      <label htmlFor="password-login" className={styles.formInput}>
-        New password:
-        <input
-          id="password-login"
-          placeholder="new password"
-          autoComplete="new-password"
-          className={styles.input}
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-      </label>
-      <button onClick={changePasswordHandle} type="button" className={styles.changeInfo}>
-        Change
-      </button>
-    </div>
+    </form>
   );
 }
