@@ -12,6 +12,8 @@ import productsData from '@/router/mock-products.json';
 
 import styles from './styles.module.scss';
 
+const OPACITY_DELAY_MS = 500;
+
 function DetailedProduct(): JSX.Element {
   const { productName: productId } = useParams();
   const product = productsData
@@ -31,7 +33,7 @@ function DetailedProduct(): JSX.Element {
     modalRef.current?.classList.remove(styles.modalOpaque!);
     setTimeout(() => {
       setIsModalOpen(false);
-    }, 500);
+    }, OPACITY_DELAY_MS);
   };
 
   useEffect(() => {

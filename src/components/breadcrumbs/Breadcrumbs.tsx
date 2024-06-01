@@ -33,7 +33,7 @@ export function Breadcrumbs({ parentClass }: { parentClass?: string }): JSX.Elem
         {breadcrumbs.map((crumb, index) => (
           <li key={crumb.label} className={styles.crumb}>
             {index === breadcrumbs.length - 1 ? (
-              <span>{crumb.label}</span>
+              <span className={styles.crumbSpan}>{crumb.label}</span>
             ) : (
               <Link className={styles.crumbLink} to={crumb.path}>
                 {crumb.label}

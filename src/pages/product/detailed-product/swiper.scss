@@ -29,7 +29,7 @@
 
 .swiper-button-prev,
 .swiper-button-next {
-  transition: color 0.6s ease-in-out;
+  transition: color 0.3s ease-in-out;
 
   @media (hover: hover) {
     &:hover,
@@ -45,7 +45,7 @@
 
   width: 10px;
   height: 10px;
-  transition: background-color 0.6s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
 
   @media (hover: hover) {
     &:hover,

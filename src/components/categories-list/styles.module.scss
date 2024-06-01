@@ -72,7 +72,7 @@
   text-transform: uppercase;
   color: var(--text-color);
   border-radius: 15px;
-  transition: color 0.6s ease-in-out, text-decoration-color 0.6s ease-in-out;
+  transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
 
   .insideMenu & {
     padding: 10px;
@@ -121,7 +121,7 @@
   line-height: 1.2;
   text-decoration: none;
   color: var(--text-color);
-  transition: color 0.6s ease-in-out, text-decoration-color 0.6s ease-in-out;
+  transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
 
   &:hover,
   &:focus-visible {
