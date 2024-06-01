@@ -1,0 +1,11 @@
+.button {
+  display: inline-block;
+  padding: 0.5em 1.2em;
+
+  &:disabled {
+    color: var(--text-color);
+    background-color: var(--disabled-color);
+    box-shadow: none;
+    cursor: default;
+  }
+}

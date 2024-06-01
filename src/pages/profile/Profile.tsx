@@ -1,12 +1,12 @@
-import type { Address, ClientResponse, Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk';
+import type { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 
-import { tokenCache } from '@/api/build-client';
-import { changePassword, login, profile } from '@/api/client-actions.ts';
+import { profile } from '@/api/client-actions.ts';
 
+import { FormChangePassword } from '../../components/formChangePassword/FormChangePassword.tsx'; // Adjust the import path
 import styles from './styles.module.scss';
 import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
 
@@ -24,6 +24,7 @@ export function Profile(): JSX.Element {
   };
 
   const [personInfo, setPersonInfo] = useState<CustomerProfile>({
+    version: 1,
     firstName: '',
     lastName: '',
     dateOfBirth: '',
@@ -71,6 +72,7 @@ export function Profile(): JSX.Element {
           const defaultBill = findAddress(customer.addresses, customer.defaultBillingAddressId || '');
 
           setPersonInfo({
+            version: customer.version || 1,
             firstName: customer.firstName || '',
             lastName: customer.lastName || '',
             dateOfBirth: customer.dateOfBirth || '',
@@ -97,37 +99,6 @@ export function Profile(): JSX.Element {
 
     fetchProfile().catch(() => {});
   }, []);
-
-  const myCustomerChangePassword: MyCustomerChangePassword = {
-    version: 4,
-    currentPassword: 'aaaaaaaaA1!',
-    newPassword: 'j5CztCY57qp6Rbn',
-  };
-
-  const changePasswordHandle = (): void => {
-    changePassword(myCustomerChangePassword)
-      .then((response: ClientResponse<Customer>) => {
-        if (response) {
-          toast('Previous password entered correctly', { type: 'success' });
-        }
-      })
-      .then(() => {
-        const password = myCustomerChangePassword.newPassword;
-        const email = 'allugovskova@mail.ru';
-
-        login({ email, password })
-          .then(() => {
-            localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
-            toast(`Password change was successful`, { type: 'success' });
-          })
-          .catch(() => {
-            toast('An error occurred when changing your password, please try again', { type: 'error' });
-          });
-      })
-      .catch((err: Error) => {
-        toast(`Password error ${err.message}`, { type: 'error' });
-      });
-  };
 
   return (
     <main className={classNames('main', styles.main)}>
@@ -224,36 +195,7 @@ export function Profile(): JSX.Element {
                 <Select options={addressesBill} defaultValue={selectedOptionBill} onChange={setSelectedOptionBill} />
               </div>
             )}
-            {passwordStatus && (
-              <div className={styles.blockPassword}>
-                <h2>Change password</h2>
-                <div>
-                  To change your password, enter your current password and the new one. Once the current password has
-                  been successfully verified, it will be replaced with a new password{' '}
-                </div>
-                <label htmlFor="password-was-login" className={styles.formInput}>
-                  Current password:
-                  <input
-                    id="password-was-login"
-                    placeholder="password"
-                    autoComplete="current-password"
-                    className={styles.input}
-                  />
-                </label>
-                <label htmlFor="password-login" className={styles.formInput}>
-                  New password:
-                  <input
-                    id="password-login"
-                    placeholder="new password"
-                    autoComplete="new-password"
-                    className={styles.input}
-                  />
-                </label>
-                <button onClick={changePasswordHandle} type="button" className={styles.changeInfo}>
-                  Change
-                </button>
-              </div>
-            )}
+            {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
           </div>
         </form>
       </div>

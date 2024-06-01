@@ -1,6 +1,7 @@
 import type { Address } from '@commercetools/platform-sdk';
 
 export interface CustomerProfile {
+  version: number;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
