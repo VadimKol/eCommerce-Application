@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 900px;
+  min-width: 850px;
   max-width: 100%;
   margin: auto;
   padding: 28px 40px 30px;
@@ -23,6 +23,14 @@
   display: flex;
   flex-flow: row nowrap;
   gap: 15px;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.profileBlock {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
 }
 
 .chooseInfoBlock {
@@ -31,6 +39,7 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
+  width: 25%;
 }
 
 .chooseInfoItem {
@@ -47,9 +56,10 @@
 }
 
 .detailInfoBlock {
-  width: 50%;
-
-  // margin: 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 75%;
 }
 
 .formInput {
@@ -57,7 +67,8 @@
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: start;
-  width: 100%;
+  width: 250px;
+  margin-bottom: 15px;
 }
 
 .input {
@@ -86,17 +97,30 @@
   border: none;
 }
 
-@media (width <= 1000px) {
+@media (width <= 900px) {
   .container {
     min-width: 330px;
   }
 
-  .form {
+  .form,
+  .profileBlock {
     flex-flow: column nowrap;
   }
 
   .chooseInfoBlock {
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
+    width: 100%;
+  }
+
+  .detailInfoBlock {
+    width: 100%;
+  }
+
+  .chooseInfoItem {
+    flex: 1 1 45%;
+    box-sizing: border-box;
+    max-width: 250px;
+    height: 80px;
   }
 }
 

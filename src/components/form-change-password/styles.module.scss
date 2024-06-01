@@ -4,11 +4,7 @@
   flex-flow: column nowrap;
   justify-content: space-around;
   align-items: center;
-  box-sizing: border-box;
-  width: calc(100% - 40px);
   max-width: 600px;
-  margin: 50px auto;
-  padding: 0 50px 10px;
   font-size: 16px;
   color: var(--primary-color);
 }
@@ -99,4 +95,10 @@
   gap: 20px;
   justify-content: center;
   align-items: center;
+}
+
+@media (width <= 900px) {
+  .titleWithTooltip {
+    gap: 10px;
+  }
 }
