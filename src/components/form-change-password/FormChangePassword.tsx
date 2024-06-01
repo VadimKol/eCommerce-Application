@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { tokenCache } from '@/api/build-client';
 import { changePassword, login } from '@/api/client-actions.ts';
 
+import { Tooltip } from '../tooltip/Tooltip.tsx';
 import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { FormChangePasswordProps } from './types.ts';
@@ -84,10 +85,12 @@ export function FormChangePassword({ email, version }: FormChangePasswordProps):
       }}
     >
       <div className={styles.blockPassword}>
-        <h2>Change password</h2>
-        <div>
-          To change your password, enter your current password and the new one. Once the current password has been
-          successfully verified, it will be replaced with a new password.
+        <div className={styles.titleWithTooltip}>
+          <h2>Change password</h2>
+          <Tooltip
+            text=" To change your password, enter your current password and the new one. Once the current password has been
+        successfully verified, it will be replaced with a new password."
+          />
         </div>
         <div className={styles.inputWithError}>
           <label htmlFor="password-was-login" className={styles.formInput}>

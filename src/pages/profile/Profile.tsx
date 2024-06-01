@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import { profile } from '@/api/client-actions.ts';
 
-import { FormChangePassword } from '../../components/formChangePassword/FormChangePassword.tsx'; // Adjust the import path
+import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx'; // Adjust the import path
 import styles from './styles.module.scss';
 import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
 
@@ -104,38 +104,38 @@ export function Profile(): JSX.Element {
     <main className={classNames('main', styles.main)}>
       <div className={styles.container}>
         <h1>Profile</h1>
-        <form className={styles.form}>
-          <div className={styles.chooseInfoBlock}>
-            <button
-              type="button"
-              onClick={() => handleBlock(true, false, false, false)}
-              className={styles.chooseInfoItem}
-            >
-              Person
-            </button>
-            <button
-              type="button"
-              onClick={() => handleBlock(false, true, false, false)}
-              className={styles.chooseInfoItem}
-            >
-              Shipping
-            </button>
-            <button
-              type="button"
-              onClick={() => handleBlock(false, false, true, false)}
-              className={styles.chooseInfoItem}
-            >
-              Billing
-            </button>
-            <button
-              type="button"
-              onClick={() => handleBlock(false, false, false, true)}
-              className={styles.chooseInfoItem}
-            >
-              Password
-            </button>
-          </div>
-          <div className={styles.detailInfoBlock}>
+        <div className={styles.chooseInfoBlock}>
+          <button
+            type="button"
+            onClick={() => handleBlock(true, false, false, false)}
+            className={styles.chooseInfoItem}
+          >
+            Person
+          </button>
+          <button
+            type="button"
+            onClick={() => handleBlock(false, true, false, false)}
+            className={styles.chooseInfoItem}
+          >
+            Shipping
+          </button>
+          <button
+            type="button"
+            onClick={() => handleBlock(false, false, true, false)}
+            className={styles.chooseInfoItem}
+          >
+            Billing
+          </button>
+          <button
+            type="button"
+            onClick={() => handleBlock(false, false, false, true)}
+            className={styles.chooseInfoItem}
+          >
+            Password
+          </button>
+        </div>
+        <div className={styles.detailInfoBlock}>
+          <form className={styles.form}>
             {personStatus && (
               <div className={styles.detailPerson}>
                 <h2>Person info</h2>
@@ -181,23 +181,23 @@ export function Profile(): JSX.Element {
                 </div>
               </div>
             )}
-            {shippingStatus && (
-              <div className={styles.detailShipping}>
-                <h2>Shipping addresses</h2>
-                <div>Default shipping address : {personInfo.defaultShippingAddressId}</div>
-                <Select options={addressesShip} defaultValue={selectedOptionShip} onChange={setSelectedOptionShip} />
-              </div>
-            )}
-            {billingStatus && (
-              <div className={styles.detailBilling}>
-                <h2>Billing addresses</h2>
-                <div>Default billing address : {personInfo.defaultBillingAddressId}</div>
-                <Select options={addressesBill} defaultValue={selectedOptionBill} onChange={setSelectedOptionBill} />
-              </div>
-            )}
-            {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
-          </div>
-        </form>
+          </form>
+          {shippingStatus && (
+            <div className={styles.detailShipping}>
+              <h2>Shipping addresses</h2>
+              <div>Default shipping address : {personInfo.defaultShippingAddressId}</div>
+              <Select options={addressesShip} defaultValue={selectedOptionShip} onChange={setSelectedOptionShip} />
+            </div>
+          )}
+          {billingStatus && (
+            <div className={styles.detailBilling}>
+              <h2>Billing addresses</h2>
+              <div>Default billing address : {personInfo.defaultBillingAddressId}</div>
+              <Select options={addressesBill} defaultValue={selectedOptionBill} onChange={setSelectedOptionBill} />
+            </div>
+          )}
+          {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
+        </div>
       </div>
     </main>
   );

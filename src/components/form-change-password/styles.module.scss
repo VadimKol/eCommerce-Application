@@ -13,7 +13,6 @@
   color: var(--primary-color);
 }
 
-
 .inputWithError {
   padding-bottom: 10px;
 }
@@ -92,4 +91,12 @@
   width: 100%;
   margin-bottom: 20px;
   color: var(--error-color);
+}
+
+.titleWithTooltip {
+  display: flex;
+  flex-flow: nowrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
