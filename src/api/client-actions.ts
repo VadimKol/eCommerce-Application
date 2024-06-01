@@ -1,4 +1,10 @@
-import type { ClientResponse, Customer, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
+import type {
+  ClientResponse,
+  Customer,
+  CustomerSignin,
+  CustomerSignInResult,
+  MyCustomerChangePassword,
+} from '@commercetools/platform-sdk';
 
 import { CustomTokenCache } from '@/common/token-cache';
 import type { GeekShopCustomerDraft } from '@/common/types';
@@ -47,4 +53,8 @@ export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientRe
 
 export function profile(): Promise<ClientResponse<Customer>> {
   return apiRoot.me().get().execute();
+}
+
+export function changePassword(myCustomerChangePassword: MyCustomerChangePassword): Promise<ClientResponse<Customer>> {
+  return apiRoot.me().password().post({ body: myCustomerChangePassword }).execute();
 }

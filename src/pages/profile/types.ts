@@ -6,6 +6,8 @@ export interface CustomerProfile {
   dateOfBirth: string;
   email: string;
   password: string;
+  billingAddressIds: string[];
+  shippingAddressIds: string[];
   defaultShippingAddressId: string;
   defaultBillingAddressId: string;
 }

@@ -1,9 +1,10 @@
-import type { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
+import type { Address, ClientResponse, Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
 
-import { profile } from '@/api/client-actions.ts';
+import { changePassword, profile } from '@/api/client-actions.ts';
 
 import styles from './styles.module.scss';
 import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
@@ -12,11 +13,13 @@ export function Profile(): JSX.Element {
   const [personStatus, setPersonStatus] = useState(true);
   const [shippingStatus, setShippingStatus] = useState(false);
   const [billingStatus, setBillingStatus] = useState(false);
+  const [passwordStatus, setPasswordStatus] = useState(false);
 
-  const handleBlock = (person: boolean, shipping: boolean, billing: boolean): void => {
+  const handleBlock = (person: boolean, shipping: boolean, billing: boolean, password: boolean): void => {
     setPersonStatus(person);
     setShippingStatus(shipping);
     setBillingStatus(billing);
+    setPasswordStatus(password);
   };
 
   const [personInfo, setPersonInfo] = useState<CustomerProfile>({
@@ -33,31 +36,30 @@ export function Profile(): JSX.Element {
 
   const addressToString = (address: Address): string => `${address.streetName}, ${address.city}, ${address.country}`;
 
-  const findAddress = (addresses: Address[], id: string): string => {
-    const result = (addresses as AddressCustom[]).find((address) => address.id === id);
-    return result ? addressToString(result) : 'you may choose';
-  };
-
-  const findAllAddressForOptions = (addresses: Address[], addressIds: string[]): AddressOption[] => {
-    const addressOptions: AddressOption[] = [];
-    addressIds.forEach((addressId: string) => {
-      const address: string = findAddress(addresses, addressId);
-
-      const option: AddressOption = {
-        value: addressId,
-        label: address,
-      };
-      addressOptions.push(option);
-    });
-    return addressOptions;
-  };
-
   const [addressesShip, setAddressesShip] = useState<AddressOption[]>([]);
   const [addressesBill, setAddressesBill] = useState<AddressOption[]>([]);
   const [selectedOptionShip, setSelectedOptionShip] = useState<AddressOption | null>(null);
   const [selectedOptionBill, setSelectedOptionBill] = useState<AddressOption | null>(null);
 
   useEffect(() => {
+    const findAddress = (addresses: Address[], id: string): string => {
+      const result = (addresses as AddressCustom[]).find((address) => address.id === id);
+      return result ? addressToString(result) : 'you may choose';
+    };
+
+    const findAllAddressForOptions = (addresses: Address[], addressIds: string[]): AddressOption[] => {
+      const addressOptions: AddressOption[] = [];
+      addressIds.forEach((addressId: string) => {
+        const address: string = findAddress(addresses, addressId);
+
+        const option: AddressOption = {
+          value: addressId,
+          label: address,
+        };
+        addressOptions.push(option);
+      });
+      return addressOptions;
+    };
     const fetchProfile = async (): Promise<void> => {
       try {
         const response: ClientResponse<Customer> = await profile();
@@ -88,12 +90,35 @@ export function Profile(): JSX.Element {
           throw new Error('Customer data not available');
         }
       } catch (error) {
-        console.error('Error fetching customer data:', error);
+        toast('Profile error', { type: 'error' });
       }
     };
 
     fetchProfile().catch(() => {});
   }, []);
+
+  const changePasswordHandle = async (): Promise<void> => {
+    const myCustomerChangePassword: MyCustomerChangePassword = {
+      version: 2,
+      currentPassword: 'aaaaaaaaA1!',
+      newPassword: 'j5CztCY57qp6Rbn',
+    };
+    console.log('change', myCustomerChangePassword);
+
+    try {
+      const response: ClientResponse<Customer> = await changePassword(myCustomerChangePassword);
+
+      if (response) {
+        console.log('response', response);
+        toast('Password change was successful', { type: 'success' });
+      } else {
+        toast('Password error', { type: 'error' });
+      }
+    } catch (err) {
+      console.error('Error changing password', err);
+      toast('Password error', { type: 'error' });
+    }
+  };
 
   return (
     <main className={classNames('main', styles.main)}>
@@ -101,14 +126,33 @@ export function Profile(): JSX.Element {
         <h1>Profile</h1>
         <form className={styles.form}>
           <div className={styles.chooseInfoBlock}>
-            <button type="button" onClick={() => handleBlock(true, false, false)} className={styles.chooseInfoItem}>
+            <button
+              type="button"
+              onClick={() => handleBlock(true, false, false, false)}
+              className={styles.chooseInfoItem}
+            >
               Person
             </button>
-            <button type="button" onClick={() => handleBlock(false, true, false)} className={styles.chooseInfoItem}>
+            <button
+              type="button"
+              onClick={() => handleBlock(false, true, false, false)}
+              className={styles.chooseInfoItem}
+            >
               Shipping
             </button>
-            <button type="button" onClick={() => handleBlock(false, false, true)} className={styles.chooseInfoItem}>
+            <button
+              type="button"
+              onClick={() => handleBlock(false, false, true, false)}
+              className={styles.chooseInfoItem}
+            >
               Billing
+            </button>
+            <button
+              type="button"
+              onClick={() => handleBlock(false, false, false, true)}
+              className={styles.chooseInfoItem}
+            >
+              Password
             </button>
           </div>
           <div className={styles.detailInfoBlock}>
@@ -155,18 +199,6 @@ export function Profile(): JSX.Element {
                     />
                   </label>
                 </div>
-                <div className={styles.password_block}>
-                  <label htmlFor="password-login" className={styles.formInput}>
-                    Password:
-                    <input
-                      id="password-login"
-                      placeholder="password"
-                      autoComplete="current-password"
-                      value={`${personInfo.password}`}
-                      className={styles.input}
-                    />
-                  </label>
-                </div>
               </div>
             )}
             {shippingStatus && (
@@ -181,6 +213,42 @@ export function Profile(): JSX.Element {
                 <h2>Billing addresses</h2>
                 <div>Default billing address : {personInfo.defaultBillingAddressId}</div>
                 <Select options={addressesBill} defaultValue={selectedOptionBill} onChange={setSelectedOptionBill} />
+              </div>
+            )}
+            {passwordStatus && (
+              <div className={styles.blockPassword}>
+                <h2>Change password</h2>
+                <div>
+                  To change your password, enter your current password and the new one. Once the current password has
+                  been successfully verified, it will be replaced with a new password{' '}
+                </div>
+                <label htmlFor="password-was-login" className={styles.formInput}>
+                  Current password:
+                  <input
+                    id="password-was-login"
+                    placeholder="password"
+                    autoComplete="current-password"
+                    className={styles.input}
+                  />
+                </label>
+                <label htmlFor="password-login" className={styles.formInput}>
+                  New password:
+                  <input
+                    id="password-login"
+                    placeholder="new password"
+                    autoComplete="new-password"
+                    className={styles.input}
+                  />
+                </label>
+                <button
+                  onClick={() => {
+                    changePasswordHandle().catch((err) => console.error(err));
+                  }}
+                  type="button"
+                  className={styles.changeInfo}
+                >
+                  Change
+                </button>
               </div>
             )}
           </div>
