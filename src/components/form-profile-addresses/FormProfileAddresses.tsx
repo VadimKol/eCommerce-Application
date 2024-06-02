@@ -95,11 +95,12 @@ export function FormProfileAddresses({ addresses, defaultAddress }: FormAddresse
             <div className={styles.changeAddress} />
             <div className={styles.saveAddress} />
             <div className={styles.deleteAddress} />
+            <div className={styles.setAddress} />
           </div>
         </div>
       ))}
-      <button type="button" className={styles.changeInfo}>
-        Add new billing address
+      <button type="button" className={styles.button}>
+        Add new address
       </button>
 
       <form
@@ -230,7 +231,7 @@ export function FormProfileAddresses({ addresses, defaultAddress }: FormAddresse
               }}
               ref={refDefault}
             />
-            Set default
+            Set default address
           </label>
         </div>
         <button type="submit" className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}>
