@@ -4,6 +4,7 @@ import type {
   CustomerSignin,
   CustomerSignInResult,
   MyCustomerChangePassword,
+  MyCustomerUpdate,
 } from '@commercetools/platform-sdk';
 
 import { CustomTokenCache } from '@/common/token-cache';
@@ -57,4 +58,8 @@ export function profile(): Promise<ClientResponse<Customer>> {
 
 export function changePassword(myCustomerChangePassword: MyCustomerChangePassword): Promise<ClientResponse<Customer>> {
   return apiRoot.me().password().post({ body: myCustomerChangePassword }).execute();
+}
+
+export function crudAddress(MyCustomerUpdate: MyCustomerUpdate): Promise<ClientResponse<Customer>> {
+  return apiRoot.me().post({ body: MyCustomerUpdate }).execute();
 }

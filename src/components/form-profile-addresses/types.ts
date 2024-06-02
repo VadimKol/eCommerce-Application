@@ -1,6 +1,8 @@
 export interface FormAddresses {
+  version: number;
   addresses: AddressOption[];
   defaultAddress: string;
+  isBilling: boolean;
 }
 
 export interface AddressOption {

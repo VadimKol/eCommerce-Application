@@ -18,22 +18,12 @@ export const registerSchema = z
     postcode: z.string(),
   })
   .superRefine((data, ctx) => {
-    const billSchema = postalCodeSchemas[data.country as Country];
-    if (!billSchema.safeParse(data.postcode).success) {
+    const addressSchema = postalCodeSchemas[data.country as Country];
+    if (!addressSchema.safeParse(data.postcode).success) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `Invalid postal code for billing country: ${data.country}`,
-        path: ['postcodeBill'],
-      });
-    }
-
-    // Validate shipping postal code
-    const shipSchema = postalCodeSchemas[data.country as Country];
-    if (!shipSchema.safeParse(data.postcode).success) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Invalid postal code for shipping country: ${data.country}`,
-        path: ['postcodeShip'],
+        message: `Invalid postal code for country: ${data.country}`,
+        path: ['postcode'],
       });
     }
   });

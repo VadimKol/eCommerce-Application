@@ -187,10 +187,20 @@ export function Profile(): JSX.Element {
               )}
             </form>
             {shippingStatus && (
-              <FormProfileAddresses addresses={addressesShip} defaultAddress={personInfo.defaultShippingAddressId} />
+              <FormProfileAddresses
+                version={personInfo.version}
+                addresses={addressesShip}
+                defaultAddress={personInfo.defaultShippingAddressId}
+                isBilling={false}
+              />
             )}
             {billingStatus && (
-              <FormProfileAddresses addresses={addressesBill} defaultAddress={personInfo.defaultBillingAddressId} />
+              <FormProfileAddresses
+                version={personInfo.version}
+                addresses={addressesBill}
+                defaultAddress={personInfo.defaultBillingAddressId}
+                isBilling
+              />
             )}
             {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
           </div>
