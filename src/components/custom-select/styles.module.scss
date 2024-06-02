@@ -1,8 +1,8 @@
-.sort_box {
+.select {
   position: relative;
 }
 
-.sort {
+.select_box {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,7 +19,7 @@
   }
 }
 
-.sort_list {
+.list {
   position: absolute;
   top: 30px;
   right: 0;
@@ -51,11 +51,11 @@
   }
 }
 
-.sort_title {
+.title {
   display: inline-block;
 }
 
-.sort_icon {
+.icon {
   display: inline-block;
   width: 20px;
   height: 20px;

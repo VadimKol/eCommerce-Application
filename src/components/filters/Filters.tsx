@@ -62,4 +62,10 @@ export function Filters(): JSX.Element {
   );
 }
 
-// apiRoot.products().get().execute().then(console.log).catch(console.error);
+/* apiRoot
+  .productProjections()
+  .search()
+  .get({ queryArgs: { sort: 'name.en-US ASC' } })
+  .execute()
+  .then(console.log)
+  .catch(console.error); */

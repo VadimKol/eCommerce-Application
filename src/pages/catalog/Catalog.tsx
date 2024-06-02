@@ -1,23 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { getProducts } from '@/api/client-actions';
-import { NavigationPaths } from '@/common/enums';
 import type { CategoriesData, Product } from '@/common/types';
 import { QUERY_LIMIT, sortingTypes } from '@/common/utils';
 import { Breadcrumbs } from '@/components/breadcrumbs/Breadcrumbs';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { CustomSelect } from '@/components/custom-select/CustomSelect';
 import { Filters } from '@/components/filters/Filters';
+import { ProductCard } from '@/components/product-card/ProductCard';
 
 import styles from './styles.module.scss';
 
 export function Catalog(): JSX.Element {
   const categoriesData = useLoaderData() as CategoriesData;
-  const [products, SetProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const { categoryName, subcategoryName } = useParams<{ categoryName?: string; subcategoryName?: string }>();
   const [page, setPage] = useState(0);
+  const [sortType, setSortType] = useState('Sort');
 
   const title = useRef('All Products');
   const total = useRef(0);
@@ -32,7 +33,7 @@ export function Catalog(): JSX.Element {
     if (subcategoryID) {
       title.current = subcategoryID.name;
     }
-    getProducts(page, categoryID?.id, subcategoryID?.id)
+    getProducts(page, sortType, categoryID?.id, subcategoryID?.id)
       .then((data) => {
         total.current = data.total;
         data.products.forEach((product) => {
@@ -47,10 +48,15 @@ export function Catalog(): JSX.Element {
             product.keySubCategory = subcategory.key;
           }
         });
-        SetProducts(data.products);
+        setProducts(data.products);
       })
       .catch((error: Error) => toast(error.message, { type: 'error' }));
-  }, [categoryName, subcategoryName, categoriesData, page]);
+  }, [categoryName, subcategoryName, categoriesData, page, sortType]);
+
+  useEffect(() => {
+    setPage(0);
+    setSortType('Sort');
+  }, [categoryName, subcategoryName]);
 
   return (
     <main className="main">
@@ -70,7 +76,7 @@ export function Catalog(): JSX.Element {
           </div>
         </form>
         <div className={styles.sort_form}>
-          <CustomSelect onClick={() => {}} selectItems={sortingTypes} />
+          <CustomSelect selectItems={sortingTypes} selectState={sortType} setSelectState={setSortType} />
         </div>
         <section className={styles.product_box}>
           <aside className={styles.filters}>
@@ -80,42 +86,36 @@ export function Catalog(): JSX.Element {
             <ul className={styles.products}>
               {products.map((product) => (
                 <li key={product.id} className={styles.products_item}>
-                  <Link
-                    to={`${NavigationPaths.CATALOG}/${categoryName || product.keyCategory}/${subcategoryName || product.keySubCategory}/${product.key}`}
-                    className={styles.product_link}
-                  >
-                    <div className={styles.image_box}>
-                      <img className={styles.product_img} src={product.images[0]} alt="Product" />
-                    </div>
-                    <p className={styles.product_name}>{product.name}</p>
-                    {/* <p className={styles.product_description}>{product.description}</p> */}
-                    <p className={styles.product_price}>€{product.price}</p>
-                  </Link>
+                  <ProductCard product={product} categoryName={categoryName} subcategoryName={subcategoryName} />
                 </li>
               ))}
             </ul>
             {total.current > QUERY_LIMIT && (
               <div className={styles.pagination}>
-                <button
-                  type="button"
-                  aria-label="Left"
-                  className={styles.pag_left}
-                  onClick={() => {
-                    setPage(page - 1);
-                  }}
-                />
+                {Boolean(page) && (
+                  <button
+                    type="button"
+                    aria-label="Left"
+                    className={styles.pag_left}
+                    onClick={() => {
+                      setPage(page - 1);
+                    }}
+                  />
+                )}
                 <div className={styles.pages}>
                   <span>{page + 1}</span>-
-                  <span>{total.current / QUERY_LIMIT + (total.current % QUERY_LIMIT > 0 ? 1 : 0)}</span>
+                  <span>{Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0)}</span>
                 </div>
-                <button
-                  type="button"
-                  aria-label="Right"
-                  className={styles.pag_right}
-                  onClick={() => {
-                    setPage(page + 1);
-                  }}
-                />
+                {page + 1 < Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0) && (
+                  <button
+                    type="button"
+                    aria-label="Right"
+                    className={styles.pag_right}
+                    onClick={() => {
+                      setPage(page + 1);
+                    }}
+                  />
+                )}
               </div>
             )}
           </section>

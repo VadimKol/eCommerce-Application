@@ -1,4 +1,4 @@
-import type { ClientResponse, CustomerSignin, CustomerSignInResult, Price } from '@commercetools/platform-sdk';
+import type { ClientResponse, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { toast } from 'react-toastify';
 
 import { CustomTokenCache } from '@/common/token-cache';
@@ -93,6 +93,7 @@ export async function getCategories(): Promise<CategoriesData> {
 
 export async function getProducts(
   offset: number,
+  sortType: string,
   categoryID?: string,
   subcategoryID?: string,
 ): Promise<{ products: Product[]; total: number }> {
@@ -106,44 +107,63 @@ export async function getProducts(
   if (subcategoryID) {
     categoryRequest = subcategoryID;
   }
-  const queryArgs = { limit: QUERY_LIMIT, offset };
+  let sort: string | undefined;
+  switch (sortType) {
+    case 'Alphabetically, A-Z': {
+      sort = 'name.en-US asc';
+      break;
+    }
+    case 'Alphabetically, Z-A': {
+      sort = 'name.en-US desc';
+      break;
+    }
+    case 'Price, low to high': {
+      sort = 'price asc';
+      break;
+    }
+    case 'Price, high to low': {
+      sort = 'price desc';
+      break;
+    }
+    default:
+      sort = undefined;
+      break;
+  }
+  const queryArgs = { limit: QUERY_LIMIT, offset: offset * 12, sort };
   if (categoryRequest) {
-    Object.assign(queryArgs, { where: `masterData(current(categories(id="${categoryRequest}")))` });
+    Object.assign(queryArgs, { filter: `categories.id:"${categoryRequest}"` });
   }
 
   try {
-    const data = await apiRoot.products().get({ queryArgs }).execute();
+    const data = await apiRoot.productProjections().search().get({ queryArgs }).execute();
 
     total = data.body.total ?? 0;
 
     data.body.results.forEach((product) => {
-      const description = product.masterData.current.description
-        ? (product.masterData.current.description['en-US'] as string)
-        : '';
-      const price = product.masterData.current.masterVariant.prices
-        ? ((product.masterData.current.masterVariant.prices[0] as Price).value.centAmount / 100).toFixed(2)
-        : '0.00';
-      const images = product.masterData.current.masterVariant.images
-        ? product.masterData.current.masterVariant.images.map((image) => image.url)
-        : [];
-      const quantity = product.masterData.current.masterVariant.availability?.availableQuantity
-        ? product.masterData.current.masterVariant.availability.availableQuantity
+      const description = product.description ? (product.description['en-US'] as string) : '';
+      const { prices } = product.masterVariant;
+      const price = prices && prices[0] ? (prices[0].value.centAmount / 100).toFixed(2) : '0.00';
+      const discount =
+        prices && prices[0] && prices[0].discounted ? (prices[0].discounted.value.centAmount / 100).toFixed(2) : '';
+      const images = product.masterVariant.images ? product.masterVariant.images.map((image) => image.url) : [];
+      const quantity = product.masterVariant.availability?.availableQuantity
+        ? product.masterVariant.availability.availableQuantity
         : 0;
       products.push({
         id: product.id,
-        name: product.masterData.current.name['en-US'] as string,
+        name: product.name['en-US'] as string,
         description,
-        slug: product.masterData.current.slug['en-US'] as string,
+        slug: product.slug['en-US'] as string,
         key: product.key as string,
-        sku: product.masterData.current.masterVariant.sku as string,
+        sku: product.masterVariant.sku as string,
         quantity,
         price,
+        discount,
         images,
-        categoryId: product.masterData.current.categories[product.masterData.current.categories.length - 1]
-          ?.id as string,
+        categoryId: product.categories[product.categories.length - 1]?.id as string,
         slugCategory: '',
         keyCategory: '',
-        subcategoryId: product.masterData.current.categories[0]?.id as string,
+        subcategoryId: product.categories[0]?.id as string,
         slugSubCategory: '',
         keySubCategory: '',
       });

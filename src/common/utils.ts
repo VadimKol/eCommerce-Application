@@ -14,8 +14,8 @@ export const sortingTypes = [
   'Alphabetically, Z-A',
   'Price, low to high',
   'Price, high to low',
-  'Date, old to new',
-  'Date, new to old',
+  /*   'Date, old to new',
+  'Date, new to old', */
 ];
 
 export const fandoms = [
