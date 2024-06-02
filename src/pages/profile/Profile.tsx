@@ -5,7 +5,8 @@ import { toast } from 'react-toastify';
 
 import { profile } from '@/api/client-actions.ts';
 
-import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx'; // Adjust the import path
+import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx';
+import { FormProfileAddresses } from '../../components/form-profile-addresses/FormProfileAddresses.tsx';
 import styles from './styles.module.scss';
 import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
 
@@ -186,39 +187,10 @@ export function Profile(): JSX.Element {
               )}
             </form>
             {shippingStatus && (
-              <div className={styles.detailShipping}>
-                <h2>Shipping addresses</h2>
-                <div>Default shipping address : {personInfo.defaultShippingAddressId}</div>
-                {addressesShip.map((addressItem) => (
-                  <div key={addressItem.value} className={styles.addressItem}>
-                    {addressItem.label}
-                    <div className={styles.addressControl}>
-                      <div className={styles.changeAddress} />
-                      <div className={styles.saveAddress} />
-                      <div className={styles.deleteAddress} />
-                    </div>
-                  </div>
-                ))}
-                <button type="button" className={styles.changeInfo}>
-                  Add new billing address
-                </button>
-              </div>
+              <FormProfileAddresses addresses={addressesShip} defaultAddress={personInfo.defaultShippingAddressId} />
             )}
             {billingStatus && (
-              <div className={styles.detailBilling}>
-                <h2>Billing addresses</h2>
-                <div>Default billing address : {personInfo.defaultBillingAddressId}</div>
-                {addressesBill.map((addressItem) => (
-                  <div key={addressItem.value} className={styles.addressItem}>
-                    {addressItem.label}
-                    <div className={styles.addressControl}>
-                      <div className={styles.changeAddress} />
-                      <div className={styles.saveAddress} />
-                      <div className={styles.deleteAddress} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <FormProfileAddresses addresses={addressesBill} defaultAddress={personInfo.defaultBillingAddressId} />
             )}
             {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
           </div>
