@@ -13,11 +13,6 @@ export interface CustomerProfile {
   defaultBillingAddressId: string;
 }
 
-export interface AddressOption {
-  value: string;
-  label: string;
-}
-
 export interface AddressCustom extends Address {
   id: string;
 }

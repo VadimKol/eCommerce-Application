@@ -16,6 +16,7 @@ export const registerSchema = z
     apartment: z.string(),
     country: z.enum(['RU', 'BY', 'US']),
     postcode: z.string(),
+    id: z.string(),
   })
   .superRefine((data, ctx) => {
     const addressSchema = postalCodeSchemas[data.country as Country];

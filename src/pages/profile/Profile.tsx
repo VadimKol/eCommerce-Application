@@ -8,7 +8,7 @@ import { profile } from '@/api/client-actions.ts';
 import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx';
 import { FormProfileAddresses } from '../../components/form-profile-addresses/FormProfileAddresses.tsx';
 import styles from './styles.module.scss';
-import type { AddressCustom, AddressOption, CustomerProfile } from './types.ts';
+import type { AddressCustom, CustomerProfile } from './types.ts';
 
 export function Profile(): JSX.Element {
   const [personStatus, setPersonStatus] = useState(true);
@@ -36,27 +36,20 @@ export function Profile(): JSX.Element {
     shippingAddressIds: [],
   });
 
-  const addressToString = (address: Address): string => `${address.streetName}, ${address.city}, ${address.country}`;
-
-  const [addressesShip, setAddressesShip] = useState<AddressOption[]>([]);
-  const [addressesBill, setAddressesBill] = useState<AddressOption[]>([]);
+  const [addressesShip, setAddressesShip] = useState<AddressCustom[]>([]);
+  const [addressesBill, setAddressesBill] = useState<AddressCustom[]>([]);
 
   useEffect(() => {
-    const findAddress = (addresses: Address[], id: string): string => {
-      const result = (addresses as AddressCustom[]).find((address) => address.id === id);
-      return result ? addressToString(result) : 'you may choose';
-    };
+    const findAddress = (addresses: Address[], id: string): AddressCustom | undefined =>
+      (addresses as AddressCustom[]).find((address) => address.id === id);
 
-    const findAllAddressForOptions = (addresses: Address[], addressIds: string[]): AddressOption[] => {
-      const addressOptions: AddressOption[] = [];
+    const findAllAddressForOptions = (addresses: Address[], addressIds: string[]): AddressCustom[] => {
+      const addressOptions: AddressCustom[] = [];
       addressIds.forEach((addressId: string) => {
-        const address: string = findAddress(addresses, addressId);
-
-        const option: AddressOption = {
-          value: addressId,
-          label: address,
-        };
-        addressOptions.push(option);
+        const address = findAddress(addresses, addressId);
+        if (address) {
+          addressOptions.push(address);
+        }
       });
       return addressOptions;
     };
@@ -66,9 +59,6 @@ export function Profile(): JSX.Element {
         const customer: Customer = response?.body;
 
         if (customer) {
-          const defaultShip = findAddress(customer.addresses, customer.defaultShippingAddressId || '');
-          const defaultBill = findAddress(customer.addresses, customer.defaultBillingAddressId || '');
-
           setPersonInfo({
             version: customer.version || 1,
             firstName: customer.firstName || '',
@@ -76,8 +66,8 @@ export function Profile(): JSX.Element {
             dateOfBirth: customer.dateOfBirth || '',
             email: customer.email || '',
             password: customer.password || '',
-            defaultShippingAddressId: defaultShip,
-            defaultBillingAddressId: defaultBill,
+            defaultShippingAddressId: customer.defaultShippingAddressId || '',
+            defaultBillingAddressId: customer.defaultBillingAddressId || '',
             billingAddressIds: customer.billingAddressIds || [],
             shippingAddressIds: customer.shippingAddressIds || [],
           });

@@ -1,6 +1,6 @@
 import type { ClientResponse, Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -9,22 +9,21 @@ import { crudAddress } from '@/api/client-actions.ts';
 import { countries } from '../../constants/constants.ts';
 import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
-import type { Country, FormAddresses } from './types.ts';
+import type { AddressCustom, Country, FormAddresses } from './types.ts';
 
 export function FormProfileAddresses({ version, addresses, defaultAddress, isBilling }: FormAddresses): JSX.Element {
   const [formStatus, setFormStatus] = useState(false);
 
-  const handleForm = (show: boolean): void => {
-    setFormStatus(show);
-  };
-
   const firstCountry: Country = 'US';
   const [selectedCountry, setSelectedCountry] = useState<Country>(firstCountry);
+  const [currentAddress, setCurrentAddress] = useState<AddressCustom | null>(null);
 
   const {
     register,
     getFieldState,
     trigger,
+    setValue,
+    reset,
     formState: { errors, isValid },
   } = useForm<FormValues>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
 
@@ -34,6 +33,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   const { onChange: onChangeApartment, name: Apartment, ref: refApartment } = register('apartment');
   const { onChange: onChangePostAddress, name: PostAddress, ref: refPostAddress } = register('postcode');
   const { onChange: onChangeDefault, name: Default, ref: refDefault } = register('default');
+  const { onChange: onChangeIdAddress, name: IdAddress, ref: refIdAddress } = register('id');
 
   const cityValue = getFieldState('city');
   const streetValue = getFieldState('street');
@@ -53,13 +53,53 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
     postcodeClass += postcodeValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
   }
 
+  const handleForm = (show: boolean): void => {
+    setFormStatus(show);
+    if (!show) {
+      setCurrentAddress(null);
+      reset();
+    }
+  };
+
+  const handleCloseForm = (): void => {
+    setFormStatus(false);
+    setCurrentAddress(null);
+    reset();
+  };
+
+  const isValidCountry = (country: string): country is Country => ['RU', 'BY', 'US'].includes(country);
+
+  useEffect(() => {
+    if (currentAddress) {
+      setValue('id', currentAddress.id);
+      setValue('country', isValidCountry(currentAddress.country) ? currentAddress.country : firstCountry);
+      setValue('city', currentAddress.city || '');
+      setValue('street', currentAddress.streetName || '');
+      setValue('apartment', currentAddress.apartment || '');
+      setValue('postcode', currentAddress.postalCode || '');
+      setValue('default', currentAddress.id === defaultAddress);
+    }
+  }, [currentAddress, setValue, defaultAddress]);
+
   const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
     setSelectedCountry(event.target.value as Country);
     await trigger(['postcode']);
   };
 
-  const handleChange = (): void => {
+  const addressToString = (address: AddressCustom): string => {
+    const house = address.apartment ? `, ${address.apartment}` : '';
+    return `${address.country}, ${address.city}, ${address.streetName}${house}, ${address.postalCode}`;
+  };
+
+  const findAddress = (addressesArr: AddressCustom[], id: string): AddressCustom | undefined =>
+    addressesArr.find((address) => address.id === id);
+
+  const defaultAddressObject = findAddress(addresses, defaultAddress);
+
+  const handleChange = (addressId: string): void => {
     handleForm(true);
+    const changeAddress = findAddress(addresses, addressId);
+    setCurrentAddress(changeAddress || null);
   };
 
   const handleDelete = (addressId: string): void => {
@@ -109,41 +149,57 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   };
 
   const saveAddress = (): void => {
-    // changePassword(myCustomerChangePassword)
-    //   .then((response: ClientResponse<Customer>) => {
-    //     if (response) {
-    //       toast('Previous password entered correctly', { type: 'success' });
-    //     }
-    //     console.log(response);
-    //   })
-    //   .catch((err: Error) => {
-    //     toast(`Password error ${err.message}`, { type: 'error' });
-    //   });
+    if (currentAddress) {
+      const body: MyCustomerUpdate = {
+        version,
+        actions: [
+          {
+            action: 'addAddress',
+            address: currentAddress,
+          },
+        ],
+      };
+
+      crudAddress(body)
+        .then((response: ClientResponse<Customer>) => {
+          if (response) {
+            toast('The address was added successfully', { type: 'success' });
+          }
+        })
+        .catch((err: Error) => {
+          toast(`An error occurred while adding the address: ${err.message}`, { type: 'error' });
+        });
+    }
   };
 
   return (
     <div className={styles.detailShipping}>
       <h2>Shipping addresses</h2>
-      <div>Default shipping address : {defaultAddress}</div>
-      {addresses.map((addressItem) => (
-        <div key={addressItem.value} className={styles.addressItem}>
-          {addressItem.label}
+      <div>
+        Default shipping address :{' '}
+        {defaultAddressObject ? addressToString(defaultAddressObject) : 'No default address found'}
+      </div>
+      {addresses.map((addressItem: AddressCustom) => (
+        <div key={addressItem.id} className={styles.addressItem}>
+          {addressToString(addressItem)}
           <div className={styles.addressControl}>
-            <button type="button" onClick={() => handleChange()} className={styles.changeAddress}>
+            <button type="button" onClick={() => handleChange(addressItem.id)} className={styles.changeAddress}>
               Change
             </button>
-            <button type="button" onClick={() => handleDelete(addressItem.value)} className={styles.deleteAddress}>
+            <button type="button" onClick={() => handleDelete(addressItem.id)} className={styles.deleteAddress}>
               Delete
             </button>
-            <button type="button" onClick={() => handleSet(addressItem.value)} className={styles.setAddress}>
+            <button type="button" onClick={() => handleSet(addressItem.id)} className={styles.setAddress}>
               Set
             </button>
           </div>
         </div>
       ))}
-      <button onClick={() => handleForm(true)} type="button" className={styles.button}>
-        Add new address
-      </button>
+      {!formStatus && (
+        <button onClick={() => handleForm(true)} type="button" className={styles.button}>
+          Add new address
+        </button>
+      )}
       {formStatus && (
         <form
           className={styles.form}
@@ -156,11 +212,26 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
             }
           }}
         >
+          <div className={styles.hidden}>
+            <label htmlFor="id" className={styles.formInput}>
+              idAddress
+              <input
+                id="id"
+                name={IdAddress}
+                type="text"
+                className={styles.input}
+                onChange={(event) => {
+                  onChangeIdAddress(event).catch(() => {});
+                }}
+                ref={refIdAddress}
+              />
+            </label>
+          </div>
           <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
             <label htmlFor="country" className={styles.formInput}>
               Country
               <select
-                id="country_billing"
+                id="country"
                 className={styles.input}
                 value={selectedCountry}
                 onChange={(e) => {
@@ -279,6 +350,10 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
           </div>
           <button type="submit" className={!isValid ? `${styles.button} ${styles.disabled}` : styles.button}>
             Save
+          </button>
+
+          <button type="button" onClick={() => handleCloseForm()} className={styles.button}>
+            Close
           </button>
         </form>
       )}
