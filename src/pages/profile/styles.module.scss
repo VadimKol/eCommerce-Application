@@ -64,9 +64,10 @@
 
 .formInput {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
+  gap: 10px;
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
   width: 250px;
   margin-bottom: 15px;
 }
@@ -77,7 +78,7 @@
   padding: 0 5px;
   font-family: var(--primary-font);
   color: var(--primary-color);
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--background-color);
   border-radius: 5px;
 }
 
@@ -95,6 +96,55 @@
 
 .newInput {
   border: none;
+}
+
+.addressItem,
+.addressControl {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addressItem {
+  padding: 15px;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.addressControl {
+  gap: 10px;
+}
+
+.changeAddress,
+.saveAddress,
+.deleteAddress {
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  cursor: pointer;
+  transition: all 300ms;
+  transform: scale(1);
+}
+
+.changeAddress {
+  background-image: url("/src/assets/images/fix.png");
+}
+
+.saveAddress {
+  display: none;
+  background-image: url("/src/assets/images/save.png");
+}
+
+
+.deleteAddress {
+  background-image: url("/src/assets/images/delete.png");
+}
+
+.changeAddress:hover,
+.saveAddress:hover,
+.deleteAddress:hover {
+  transition: all 300ms;
+  transform: scale(1.1);
 }
 
 @media (width <= 900px) {

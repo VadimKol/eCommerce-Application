@@ -1,7 +1,6 @@
 import type { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import Select from 'react-select';
 import { toast } from 'react-toastify';
 
 import { profile } from '@/api/client-actions.ts';
@@ -40,8 +39,6 @@ export function Profile(): JSX.Element {
 
   const [addressesShip, setAddressesShip] = useState<AddressOption[]>([]);
   const [addressesBill, setAddressesBill] = useState<AddressOption[]>([]);
-  const [selectedOptionShip, setSelectedOptionShip] = useState<AddressOption | null>(null);
-  const [selectedOptionBill, setSelectedOptionBill] = useState<AddressOption | null>(null);
 
   useEffect(() => {
     const findAddress = (addresses: Address[], id: string): string => {
@@ -192,14 +189,35 @@ export function Profile(): JSX.Element {
               <div className={styles.detailShipping}>
                 <h2>Shipping addresses</h2>
                 <div>Default shipping address : {personInfo.defaultShippingAddressId}</div>
-                <Select options={addressesShip} defaultValue={selectedOptionShip} onChange={setSelectedOptionShip} />
+                {addressesShip.map((addressItem) => (
+                  <div key={addressItem.value} className={styles.addressItem}>
+                    {addressItem.label}
+                    <div className={styles.addressControl}>
+                      <div className={styles.changeAddress} />
+                      <div className={styles.saveAddress} />
+                      <div className={styles.deleteAddress} />
+                    </div>
+                  </div>
+                ))}
+                <button type="button" className={styles.changeInfo}>
+                  Add new billing address
+                </button>
               </div>
             )}
             {billingStatus && (
               <div className={styles.detailBilling}>
                 <h2>Billing addresses</h2>
                 <div>Default billing address : {personInfo.defaultBillingAddressId}</div>
-                <Select options={addressesBill} defaultValue={selectedOptionBill} onChange={setSelectedOptionBill} />
+                {addressesBill.map((addressItem) => (
+                  <div key={addressItem.value} className={styles.addressItem}>
+                    {addressItem.label}
+                    <div className={styles.addressControl}>
+                      <div className={styles.changeAddress} />
+                      <div className={styles.saveAddress} />
+                      <div className={styles.deleteAddress} />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
             {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
