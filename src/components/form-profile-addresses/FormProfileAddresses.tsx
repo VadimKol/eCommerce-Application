@@ -23,6 +23,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
     getFieldState,
     trigger,
     setValue,
+    watch,
     reset,
     formState: { errors, isValid },
   } = useForm<FormValues>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
@@ -79,7 +80,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
       setValue('postcode', currentAddress.postalCode || '');
       setValue('default', currentAddress.id === defaultAddress);
     }
-  }, [currentAddress, setValue, defaultAddress]);
+  }, [currentAddress, setValue, defaultAddress, firstCountry]);
 
   const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
     setSelectedCountry(event.target.value as Country);
@@ -125,7 +126,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   };
 
   const handleSet = (addressId: string): void => {
-    const actionType = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
+    const actionType = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
 
     const body: MyCustomerUpdate = {
       version,
@@ -149,7 +150,12 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   };
 
   const saveAddress = (): void => {
+    console.log('currentAddress', currentAddress);
+
     if (currentAddress) {
+      const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
+      const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
+
       const body: MyCustomerUpdate = {
         version,
         actions: [
@@ -159,16 +165,59 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
           },
         ],
       };
+      console.log('currentAddress', currentAddress);
 
       crudAddress(body)
         .then((response: ClientResponse<Customer>) => {
           if (response) {
             toast('The address was added successfully', { type: 'success' });
+            console.log(response);
+
+            const addedAddress = response.body.addresses;
+            console.log(addedAddress);
+
+            if (addedAddress && addedAddress.length > 0) {
+              const setDefaultBody2: MyCustomerUpdate = {
+                version: response.body.version,
+                actions: [
+                  {
+                    action: addressTypeAction,
+                    addressId: addedAddress[addedAddress.length - 1]?.id,
+                  },
+                  {
+                    action: addressSetDefaultAction,
+                    addressId: addedAddress[addedAddress.length - 1]?.id,
+                  },
+                ],
+              };
+              console.log(setDefaultBody2);
+
+              crudAddress(setDefaultBody2)
+                .then(() => {
+                  toast('The address was added and set as default successfully', { type: 'success' });
+                })
+                .catch((err: Error) => {
+                  toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
+                });
+            }
           }
         })
         .catch((err: Error) => {
           toast(`An error occurred while adding the address: ${err.message}`, { type: 'error' });
         });
+    }
+  };
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    if (isValid) {
+      const formValues = watch(); // Get the current form values
+      console.log('formValues', formValues);
+
+      setCurrentAddress(formValues as AddressCustom); // Update currentAddress with form values
+      saveAddress();
+    } else {
+      toast('Validation error', { type: 'error' });
     }
   };
 
@@ -201,17 +250,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
         </button>
       )}
       {formStatus && (
-        <form
-          className={styles.form}
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (isValid) {
-              saveAddress();
-            } else {
-              toast('Validation error', { type: 'error' });
-            }
-          }}
-        >
+        <form className={styles.form} onSubmit={onSubmit}>
           <div className={styles.hidden}>
             <label htmlFor="id" className={styles.formInput}>
               idAddress
