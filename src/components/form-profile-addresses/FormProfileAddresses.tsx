@@ -272,8 +272,10 @@ export function FormProfileAddresses({
                   billingAddressIds: responseSet.body.billingAddressIds || [],
                   shippingAddressIds: responseSet.body.shippingAddressIds || [],
                 });
-                const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-                const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
+                const findAddressArr = isBilling
+                  ? responseSet.body.billingAddressIds
+                  : responseSet.body.shippingAddressIds;
+                const addressOptions = findAllAddressForOptions(responseSet.body.addresses, findAddressArr || []);
                 setAddressesTable(addressOptions);
                 toast('The address was added and set as default successfully', { type: 'success' });
               })
