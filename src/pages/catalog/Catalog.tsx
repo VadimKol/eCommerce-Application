@@ -30,8 +30,10 @@ export function Catalog(): JSX.Element {
 
   const [priceFilter, setPriceFilter] = useState<[number, number]>([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
   const [franchises, setFranchises] = useState(Array<boolean>(fandoms.length).fill(false));
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
   useEffect(() => {
+    setLoadingProducts(true);
     const categoryID = categoriesData?.find((category) => category.key === categoryName);
     /*     title.current = 'All Products';
     if (categoryID) {
@@ -58,7 +60,8 @@ export function Catalog(): JSX.Element {
         });
         setProducts(data.products);
       })
-      .catch((e: Error) => toast(e.message, { type: 'error' }));
+      .catch((e: Error) => toast(e.message, { type: 'error' }))
+      .finally(() => setLoadingProducts(false));
   }, [categoryName, subcategoryName, categoriesData, page, sortType, priceFilter, franchises, search]);
 
   useEffect(() => {
@@ -109,61 +112,71 @@ export function Catalog(): JSX.Element {
               setFranchises={setFranchises}
             />
           </aside>
-          <section className={styles.products_section}>
-            <div className={styles.sort_n_search_form}>
-              <form
-                className={styles.search_form}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (typeof searchField.current?.value === 'string') {
-                    setSearch(searchField.current?.value.trim());
-                  }
-                }}
-              >
-                <div className={styles.search_box}>
-                  <input id="search" className={styles.search} type="text" placeholder="Search..." ref={searchField} />
-                  <button type="submit" className={styles.search_button} aria-label="Search-button" />
-                </div>
-              </form>
-              <CustomSelect selectItems={sortingTypes} selectState={sortType} setSelectState={setSortType} />
-            </div>
-            <ul className={products.length ? styles.products : `${styles.products} ${styles.products_not_found}`}>
-              {products.map((product) => (
-                <li key={product.id} className={styles.products_item}>
-                  <ProductCard product={product} categoryName={categoryName} subcategoryName={subcategoryName} />
-                </li>
-              ))}
-              {!products.length && <li className={styles.not_found}>Products not found</li>}
-            </ul>
-            {total.current > QUERY_LIMIT && (
-              <div className={styles.pagination}>
-                {Boolean(page) && (
-                  <button
-                    type="button"
-                    aria-label="Left"
-                    className={styles.pag_left}
-                    onClick={() => {
-                      setPage(page - 1);
-                    }}
-                  />
-                )}
-                <div className={styles.pages}>
-                  <span>{page + 1}</span>-
-                  <span>{Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0)}</span>
-                </div>
-                {page + 1 < Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0) && (
-                  <button
-                    type="button"
-                    aria-label="Right"
-                    className={styles.pag_right}
-                    onClick={() => {
-                      setPage(page + 1);
-                    }}
-                  />
-                )}
+          {loadingProducts ? (
+            <div className={styles.infoContainer}>Loading products...</div>
+          ) : (
+            <section className={styles.products_section}>
+              <div className={styles.sort_n_search_form}>
+                <form
+                  className={styles.search_form}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (typeof searchField.current?.value === 'string') {
+                      setSearch(searchField.current?.value.trim());
+                    }
+                  }}
+                >
+                  <div className={styles.search_box}>
+                    <input
+                      id="search"
+                      className={styles.search}
+                      type="text"
+                      placeholder="Search..."
+                      ref={searchField}
+                    />
+                    <button type="submit" className={styles.search_button} aria-label="Search-button" />
+                  </div>
+                </form>
+                <CustomSelect selectItems={sortingTypes} selectState={sortType} setSelectState={setSortType} />
               </div>
-            )}
-          </section>
+              <ul className={products.length ? styles.products : `${styles.products} ${styles.products_not_found}`}>
+                {products.map((product) => (
+                  <li key={product.id} className={styles.products_item}>
+                    <ProductCard product={product} categoryName={categoryName} subcategoryName={subcategoryName} />
+                  </li>
+                ))}
+                {!products.length && <li className={styles.not_found}>Products not found</li>}
+              </ul>
+              {total.current > QUERY_LIMIT && (
+                <div className={styles.pagination}>
+                  {Boolean(page) && (
+                    <button
+                      type="button"
+                      aria-label="Left"
+                      className={styles.pag_left}
+                      onClick={() => {
+                        setPage(page - 1);
+                      }}
+                    />
+                  )}
+                  <div className={styles.pages}>
+                    <span>{page + 1}</span>-
+                    <span>{Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0)}</span>
+                  </div>
+                  {page + 1 < Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0) && (
+                    <button
+                      type="button"
+                      aria-label="Right"
+                      className={styles.pag_right}
+                      onClick={() => {
+                        setPage(page + 1);
+                      }}
+                    />
+                  )}
+                </div>
+              )}
+            </section>
+          )}
         </section>
       </div>
     </main>
