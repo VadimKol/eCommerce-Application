@@ -9,3 +9,8 @@ export enum ActionPaths {
   REGISTER = '/register',
   PROFILE = '/profile',
 }
+
+export enum CurrencySymbols {
+  USD = '$',
+  EUR = '€',
+}

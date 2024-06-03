@@ -4,22 +4,21 @@ import 'swiper/css/pagination';
 import './swiper.scss';
 
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import productsData from '@/router/mock-products.json';
+import type { ProductDetails } from '@/common/types';
 
 import styles from './styles.module.scss';
 
 const OPACITY_DELAY_MS = 500;
 
-function DetailedProduct(): JSX.Element {
-  const { productName: productId } = useParams();
-  const product = productsData
-    .flatMap((category) => category.subcategories.flatMap((subcategory) => subcategory.products))
-    .find((productItem) => productItem.id === productId);
+interface DetailedProductProps {
+  product: ProductDetails | null;
+  loading: boolean;
+}
 
+function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -61,9 +60,15 @@ function DetailedProduct(): JSX.Element {
     return (): void => {};
   }, [isModalOpen]);
 
-  if (!product) {
-    return <div>Product not found</div>;
+  if (loading) {
+    return <div className={styles.infoMessage}>Loading product data...</div>;
   }
+
+  if (!product) {
+    return <div className={styles.infoMessage}>Product not found</div>;
+  }
+
+  const { name, description, price, discountedPrice, currency, images, attributes, availability } = product;
 
   return (
     <>
@@ -81,41 +86,60 @@ function DetailedProduct(): JSX.Element {
             modules={[Navigation, Pagination]}
             className="pageSwiper"
           >
-            {product.images.map((image, index) => (
-              <SwiperSlide
-                key={image}
-                tabIndex={0}
-                className={styles.swiperSlide}
-                onClick={() => handleImageClick(index)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleImageClick(index);
-                  }
-                }}
-              >
-                <img
-                  src={`/src/assets/products/${image}`}
-                  alt={`${product.name} ${index + 1}`}
-                  className={styles.productImage}
-                  loading="lazy"
-                />
-                <div className="swiper-lazy-preloader" />
-              </SwiperSlide>
-            ))}
+            {images &&
+              images.map((image, index) => (
+                <SwiperSlide
+                  key={image}
+                  tabIndex={0}
+                  className={styles.swiperSlide}
+                  onClick={() => handleImageClick(index)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleImageClick(index);
+                    }
+                  }}
+                >
+                  <img src={image} alt={`${name} ${index + 1}`} className={styles.productImage} loading="lazy" />
+                  <div className="swiper-lazy-preloader" />
+                </SwiperSlide>
+              ))}
           </Swiper>
         </div>
         <div className={styles.productInfo}>
-          <h1 className={styles.productName}>{product.name}</h1>
-          <p className={styles.productDescription}>{product.description}</p>
+          <h1 className={styles.productName}>{name}</h1>
+          <p className={styles.productDescription}>{description}</p>
           <div className={styles.productPrice}>
-            {product.salePrice ? (
+            {discountedPrice ? (
               <>
-                <span className={styles.salePrice}>${product.salePrice}</span>
-                <span className={styles.originalPrice}>${product.price}</span>
+                <p className={styles.salePrice}>
+                  <span>{currency}</span>
+                  <span>{discountedPrice}</span>
+                </p>
+                <p className={styles.originalPrice}>
+                  <span>{currency}</span>
+                  <span>{price}</span>
+                </p>
               </>
             ) : (
-              <span className={styles.price}>${product.price}</span>
+              <span className={styles.price}>
+                {currency} {price}
+              </span>
             )}
+          </div>
+          <div className={styles.productQuantity}>
+            <strong>Available Quantity:</strong> {availability?.availableQuantity}
+          </div>
+          <div className={styles.productAttributes}>
+            {attributes &&
+              attributes.map(
+                (attribute) =>
+                  attribute.name !== 'Description' && (
+                    <div key={attribute.name} className={styles.attribute}>
+                      <strong>{attribute.name}:</strong>{' '}
+                      {Array.isArray(attribute.value) ? attribute.value.join(', ') : attribute.value}
+                    </div>
+                  ),
+              )}
           </div>
         </div>
       </div>
@@ -139,17 +163,13 @@ function DetailedProduct(): JSX.Element {
               modules={[Navigation, Pagination]}
               className="modalSwiper"
             >
-              {product.images.map((image, index) => (
-                <SwiperSlide key={image} className={styles.swiperSlide}>
-                  <img
-                    src={`/src/assets/products/${image}`}
-                    alt={`${product.name} ${index + 1}`}
-                    className={styles.modalImage}
-                    loading="lazy"
-                  />
-                  <div className="swiper-lazy-preloader" />
-                </SwiperSlide>
-              ))}
+              {images &&
+                images.map((image, index) => (
+                  <SwiperSlide key={image} className={styles.swiperSlide}>
+                    <img src={image} alt={`${name} ${index + 1}`} className={styles.modalImage} loading="lazy" />
+                    <div className="swiper-lazy-preloader" />
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
         </div>

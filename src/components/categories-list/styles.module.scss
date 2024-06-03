@@ -1,3 +1,17 @@
+.filler {
+  padding: 20px;
+  font-size: 20px;
+  visibility: hidden;
+
+  @media (width <= 768px) {
+    display: none;
+  }
+
+  &.insideMenu {
+    display: none;
+  }
+}
+
 .categoriesList,
 .subcategoriesList {
   margin: 0;
@@ -9,19 +23,28 @@
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
+  justify-content: space-evenly;
   width: fit-content;
   padding: 10px;
   font-size: 20px;
   color: var(--text-color);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 
   @media (width <= 768px) {
     display: none;
+  }
+
+  &.opaque {
+    opacity: 1;
   }
 
   &.insideMenu {
     display: flex;
     flex-direction: column;
     gap: 0;
+    justify-content: unset;
+    align-items: center;
     padding: 0;
     text-align: center;
     color: var(--text-color);
@@ -41,7 +64,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 10;
   display: none;
   flex-direction: column;
   gap: 8px;
@@ -53,20 +76,26 @@
   box-shadow: 0 2px 6px 6px rgb(0 0 0 / 10%);
 
   .insideMenu & {
+    position: static;
     left: 0;
     z-index: 10000;
     align-items: center;
     width: fit-content;
     min-width: 140px;
-    padding: 15px 0;
-    background-image: linear-gradient(45deg, #07531d, #0a9230);
-    transform: translate(calc(-100% + 40px), -8px);
+    padding: 10px;
+    background-image: none;
+  }
+
+  &.subcategoriesListOpen {
+    display: flex;
   }
 }
 
 .categoryLink {
   position: relative;
-  display: inline-block;
+  display: flex;
+  gap: 5px;
+  align-items: center;
   padding: 10px 20px;
   text-decoration: none;
   text-transform: uppercase;
@@ -75,6 +104,7 @@
   transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
 
   .insideMenu & {
+    width: fit-content;
     padding: 10px;
     font-size: 18px;
     color: var(--text-color);
@@ -99,13 +129,16 @@
   border-radius: 15px;
 
   .insideMenu & {
-    margin-inline: -40px;
-    padding-inline: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    width: fit-content;
   }
 
   &:hover {
     .categoryLink {
-      z-index: 2;
+      z-index: 20;
     }
 
     & .subcategoriesList {
@@ -152,12 +185,10 @@
 
   &:hover {
     @media (hover: hover) {
-      text-decoration: underline dotted;
       text-underline-offset: 10px;
       text-decoration-thickness: 2px;
 
       .insideMenu & {
-        text-decoration: underline;
         color: var(--tertiary-color);
         text-underline-offset: 10px;
         text-decoration-thickness: 2px;
@@ -167,7 +198,6 @@
   }
 
   .insideMenu & {
-    text-decoration: underline;
     text-decoration-color: var(--text-color);
     text-underline-offset: 10px;
     text-decoration-thickness: 2px;

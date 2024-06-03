@@ -1,8 +1,19 @@
 .productDetails {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 50% 1fr;
   gap: 10px;
   align-items: center;
+  font-size: 18px;
+
+  @media (width <= 1200px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @media (width <= 480px) {
+    font-size: 16px;
+  }
 }
 
 .productImage {
@@ -15,9 +26,14 @@
 }
 
 .imageSlider {
-  flex: 1;
   width: calc(100% - 20px);
-  max-height: 400px;
+  max-width: 100%;
+  min-height: 200px;
+  max-height: 550px;
+
+  @media (width <= 1200px) {
+    max-height: 400px;
+  }
 }
 
 .productInfo {
@@ -26,35 +42,93 @@
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  padding: 20px;
+
+  @media (width <= 768px) {
+    padding: 0 10px;
+  }
+
+  @media (width <= 480px) {
+    padding: 0;
+  }
 }
 
 .productName {
-  margin-block: 0;
+  margin-block: 0 10px;
   font-size: 2rem;
+
+  @media (width <= 768px) {
+    margin-bottom: 5px;
+  }
 }
 
 .productDescription {
-  margin-block: 0;
+  margin-block: 0 5px;
+  text-align: justify;
+
+  @media (width <= 768px) {
+    margin-bottom: 5px;
+  }
+
+  @media (width <= 480px) {
+    font-size: 16px;
+  }
 }
 
 .productPrice {
   display: flex;
   align-items: baseline;
+  margin-bottom: 5px;
 
   .salePrice {
+    display: flex;
+    margin: 0;
     margin-right: 0.5rem;
     font-size: 1.5rem;
     color: var(--primary-color);
   }
 
   .originalPrice {
+    display: flex;
+    margin: 0;
     font-size: 1rem;
     text-decoration: line-through;
-    color: var(--disabled-color);
+    color: var(--error-color);
   }
 
   .price {
     font-size: 1.5rem;
+  }
+}
+
+.productQuantity {
+  margin-bottom: 5px;
+}
+
+.productAttributes {
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr max-content 1fr;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+
+  @media (width <= 480px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.attribute {
+  width: fit-content;
+
+  &:nth-child(2n+1) {
+    grid-column: 2;
+  }
+
+  &:nth-child(2n) {
+    grid-column: 4;
   }
 }
 
@@ -80,6 +154,7 @@
   flex-direction: column;
   overflow: hidden;
   width: calc(100% - 40px);
+  max-width: var(--max-width);
   max-height: calc(100% - 40px);
   padding: 1rem;
   background: var(--background-color);
@@ -137,4 +212,13 @@
 .modalOpaque {
   opacity: 1;
   pointer-events: auto;
+}
+
+.infoMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 8rem;
+  font-size: 2rem;
+  text-align: center;
 }

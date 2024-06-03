@@ -25,6 +25,7 @@
   justify-content: center;
   align-items: center;
   height: auto;
+  min-height: 200px;
 }
 
 .swiper-button-prev,
@@ -53,4 +54,8 @@
       background: var(--tertiary-color);
     }
   }
+}
+
+.swiper-pagination-bullet-active:hover {
+  cursor: default;
 }
