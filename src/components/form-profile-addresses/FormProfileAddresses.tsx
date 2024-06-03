@@ -1,4 +1,10 @@
-import type { ClientResponse, Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
+import type {
+  Address,
+  ClientResponse,
+  Customer,
+  MyCustomerUpdate,
+  MyCustomerUpdateAction,
+} from '@commercetools/platform-sdk';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -149,72 +155,161 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
       });
   };
 
-  const saveAddress = (): void => {
-    console.log('currentAddress', currentAddress);
+  const createAddress = (newAddress: Address, isDefault: boolean): void => {
+    const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
+    const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
 
-    if (currentAddress) {
-      const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
-      const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
+    const body: MyCustomerUpdate = {
+      version,
+      actions: [
+        {
+          action: 'addAddress',
+          address: newAddress,
+        },
+      ],
+    };
+    console.log('body', body);
 
-      const body: MyCustomerUpdate = {
-        version,
-        actions: [
-          {
-            action: 'addAddress',
-            address: currentAddress,
-          },
-        ],
-      };
-      console.log('currentAddress', currentAddress);
+    crudAddress(body)
+      .then((response: ClientResponse<Customer>) => {
+        if (response) {
+          toast('The address was added successfully', { type: 'success' });
+          console.log(response);
 
-      crudAddress(body)
-        .then((response: ClientResponse<Customer>) => {
-          if (response) {
-            toast('The address was added successfully', { type: 'success' });
-            console.log(response);
+          const addedAddress = response.body.addresses;
+          console.log(addedAddress);
 
-            const addedAddress = response.body.addresses;
-            console.log(addedAddress);
+          if (addedAddress && addedAddress.length > 0) {
+            const lastAddressId = addedAddress[addedAddress.length - 1]?.id;
 
-            if (addedAddress && addedAddress.length > 0) {
-              const setDefaultBody2: MyCustomerUpdate = {
-                version: response.body.version,
-                actions: [
-                  {
-                    action: addressTypeAction,
-                    addressId: addedAddress[addedAddress.length - 1]?.id,
-                  },
-                  {
-                    action: addressSetDefaultAction,
-                    addressId: addedAddress[addedAddress.length - 1]?.id,
-                  },
-                ],
-              };
-              console.log(setDefaultBody2);
-
-              crudAddress(setDefaultBody2)
-                .then(() => {
-                  toast('The address was added and set as default successfully', { type: 'success' });
-                })
-                .catch((err: Error) => {
-                  toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
-                });
+            if (!lastAddressId) {
+              throw new Error('No address ID found for the newly added address.');
             }
+
+            const actions: MyCustomerUpdateAction[] = [
+              {
+                action: addressTypeAction,
+                addressId: lastAddressId,
+              },
+            ];
+
+            if (isDefault) {
+              actions.push({
+                action: addressSetDefaultAction,
+                addressId: lastAddressId,
+              });
+            }
+
+            const setDefaultBody2: MyCustomerUpdate = {
+              version: response.body.version,
+              actions,
+            };
+
+            console.log(setDefaultBody2);
+
+            crudAddress(setDefaultBody2)
+              .then(() => {
+                toast('The address was added and set as default successfully', { type: 'success' });
+              })
+              .catch((err: Error) => {
+                toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
+              });
           }
-        })
-        .catch((err: Error) => {
-          toast(`An error occurred while adding the address: ${err.message}`, { type: 'error' });
-        });
+        }
+      })
+      .catch((err: Error) => {
+        toast(`An error occurred while adding the address: ${err.message}`, { type: 'error' });
+      });
+  };
+
+  const updateAddress = (idAddress: string, newAddress: Address, isDefault: boolean): void => {
+    const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
+    const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
+
+    const body: MyCustomerUpdate = {
+      version,
+      actions: [
+        {
+          action: 'addAddress',
+          address: newAddress,
+        },
+      ],
+    };
+    console.log('body', body);
+
+    crudAddress(body)
+      .then((response: ClientResponse<Customer>) => {
+        if (response) {
+          toast('The address was added successfully', { type: 'success' });
+          console.log(response);
+
+          const addedAddress = response.body.addresses;
+          console.log(addedAddress);
+
+          if (addedAddress && addedAddress.length > 0) {
+            const lastAddressId = addedAddress[addedAddress.length - 1]?.id;
+
+            if (!lastAddressId) {
+              throw new Error('No address ID found for the newly added address.');
+            }
+
+            const actions: MyCustomerUpdateAction[] = [
+              {
+                action: addressTypeAction,
+                addressId: lastAddressId,
+              },
+            ];
+
+            if (isDefault) {
+              actions.push({
+                action: addressSetDefaultAction,
+                addressId: lastAddressId,
+              });
+            }
+
+            const setDefaultBody2: MyCustomerUpdate = {
+              version: response.body.version,
+              actions,
+            };
+
+            console.log(setDefaultBody2);
+
+            crudAddress(setDefaultBody2)
+              .then(() => {
+                toast('The address was added and set as default successfully', { type: 'success' });
+              })
+              .catch((err: Error) => {
+                toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
+              });
+          }
+        }
+      })
+      .catch((err: Error) => {
+        toast(`An error occurred while adding the address: ${err.message}`, { type: 'error' });
+      });
+  };
+
+  const saveAddress = (): void => {
+    const formValues = watch();
+    const newAddress: Address = {
+      apartment: formValues.apartment,
+      city: formValues.city,
+      country: formValues.country,
+      postalCode: formValues.postcode,
+      streetName: formValues.street,
+    };
+    if (newAddress) {
+      if (formValues.id === '') {
+        createAddress(newAddress, formValues.default);
+      } else {
+        updateAddress(formValues.id, newAddress, formValues.default);
+      }
     }
   };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (isValid) {
-      const formValues = watch(); // Get the current form values
-      console.log('formValues', formValues);
-
-      setCurrentAddress(formValues as AddressCustom); // Update currentAddress with form values
       saveAddress();
     } else {
       toast('Validation error', { type: 'error' });
