@@ -11,7 +11,7 @@ import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { FormChangePasswordProps } from './types.ts';
 
-export function FormChangePassword({ email, version }: FormChangePasswordProps): JSX.Element {
+export function FormChangePassword({ email, version, setPersonInfo }: FormChangePasswordProps): JSX.Element {
   const {
     register,
     getFieldState,
@@ -53,6 +53,18 @@ export function FormChangePassword({ email, version }: FormChangePasswordProps):
       .then((response: ClientResponse<Customer>) => {
         if (response) {
           toast('Previous password entered correctly', { type: 'success' });
+          setPersonInfo({
+            version: response.body.version || 1,
+            firstName: response.body.firstName || '',
+            lastName: response.body.lastName || '',
+            dateOfBirth: response.body.dateOfBirth || '',
+            email: response.body.email || '',
+            password: response.body.password || '',
+            defaultShippingAddressId: response.body.defaultShippingAddressId || '',
+            defaultBillingAddressId: response.body.defaultBillingAddressId || '',
+            billingAddressIds: response.body.billingAddressIds || [],
+            shippingAddressIds: response.body.shippingAddressIds || [],
+          });
         }
       })
       .then(() => {

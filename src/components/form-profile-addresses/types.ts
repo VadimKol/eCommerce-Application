@@ -5,6 +5,7 @@ export interface FormAddresses {
   addresses: AddressCustom[];
   defaultAddress: string;
   isBilling: boolean;
+  setPersonInfo: (personInfo: CustomerProfile) => void;
 }
 
 export interface AddressOption {
@@ -16,3 +17,16 @@ export interface AddressCustom extends Address {
 }
 
 export type Country = 'RU' | 'BY' | 'US';
+
+export interface CustomerProfile {
+  version: number;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  email: string;
+  password: string;
+  billingAddressIds: string[];
+  shippingAddressIds: string[];
+  defaultShippingAddressId: string;
+  defaultBillingAddressId: string;
+}

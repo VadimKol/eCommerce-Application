@@ -17,12 +17,19 @@ import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { AddressCustom, Country, FormAddresses } from './types.ts';
 
-export function FormProfileAddresses({ version, addresses, defaultAddress, isBilling }: FormAddresses): JSX.Element {
+export function FormProfileAddresses({
+  version,
+  addresses,
+  defaultAddress,
+  isBilling,
+  setPersonInfo,
+}: FormAddresses): JSX.Element {
   const [formStatus, setFormStatus] = useState(false);
 
   const firstCountry: Country = 'US';
   const [selectedCountry, setSelectedCountry] = useState<Country>(firstCountry);
   const [currentAddress, setCurrentAddress] = useState<AddressCustom | null>(null);
+  const [addressesTable, setAddressesTable] = useState<AddressCustom[]>(addresses);
 
   const {
     register,
@@ -101,11 +108,22 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   const findAddress = (addressesArr: AddressCustom[], id: string): AddressCustom | undefined =>
     addressesArr.find((address) => address.id === id);
 
-  const defaultAddressObject = findAddress(addresses, defaultAddress);
+  const findAllAddressForOptions = (addressArr: Address[], addressIds: string[]): AddressCustom[] => {
+    const addressOptions: AddressCustom[] = [];
+    addressIds.forEach((addressId: string) => {
+      const address = findAddress(addressArr as AddressCustom[], addressId);
+      if (address) {
+        addressOptions.push(address);
+      }
+    });
+    return addressOptions;
+  };
+
+  const defaultAddressObject = findAddress(addressesTable, defaultAddress);
 
   const handleChange = (addressId: string): void => {
     handleForm(true);
-    const changeAddress = findAddress(addresses, addressId);
+    const changeAddress = findAddress(addressesTable, addressId);
     setCurrentAddress(changeAddress || null);
     if (changeAddress) {
       setSelectedCountry(isValidCountry(changeAddress.country) ? changeAddress.country : firstCountry);
@@ -127,6 +145,22 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
       .then((response: ClientResponse<Customer>) => {
         if (response) {
           toast('Address deleted successfully', { type: 'success' });
+          handleCloseForm();
+          setPersonInfo({
+            version: response.body.version || 1,
+            firstName: response.body.firstName || '',
+            lastName: response.body.lastName || '',
+            dateOfBirth: response.body.dateOfBirth || '',
+            email: response.body.email || '',
+            password: response.body.password || '',
+            defaultShippingAddressId: response.body.defaultShippingAddressId || '',
+            defaultBillingAddressId: response.body.defaultBillingAddressId || '',
+            billingAddressIds: response.body.billingAddressIds || [],
+            shippingAddressIds: response.body.shippingAddressIds || [],
+          });
+          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
+          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
+          setAddressesTable(addressOptions);
         }
       })
       .catch((err: Error) => {
@@ -156,6 +190,22 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
       .then((response: ClientResponse<Customer>) => {
         if (response) {
           toast('Address set as default successfully', { type: 'success' });
+          handleCloseForm();
+          setPersonInfo({
+            version: response.body.version || 1,
+            firstName: response.body.firstName || '',
+            lastName: response.body.lastName || '',
+            dateOfBirth: response.body.dateOfBirth || '',
+            email: response.body.email || '',
+            password: response.body.password || '',
+            defaultShippingAddressId: response.body.defaultShippingAddressId || '',
+            defaultBillingAddressId: response.body.defaultBillingAddressId || '',
+            billingAddressIds: response.body.billingAddressIds || [],
+            shippingAddressIds: response.body.shippingAddressIds || [],
+          });
+          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
+          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
+          setAddressesTable(addressOptions);
         }
       })
       .catch((err: Error) => {
@@ -208,7 +258,23 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
             };
 
             crudAddress(setDefaultBody2)
-              .then(() => {
+              .then((responseSet) => {
+                handleCloseForm();
+                setPersonInfo({
+                  version: responseSet.body.version || 1,
+                  firstName: responseSet.body.firstName || '',
+                  lastName: responseSet.body.lastName || '',
+                  dateOfBirth: responseSet.body.dateOfBirth || '',
+                  email: responseSet.body.email || '',
+                  password: responseSet.body.password || '',
+                  defaultShippingAddressId: responseSet.body.defaultShippingAddressId || '',
+                  defaultBillingAddressId: responseSet.body.defaultBillingAddressId || '',
+                  billingAddressIds: responseSet.body.billingAddressIds || [],
+                  shippingAddressIds: responseSet.body.shippingAddressIds || [],
+                });
+                const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
+                const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
+                setAddressesTable(addressOptions);
                 toast('The address was added and set as default successfully', { type: 'success' });
               })
               .catch((err: Error) => {
@@ -254,6 +320,22 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
       .then((response: ClientResponse<Customer>) => {
         if (response) {
           toast('Address updated successfully', { type: 'success' });
+          handleCloseForm();
+          setPersonInfo({
+            version: response.body.version || 1,
+            firstName: response.body.firstName || '',
+            lastName: response.body.lastName || '',
+            dateOfBirth: response.body.dateOfBirth || '',
+            email: response.body.email || '',
+            password: response.body.password || '',
+            defaultShippingAddressId: response.body.defaultShippingAddressId || '',
+            defaultBillingAddressId: response.body.defaultBillingAddressId || '',
+            billingAddressIds: response.body.billingAddressIds || [],
+            shippingAddressIds: response.body.shippingAddressIds || [],
+          });
+          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
+          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
+          setAddressesTable(addressOptions);
         }
       })
       .catch((err: Error) => {
@@ -295,7 +377,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
         Default {isBilling ? 'billing' : 'shipping'} address :{' '}
         {defaultAddressObject ? addressToString(defaultAddressObject) : 'No default address found'}
       </div>
-      {addresses.map((addressItem: AddressCustom) => (
+      {addressesTable.map((addressItem: AddressCustom) => (
         <div key={addressItem.id} className={styles.addressItem}>
           {addressToString(addressItem)}
           <div className={styles.addressControl}>

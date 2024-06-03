@@ -172,6 +172,22 @@ export function Profile(): JSX.Element {
       .then((response: ClientResponse<Customer>) => {
         if (response) {
           toast('User information successfully changed', { type: 'success' });
+          setPersonInfo({
+            version: response.body.version || 1,
+            firstName: response.body.firstName || '',
+            lastName: response.body.lastName || '',
+            dateOfBirth: response.body.dateOfBirth || '',
+            email: response.body.email || '',
+            password: response.body.password || '',
+            defaultShippingAddressId: response.body.defaultShippingAddressId || '',
+            defaultBillingAddressId: response.body.defaultBillingAddressId || '',
+            billingAddressIds: response.body.billingAddressIds || [],
+            shippingAddressIds: response.body.shippingAddressIds || [],
+          });
+          setValue('name', response.body.firstName || '');
+          setValue('surname', response.body.lastName || '');
+          setValue('age', response.body.dateOfBirth || '');
+          setValue('email', response.body.email || '');
         }
       })
       .catch((err: Error) => {
@@ -372,6 +388,7 @@ export function Profile(): JSX.Element {
                 addresses={addressesShip}
                 defaultAddress={personInfo.defaultShippingAddressId}
                 isBilling={false}
+                setPersonInfo={setPersonInfo}
               />
             )}
             {billingStatus && (
@@ -380,9 +397,12 @@ export function Profile(): JSX.Element {
                 addresses={addressesBill}
                 defaultAddress={personInfo.defaultBillingAddressId}
                 isBilling
+                setPersonInfo={setPersonInfo}
               />
             )}
-            {passwordStatus && <FormChangePassword email={personInfo.email} version={personInfo.version} />}
+            {passwordStatus && (
+              <FormChangePassword email={personInfo.email} version={personInfo.version} setPersonInfo={setPersonInfo} />
+            )}
           </div>
         </div>
       </div>
