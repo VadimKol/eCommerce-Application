@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { CustomTokenCache } from '@/common/token-cache';
 import type { CategoriesData, GeekShopCustomerDraft, Product } from '@/common/types';
-import { QUERY_LIMIT } from '@/common/utils';
+import { getFandomsFilter, QUERY_LIMIT } from '@/common/utils';
 
 import {
   apiRoot,
@@ -94,6 +94,9 @@ export async function getCategories(): Promise<CategoriesData> {
 export async function getProducts(
   offset: number,
   sortType: string,
+  priceFilter: [number, number],
+  franchises: boolean[],
+  search: string,
   categoryID?: string,
   subcategoryID?: string,
 ): Promise<{ products: Product[]; total: number }> {
@@ -129,9 +132,21 @@ export async function getProducts(
       sort = undefined;
       break;
   }
-  const queryArgs = { limit: QUERY_LIMIT, offset: offset * 12, sort };
+  const queryArgs = {
+    limit: QUERY_LIMIT,
+    offset: offset * 12,
+    sort,
+    filter: [`variants.price.centAmount:range (${priceFilter[0] * 100} to ${priceFilter[1] * 100})`],
+  };
   if (categoryRequest) {
-    Object.assign(queryArgs, { filter: `categories.id:"${categoryRequest}"` });
+    queryArgs.filter.push(`categories.id:"${categoryRequest}"`);
+  }
+  const fandomsFilter = getFandomsFilter(franchises);
+  if (fandomsFilter) {
+    queryArgs.filter.push(fandomsFilter);
+  }
+  if (search) {
+    Object.assign(queryArgs, { fuzzy: true, fuzzyLevel: 0, 'text.en-US': search });
   }
 
   try {

@@ -43,8 +43,11 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  width: 377px;
-  height: 377px;
+  width: 100%;
+  max-width: 377px;
+  height: 100%;
+  max-height: 377px;
+  border-radius: 10px;
 }
 
 .product_img {

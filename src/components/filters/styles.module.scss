@@ -50,6 +50,14 @@
       cursor: pointer;
     }
   }
+
+  @media screen and (width <= 768px) {
+    justify-content: center;
+  }
+
+  @media screen and (width <= 590px) {
+    justify-content: initial;
+  }
 }
 
 .title {
@@ -83,6 +91,6 @@
   }
 }
 
-.apply {
+.reset {
   padding: 0.3em 1.2em;
 }

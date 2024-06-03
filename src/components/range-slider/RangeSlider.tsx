@@ -5,9 +5,11 @@ import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'reac
 interface RangeSliderProps {
   min: number;
   max: number;
+  priceFilter: [number, number];
+  setPriceFilter: (priceFilter: [number, number]) => void;
 }
 
-export function RangeSlider({ min, max }: RangeSliderProps): JSX.Element {
+export function RangeSlider({ min, max, priceFilter, setPriceFilter }: RangeSliderProps): JSX.Element {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
   const minValRef = useRef(min);
@@ -38,6 +40,12 @@ export function RangeSlider({ min, max }: RangeSliderProps): JSX.Element {
     }
   }, [maxVal, getPercent]);
 
+  useEffect(() => {
+    setMinVal(priceFilter[0]);
+    setMaxVal(priceFilter[1]);
+    [minValRef.current, maxValRef.current] = priceFilter;
+  }, [priceFilter]);
+
   return (
     <div className="container">
       <input
@@ -49,6 +57,11 @@ export function RangeSlider({ min, max }: RangeSliderProps): JSX.Element {
           const value = Math.min(Number(event.target.value), maxVal - 1);
           setMinVal(value);
           minValRef.current = value;
+        }}
+        onMouseUp={(event: React.MouseEvent) => {
+          if (event.target instanceof HTMLInputElement) {
+            setPriceFilter([Math.min(Number(event.target.value), maxVal - 1), priceFilter[1]]);
+          }
         }}
         className="thumb thumb--left"
         style={{ zIndex: minVal > max - 100 ? '5' : undefined }}
@@ -63,14 +76,19 @@ export function RangeSlider({ min, max }: RangeSliderProps): JSX.Element {
           setMaxVal(value);
           maxValRef.current = value;
         }}
+        onMouseUp={(event: React.MouseEvent) => {
+          if (event.target instanceof HTMLInputElement) {
+            setPriceFilter([priceFilter[0], Math.max(Number(event.target.value), minVal + 1)]);
+          }
+        }}
         className="thumb thumb--right"
       />
 
       <div className="slider">
         <div className="slider__track" />
         <div ref={range} className="slider__range" />
-        <div className="slider__left-value">£{minVal}</div>
-        <div className="slider__right-value">£{maxVal}</div>
+        <div className="slider__left-value">${minVal}</div>
+        <div className="slider__right-value">${maxVal}</div>
       </div>
     </div>
   );

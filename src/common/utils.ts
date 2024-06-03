@@ -38,3 +38,19 @@ export const fandoms = [
 ];
 
 export const QUERY_LIMIT = 12;
+export const PRICE_FILTER_MIN = 1;
+export const PRICE_FILTER_MAX = 100;
+
+export function getFandomsFilter(franchises: boolean[]): string {
+  const filter: string[] = [];
+
+  franchises.forEach((franchise, index) => {
+    fandoms.forEach((fandom, i) => {
+      if (index === i && franchise) {
+        filter.push(`"${fandom}"`);
+      }
+    });
+  });
+
+  return filter.length > 0 ? `variants.attributes.Fandom:${filter.join(',')}` : '';
+}
