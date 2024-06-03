@@ -1,4 +1,11 @@
-import type { ClientResponse, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
+import type {
+  ClientResponse,
+  Customer,
+  CustomerSignin,
+  CustomerSignInResult,
+  MyCustomerChangePassword,
+  MyCustomerUpdate,
+} from '@commercetools/platform-sdk';
 import { toast } from 'react-toastify';
 
 import { CurrencySymbols } from '@/common/enums';
@@ -47,6 +54,18 @@ export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientRe
   Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
   return apiRoot.me().signup().post({ body: myCustomerDraft }).execute();
   // return apiRoot.customers().post({ body: myCustomerDraft }).execute(); // с анонима можно
+}
+
+export function profile(): Promise<ClientResponse<Customer>> {
+  return apiRoot.me().get().execute();
+}
+
+export function changePassword(myCustomerChangePassword: MyCustomerChangePassword): Promise<ClientResponse<Customer>> {
+  return apiRoot.me().password().post({ body: myCustomerChangePassword }).execute();
+}
+
+export function crudAddress(MyCustomerUpdate: MyCustomerUpdate): Promise<ClientResponse<Customer>> {
+  return apiRoot.me().post({ body: MyCustomerUpdate }).execute();
 }
 
 export async function getCategories(): Promise<CategoriesData> {
