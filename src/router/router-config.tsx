@@ -14,24 +14,14 @@ import { Product } from '@/pages/product/Product';
 import { Profile } from '@/pages/profile/Profile';
 import { Register } from '@/pages/register/Register';
 
-import { loadCategories, loadCategory, loadProduct, loadSubcategory } from './loaders';
-
 export const routerConfig = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
     <Route errorElement={<ErrorPage />}>
       <Route index element={<Home />} />
-      <Route path={NavigationPaths.CATALOG} element={<Catalog />} loader={loadCategories} />
-      <Route path={`${NavigationPaths.CATALOG}/:categoryName`} element={<Catalog />} loader={loadCategory} />
-      <Route
-        path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName`}
-        element={<Catalog />}
-        loader={loadSubcategory}
-      />
-      <Route
-        path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName/:productName`}
-        element={<Product />}
-        loader={loadProduct}
-      />
+      <Route path={NavigationPaths.CATALOG} element={<Catalog />} />
+      <Route path={`${NavigationPaths.CATALOG}/:categoryName`} element={<Catalog />} />
+      <Route path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName`} element={<Catalog />} />
+      <Route path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName/:productName`} element={<Product />} />
       <Route path={NavigationPaths.ABOUT} element={<About />} />
       <Route
         path={ActionPaths.LOGIN}

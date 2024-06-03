@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
+import { NavigationPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 
 import styles from './styles.module.scss';
@@ -17,7 +18,7 @@ export function NoMatch(): JSX.Element {
           <CustomButton variant="tertiary" onClick={() => navigate(-1)}>
             Previous page
           </CustomButton>
-          <CustomButton variant="tertiary" onClick={() => navigate('/')}>
+          <CustomButton variant="tertiary" onClick={() => navigate(NavigationPaths.HOME)}>
             Home page
           </CustomButton>
         </div>

@@ -8,3 +8,12 @@ export const calculateAge = (birthDate: string): boolean => {
   }
   return age >= 13;
 };
+
+export class StatusError extends Error {
+  public statusCode: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.statusCode = status;
+  }
+}
