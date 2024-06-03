@@ -8,7 +8,6 @@ import type {
 } from '@commercetools/platform-sdk';
 import { toast } from 'react-toastify';
 
-
 import { CurrencySymbols } from '@/common/enums';
 import { CustomTokenCache } from '@/common/token-cache';
 import type { CategoriesData, GeekShopCustomerDraft, ProductDetails } from '@/common/types';

@@ -260,7 +260,7 @@ export function Profile(): JSX.Element {
                   <div className={styles.mainFormProfile}>
                     <div className={classNames(styles.inputWithError, styles.bigInput)}>
                       <label htmlFor="name" className={styles.formInput}>
-                        <div className={styles.requiredTitle}>Name</div>
+                        <div className={styles.requiredTitle}>Name:</div>
                         <input
                           id="name"
                           className={modeFix ? nameClass : `${nameClass} ${styles.noMode}`}
@@ -284,7 +284,7 @@ export function Profile(): JSX.Element {
                     </div>
                     <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
                       <label htmlFor="last" className={styles.formInput}>
-                        <div className={styles.requiredTitle}>Surname</div>
+                        <div className={styles.requiredTitle}>Surname:</div>
                         <input
                           id="last"
                           onChange={(event) => {
@@ -309,7 +309,7 @@ export function Profile(): JSX.Element {
 
                     <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
                       <label htmlFor="date" className={styles.formInput}>
-                        <div className={styles.requiredTitle}>Birthday</div>
+                        <div className={styles.requiredTitle}>Birthday:</div>
                         <input
                           id="date"
                           onChange={(event) => {
@@ -333,7 +333,7 @@ export function Profile(): JSX.Element {
 
                     <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
                       <label htmlFor="mail" className={styles.formInput}>
-                        <div className={styles.requiredTitle}>Email</div>
+                        <div className={styles.requiredTitle}>Email:</div>
                         <input
                           onChange={(event) => {
                             onChangeEmail(event).catch(() => {});
