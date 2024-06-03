@@ -6,6 +6,12 @@ export interface AuthContextInterface {
   handleLogout: () => void;
 }
 
+export type CategoriesContextType = {
+  categories: CategoriesData | null;
+  loading: boolean;
+  error: Error | null;
+};
+
 export interface Credentials {
   clientId: string;
   clientSecret: string;
@@ -131,6 +137,20 @@ export interface GeekShopCustomerDraft {
    */
   readonly stores?: StoreResourceIdentifier[];
 }
+
+export type ProductDetails = {
+  name?: string;
+  description?: string;
+  price?: string | null;
+  discountedPrice?: string | null;
+  currency?: string | null;
+  images?: string[];
+  attributes?: { name: string; value: string | number | string[] }[];
+  availability?: {
+    isOnStock?: boolean | null;
+    availableQuantity?: number | null;
+  };
+};
 
 export type Product = {
   id: string;

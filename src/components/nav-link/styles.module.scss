@@ -1,0 +1,29 @@
+
+.link {
+  display: inline-block;
+  padding: 5px;
+  font-size: inherit;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
+    }
+  }
+}
+
+.linkCurrent {
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--text-color);
+}
+
+span.linkCurrent {
+  pointer-events: none;
+}
+

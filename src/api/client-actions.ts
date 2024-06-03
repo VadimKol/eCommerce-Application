@@ -1,8 +1,9 @@
 import type { ClientResponse, CustomerSignin, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { toast } from 'react-toastify';
 
+import { CurrencySymbols } from '@/common/enums';
 import { CustomTokenCache } from '@/common/token-cache';
-import type { CategoriesData, GeekShopCustomerDraft, Product } from '@/common/types';
+import type { CategoriesData, GeekShopCustomerDraft, Product, ProductDetails } from '@/common/types';
 import { getFandomsFilter, QUERY_LIMIT } from '@/common/utils';
 
 import {
@@ -12,6 +13,8 @@ import {
   getPasswordFlowApiRoot,
   tokenCache,
 } from './build-client';
+
+const DEFAULT_LOCALE = 'en-US';
 
 export function login(customerSignin: CustomerSignin): Promise<ClientResponse<CustomerSignInResult>> {
   Object.assign(apiRoot, getPasswordFlowApiRoot(customerSignin.email, customerSignin.password));
@@ -54,17 +57,19 @@ export async function getCategories(): Promise<CategoriesData> {
       .categories()
       .get({ queryArgs: { limit: 50 } })
       .execute();
+
     data.body.results.forEach((category) => {
       if (!category.parent) {
         categories.push({
           id: category.id,
-          name: category.name['en-US'] as string,
-          slug: category.slug['en-US'] as string,
+          name: category.name[DEFAULT_LOCALE] as string,
+          slug: category.slug[DEFAULT_LOCALE] as string,
           key: category.key as string,
           subcategories: [],
         });
       }
     });
+
     data.body.results.forEach((subcategory) => {
       if (subcategory.parent) {
         const parentId = subcategory.parent.id;
@@ -72,8 +77,8 @@ export async function getCategories(): Promise<CategoriesData> {
         if (category) {
           category.subcategories.push({
             id: subcategory.id,
-            name: subcategory.name['en-US'] as string,
-            slug: subcategory.slug['en-US'] as string,
+            name: subcategory.name[DEFAULT_LOCALE] as string,
+            slug: subcategory.slug[DEFAULT_LOCALE] as string,
             key: subcategory.key as string,
             products: [],
           });
@@ -192,4 +197,72 @@ export async function getProducts(
   }
 
   return { products: [...products], total };
+}
+
+export async function getProduct(productKey: string): Promise<ProductDetails> {
+  try {
+    const response = await apiRoot
+      .productProjections()
+      .get({
+        queryArgs: {
+          where: `key="${productKey}"`,
+        },
+      })
+      .execute();
+
+    const product = response.body.results[0];
+
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    const productTypeId = product.productType.id;
+
+    const productTypeResponse = await apiRoot.productTypes().withId({ ID: productTypeId }).get().execute();
+
+    const productType = productTypeResponse.body;
+
+    const name = product.name[DEFAULT_LOCALE];
+    const description = product.description?.[DEFAULT_LOCALE];
+    const { masterVariant } = product;
+    const prices = masterVariant?.prices ?? [];
+    const images = masterVariant?.images ?? [];
+    const attributes = masterVariant?.attributes ?? [];
+    const availability = masterVariant?.availability;
+
+    const price = prices[0];
+    const priceAmount = price?.value?.centAmount ? (price.value.centAmount / 100).toFixed(2) : null;
+    const discountedAmount = price?.discounted ? (price.discounted.value.centAmount / 100).toFixed(2) : null;
+
+    const currencySymbol = price?.value?.currencyCode
+      ? CurrencySymbols[price.value.currencyCode as keyof typeof CurrencySymbols]
+      : null;
+
+    const attributeLabels = productType.attributes?.reduce(
+      (acc, attr) => {
+        acc[attr.name] = attr.label[DEFAULT_LOCALE]!;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    return {
+      name,
+      description,
+      price: priceAmount || null,
+      discountedPrice: discountedAmount || null,
+      currency: currencySymbol,
+      images: images.map((image) => image.url),
+      attributes: attributes.map((attr) => ({
+        name: attributeLabels?.[attr.name] || attr.name,
+        value: attr.value,
+      })),
+      availability: {
+        isOnStock: availability?.isOnStock ?? null,
+        availableQuantity: availability?.availableQuantity ?? null,
+      },
+    };
+  } catch (error) {
+    throw new Error(`Error fetching product information: ${error}`);
+  }
 }

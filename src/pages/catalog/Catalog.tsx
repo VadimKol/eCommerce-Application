@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import { getProducts } from '@/api/client-actions';
 import type { CategoriesData, Product } from '@/common/types';
 import { fandoms, PRICE_FILTER_MAX, PRICE_FILTER_MIN, QUERY_LIMIT, sortingTypes } from '@/common/utils';
@@ -10,6 +9,9 @@ import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { CustomSelect } from '@/components/custom-select/CustomSelect';
 import { Filters } from '@/components/filters/Filters';
 import { ProductCard } from '@/components/product-card/ProductCard';
+import { StatusError } from '@/common/utils';
+import { useCategories } from '@/hooks/useCategories';
+import { NoMatch } from '@/pages/no-match/NoMatch';
 
 import styles from './styles.module.scss';
 
@@ -27,6 +29,12 @@ export function Catalog(): JSX.Element {
 
   const [priceFilter, setPriceFilter] = useState<[number, number]>([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
   const [franchises, setFranchises] = useState(Array<boolean>(fandoms.length).fill(false));
+    
+  const { error } = useCategories();
+
+  if (error instanceof StatusError && error.statusCode === 404) {
+    return <NoMatch />;
+  }
 
   useEffect(() => {
     const categoryID = categoriesData.find((category) => category.key === categoryName);
@@ -71,8 +79,10 @@ export function Catalog(): JSX.Element {
 
   return (
     <main className="main">
-      <CategoriesList />
-      <Breadcrumbs />
+      <div className={styles.topContainer}>
+        <CategoriesList parentClass={styles.categoriesList} />
+      </div>
+      <Breadcrumbs parentClass={styles.breadcrumbs} />
       <div className={styles.container}>
         {/* <h1>{title.current}</h1> */}
         <section className={styles.product_box}>

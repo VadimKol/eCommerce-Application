@@ -54,3 +54,12 @@ export function getFandomsFilter(franchises: boolean[]): string {
 
   return filter.length > 0 ? `variants.attributes.Fandom:${filter.join(',')}` : '';
 }
+
+export class StatusError extends Error {
+  public statusCode: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.statusCode = status;
+  }
+}
