@@ -101,8 +101,12 @@ export function FormProfileAddresses({
   };
 
   const addressToString = (address: AddressCustom): string => {
+    const county = address.country ? `${address.country}` : '';
+    const city = address.city ? `, ${address.city}` : '';
+    const street = address.streetName ? `, ${address.streetName}` : '';
     const house = address.apartment ? `, ${address.apartment}` : '';
-    return `${address.country}, ${address.city}, ${address.streetName}${house}, ${address.postalCode}`;
+    const post = address.postalCode ? `, ${address.postalCode}` : '';
+    return `${county}${city}${street}${house}${post}`;
   };
 
   const findAddress = (addressesArr: AddressCustom[], id: string): AddressCustom | undefined =>
