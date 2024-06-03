@@ -23,6 +23,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   rules: {
+    'no-void': ['error', { allowAsStatement: true }],
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     'prettier/prettier': 'error',

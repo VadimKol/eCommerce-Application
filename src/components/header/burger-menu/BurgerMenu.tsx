@@ -16,10 +16,31 @@ export function BurgerMenu(): JSX.Element {
 
   const handleStateChange = (state: { isOpen: boolean }): void => {
     setIsOpen(state.isOpen);
+    if (state.isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   };
 
+  useEffect(
+    () => (): void => {
+      document.body.style.overflow = '';
+    },
+    [],
+  );
+
   return (
-    <Menu right disableCloseOnEsc width={280} itemListElement="div" isOpen={isOpen} onStateChange={handleStateChange}>
+    <Menu
+      right
+      disableCloseOnEsc
+      width={280}
+      itemListElement="div"
+      isOpen={isOpen}
+      onStateChange={handleStateChange}
+      pageWrapId="page-wrap"
+      outerContainerId="outer-container"
+    >
       <HeaderLinks isInsideBurgerMenu />
     </Menu>
   );

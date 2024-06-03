@@ -7,6 +7,7 @@ import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { NavLink } from '@/components/nav-link/NavLink';
 import { useAuth } from '@/hooks/useAuth';
+import { useCategories } from '@/hooks/useCategories';
 
 import styles from './styles.module.scss';
 
@@ -18,6 +19,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
   const { isAuthenticated, handleLogout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { error: error404 } = useCategories();
 
   const onLogoutClick = (): void => {
     logout()
@@ -31,7 +33,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
       });
   };
 
-  const isCatalogPath = location.pathname.startsWith(`${NavigationPaths.CATALOG}/`);
+  const isCatalogPath = location.pathname.startsWith(`${NavigationPaths.CATALOG}`);
 
   return (
     <>
@@ -54,7 +56,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
           })}
         </ul>
       </nav>
-      {isInsideBurgerMenu && <CategoriesList isInsideBurgerMenu />}
+      {isInsideBurgerMenu && isCatalogPath && !error404 && <CategoriesList isInsideBurgerMenu />}
       <ul className={classNames(styles.actionsList, { [styles.insideMenu!]: isInsideBurgerMenu })}>
         {isAuthenticated ? (
           <>
