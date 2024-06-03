@@ -24,7 +24,8 @@
 .changeAddress,
 .saveAddress,
 .deleteAddress,
-.setAddress {
+.setAddress,
+.emptyAddress {
   width: 25px;
   height: 25px;
   text-indent: -9999px;
@@ -54,10 +55,15 @@
   background-image: url("/src/assets/images/choose.png");
 }
 
+.emptyAddress {
+  background-image: url("/src/assets/images/empty.png");
+}
+
 .changeAddress:hover,
 .saveAddress:hover,
 .deleteAddress:hover,
-.setAddress:hover {
+.setAddress:hover,
+.emptyAddress:hover {
   transition: all 300ms;
   transform: scale(1.1);
 }

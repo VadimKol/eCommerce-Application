@@ -86,7 +86,7 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
       setValue('postcode', currentAddress.postalCode || '');
       setValue('default', currentAddress.id === defaultAddress);
     }
-  }, [currentAddress, setValue, defaultAddress, firstCountry]);
+  }, [currentAddress, setValue, defaultAddress]);
 
   const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
     setSelectedCountry(event.target.value as Country);
@@ -107,6 +107,9 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
     handleForm(true);
     const changeAddress = findAddress(addresses, addressId);
     setCurrentAddress(changeAddress || null);
+    if (changeAddress) {
+      setSelectedCountry(isValidCountry(changeAddress.country) ? changeAddress.country : firstCountry);
+    }
   };
 
   const handleDelete = (addressId: string): void => {
@@ -132,14 +135,19 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   };
 
   const handleSet = (addressId: string): void => {
-    const actionType = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
-
+    const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
+    let addressForSet: string | undefined;
+    if (defaultAddress !== addressId) {
+      addressForSet = addressId;
+    } else {
+      addressForSet = undefined;
+    }
     const body: MyCustomerUpdate = {
       version,
       actions: [
         {
-          action: actionType,
-          addressId,
+          action: addressSetDefaultAction,
+          addressId: addressForSet,
         },
       ],
     };
@@ -168,17 +176,11 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
         },
       ],
     };
-    console.log('body', body);
-
     crudAddress(body)
       .then((response: ClientResponse<Customer>) => {
         if (response) {
           toast('The address was added successfully', { type: 'success' });
-          console.log(response);
-
           const addedAddress = response.body.addresses;
-          console.log(addedAddress);
-
           if (addedAddress && addedAddress.length > 0) {
             const lastAddressId = addedAddress[addedAddress.length - 1]?.id;
 
@@ -204,8 +206,6 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
               version: response.body.version,
               actions,
             };
-
-            console.log(setDefaultBody2);
 
             crudAddress(setDefaultBody2)
               .then(() => {
@@ -223,69 +223,41 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
   };
 
   const updateAddress = (idAddress: string, newAddress: Address, isDefault: boolean): void => {
-    const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
+
+    const actions: MyCustomerUpdateAction[] = [
+      {
+        action: 'changeAddress',
+        addressId: idAddress,
+        address: newAddress,
+      },
+    ];
+
+    if (isDefault) {
+      actions.push({
+        action: addressSetDefaultAction,
+        addressId: idAddress,
+      });
+    } else {
+      actions.push({
+        action: addressSetDefaultAction,
+        addressId: undefined,
+      });
+    }
 
     const body: MyCustomerUpdate = {
       version,
-      actions: [
-        {
-          action: 'addAddress',
-          address: newAddress,
-        },
-      ],
+      actions,
     };
-    console.log('body', body);
 
     crudAddress(body)
       .then((response: ClientResponse<Customer>) => {
         if (response) {
-          toast('The address was added successfully', { type: 'success' });
-          console.log(response);
-
-          const addedAddress = response.body.addresses;
-          console.log(addedAddress);
-
-          if (addedAddress && addedAddress.length > 0) {
-            const lastAddressId = addedAddress[addedAddress.length - 1]?.id;
-
-            if (!lastAddressId) {
-              throw new Error('No address ID found for the newly added address.');
-            }
-
-            const actions: MyCustomerUpdateAction[] = [
-              {
-                action: addressTypeAction,
-                addressId: lastAddressId,
-              },
-            ];
-
-            if (isDefault) {
-              actions.push({
-                action: addressSetDefaultAction,
-                addressId: lastAddressId,
-              });
-            }
-
-            const setDefaultBody2: MyCustomerUpdate = {
-              version: response.body.version,
-              actions,
-            };
-
-            console.log(setDefaultBody2);
-
-            crudAddress(setDefaultBody2)
-              .then(() => {
-                toast('The address was added and set as default successfully', { type: 'success' });
-              })
-              .catch((err: Error) => {
-                toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
-              });
-          }
+          toast('Address updated successfully', { type: 'success' });
         }
       })
       .catch((err: Error) => {
-        toast(`An error occurred while adding the address: ${err.message}`, { type: 'error' });
+        toast(`Error updating address: ${err.message}`, { type: 'error' });
       });
   };
 
@@ -318,9 +290,9 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
 
   return (
     <div className={styles.detailShipping}>
-      <h2>Shipping addresses</h2>
+      <h2>{isBilling ? 'Billing' : 'Shipping'} addresses</h2>
       <div>
-        Default shipping address :{' '}
+        Default {isBilling ? 'billing' : 'shipping'} address :{' '}
         {defaultAddressObject ? addressToString(defaultAddressObject) : 'No default address found'}
       </div>
       {addresses.map((addressItem: AddressCustom) => (
@@ -333,7 +305,11 @@ export function FormProfileAddresses({ version, addresses, defaultAddress, isBil
             <button type="button" onClick={() => handleDelete(addressItem.id)} className={styles.deleteAddress}>
               Delete
             </button>
-            <button type="button" onClick={() => handleSet(addressItem.id)} className={styles.setAddress}>
+            <button
+              type="button"
+              onClick={() => handleSet(addressItem.id)}
+              className={addressItem.id === defaultAddress ? styles.setAddress : styles.emptyAddress}
+            >
               Set
             </button>
           </div>
