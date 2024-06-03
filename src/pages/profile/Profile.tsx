@@ -38,6 +38,11 @@ export function Profile(): JSX.Element {
 
   const [addressesShip, setAddressesShip] = useState<AddressCustom[]>([]);
   const [addressesBill, setAddressesBill] = useState<AddressCustom[]>([]);
+  const [modeFix, setModeFix] = useState(false);
+
+  const handleMode = (mode: boolean): void => {
+    setModeFix(mode);
+  };
 
   useEffect(() => {
     const findAddress = (addresses: Address[], id: string): AddressCustom | undefined =>
@@ -124,58 +129,63 @@ export function Profile(): JSX.Element {
             </button>
           </div>
           <div className={styles.detailInfoBlock}>
-            <form className={styles.form}>
-              {personStatus && (
+            {personStatus && (
+              <form className={styles.form}>
                 <div className={styles.detailPerson}>
                   <h2>Person info</h2>
-                  <div className={styles.name_block}>
-                    <label htmlFor="name-profile" className={styles.formInput}>
-                      Name:
-                      <input
-                        id="name-profile"
-                        placeholder="name"
-                        className={styles.input}
-                        value={`${personInfo.firstName}`}
-                      />
-                    </label>
-                  </div>
-                  <div className={styles.surname_block}>
-                    <label htmlFor="surname-profile" className={styles.formInput}>
-                      Surname:
-                      <input
-                        id="surname-profile"
-                        placeholder="surname"
-                        className={styles.input}
-                        value={`${personInfo.lastName}`}
-                      />
-                    </label>
-                  </div>
-                  <div className={styles.date_block}>
-                    <label htmlFor="date-profile" className={styles.formInput}>
-                      Birthday:
-                      <input
-                        type="date"
-                        id="date-profile"
-                        className={styles.input}
-                        value={`${personInfo.dateOfBirth}`}
-                      />
-                    </label>
-                  </div>
-                  <div className={styles.email_block}>
-                    <label htmlFor="email-profile" className={styles.formInput}>
-                      Email:
-                      <input
-                        id="email-profile"
-                        placeholder="email"
-                        autoComplete="email"
-                        className={styles.input}
-                        value={`${personInfo.email}`}
-                      />
-                    </label>
+                  <div className={styles.mainFormProfile}>
+                    <div className={styles.name_block}>
+                      <label htmlFor="name-profile" className={styles.formInput}>
+                        Name:
+                        <input
+                          id="name-profile"
+                          placeholder="name"
+                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
+                          value={`${personInfo.firstName}`}
+                        />
+                      </label>
+                    </div>
+                    <div className={styles.surname_block}>
+                      <label htmlFor="surname-profile" className={styles.formInput}>
+                        Surname:
+                        <input
+                          id="surname-profile"
+                          placeholder="surname"
+                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
+                          value={`${personInfo.lastName}`}
+                        />
+                      </label>
+                    </div>
+                    <div className={styles.date_block}>
+                      <label htmlFor="date-profile" className={styles.formInput}>
+                        Birthday:
+                        <input
+                          type={modeFix ? 'date' : 'text'}
+                          id="date-profile"
+                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
+                          value={`${personInfo.dateOfBirth}`}
+                        />
+                      </label>
+                    </div>
+                    <div className={styles.email_block}>
+                      <label htmlFor="email-profile" className={styles.formInput}>
+                        Email:
+                        <input
+                          id="email-profile"
+                          placeholder="email"
+                          autoComplete="email"
+                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
+                          value={`${personInfo.email}`}
+                        />
+                      </label>
+                    </div>
+                    <button onClick={() => handleMode(!modeFix)} type="button" className={styles.button}>
+                      {modeFix ? 'Save' : 'Change'}
+                    </button>
                   </div>
                 </div>
-              )}
-            </form>
+              </form>
+            )}
             {shippingStatus && (
               <FormProfileAddresses
                 version={personInfo.version}
