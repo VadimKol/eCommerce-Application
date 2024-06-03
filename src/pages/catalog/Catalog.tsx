@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -76,11 +77,19 @@ export function Catalog(): JSX.Element {
   }
 
   if (loading) {
-    return <div>Loading data...</div>;
+    return (
+      <main className={classNames('main', styles.main)}>
+        <div className={styles.infoContainer}>Loading data...</div>
+      </main>
+    );
   }
 
   if (!categoriesData) {
-    return <div>No categories data</div>;
+    return (
+      <main className={classNames('main', styles.main)}>
+        <div className={styles.infoContainer}>No categories data</div>
+      </main>
+    );
   }
 
   return (

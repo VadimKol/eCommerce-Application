@@ -1,3 +1,25 @@
+.main {
+  padding: 20px;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
+  max-width: 100%;
+  margin: auto;
+  padding: 28px 40px 30px;
+  font-size: 2em;
+  text-align: center;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+}
+
 .topContainer {
   display: flex;
   justify-content: space-between;
