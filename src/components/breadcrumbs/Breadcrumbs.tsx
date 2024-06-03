@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 
 import { NavigationPaths } from '@/common/enums';
+
 import { useCategories } from '@/hooks/useCategories';
 
 import styles from './styles.module.scss';

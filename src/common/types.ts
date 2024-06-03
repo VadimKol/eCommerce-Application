@@ -161,6 +161,7 @@ export type Product = {
   sku: string;
   quantity: number;
   price: string;
+  discount: string;
   images: string[];
   categoryId: string;
   slugCategory: string;

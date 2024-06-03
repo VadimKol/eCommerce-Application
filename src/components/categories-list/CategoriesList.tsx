@@ -6,6 +6,7 @@ import { NavigationPaths } from '@/common/enums';
 import { NavLink } from '@/components/nav-link/NavLink';
 import { useCategories } from '@/hooks/useCategories';
 
+// import categoriesData from '@/router/mock-products.json';
 import styles from './styles.module.scss';
 
 interface Props {
