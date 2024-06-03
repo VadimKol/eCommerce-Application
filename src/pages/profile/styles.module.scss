@@ -157,6 +157,15 @@
   box-shadow: 0 0 7px var(--error-color);
 }
 
+.buttonBlock {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 @media (width <= 900px) {
   .container {
     min-width: 330px;

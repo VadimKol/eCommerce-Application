@@ -50,14 +50,11 @@ export function Profile(): JSX.Element {
   const [addressesBill, setAddressesBill] = useState<AddressCustom[]>([]);
   const [modeFix, setModeFix] = useState(false);
 
-  const handleMode = (mode: boolean): void => {
-    setModeFix(mode);
-  };
-
   const {
     register,
     getFieldState,
     watch,
+    trigger,
     setValue,
     formState: { errors, isValid },
   } = useForm<RegisterSchema>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
@@ -180,6 +177,18 @@ export function Profile(): JSX.Element {
       .catch((err: Error) => {
         toast(`Error changing information: ${err.message}`, { type: 'error' });
       });
+  };
+  const handleMode = async (mode: boolean): Promise<void> => {
+    setModeFix(mode);
+    await trigger();
+  };
+
+  const handleCancel = async (): Promise<void> => {
+    setValue('name', personInfo.firstName || '');
+    setValue('surname', personInfo.lastName || '');
+    setValue('age', personInfo.dateOfBirth || '');
+    setValue('email', personInfo.email || '');
+    await handleMode(!modeFix);
   };
 
   return (
@@ -331,14 +340,28 @@ export function Profile(): JSX.Element {
                         </span>
                       )}
                     </div>
-
-                    <button
-                      onClick={() => handleMode(!modeFix)}
-                      type={modeFix ? 'button' : 'submit'}
-                      className={!isValid && modeFix ? `${styles.button} ${styles.disabled}` : styles.button}
-                    >
-                      {modeFix ? 'Save' : 'Change'}
-                    </button>
+                    <div className={styles.buttonBlock}>
+                      <button
+                        onClick={() => {
+                          handleMode(!modeFix).catch(() => {});
+                        }}
+                        type={modeFix ? 'button' : 'submit'}
+                        className={!isValid && modeFix ? `${styles.button} ${styles.disabled}` : styles.button}
+                      >
+                        {modeFix ? 'Save' : 'Change'}
+                      </button>
+                      {modeFix && (
+                        <button
+                          onClick={() => {
+                            handleCancel().catch(() => {});
+                          }}
+                          type="button"
+                          className={styles.button}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </form>
