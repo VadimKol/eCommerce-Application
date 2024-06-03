@@ -1,12 +1,22 @@
-import type { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
+import type {
+  Address,
+  ClientResponse,
+  Customer,
+  MyCustomerUpdate,
+  MyCustomerUpdateAction,
+} from '@commercetools/platform-sdk';
+import { zodResolver } from '@hookform/resolvers/zod';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { profile } from '@/api/client-actions.ts';
+import { crudAddress, profile } from '@/api/client-actions.ts';
 
 import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx';
 import { FormProfileAddresses } from '../../components/form-profile-addresses/FormProfileAddresses.tsx';
+import type { RegisterSchema } from './register-schema.ts';
+import { registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { AddressCustom, CustomerProfile } from './types.ts';
 
@@ -44,6 +54,44 @@ export function Profile(): JSX.Element {
     setModeFix(mode);
   };
 
+  const {
+    register,
+    getFieldState,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<RegisterSchema>({ mode: 'onChange', resolver: zodResolver(registerSchema) });
+  const { onChange: onChangeEmail, name: Email, ref: refEmail } = register('email');
+  const { onChange: onChangeName, name: Name, ref: refName } = register('name');
+  const { onChange: onChangeSurname, name: Surname, ref: refSurname } = register('surname');
+  const { onChange: onChangeData, name: Data, ref: refData } = register('age');
+
+  const emailValue = getFieldState('email');
+  const nameValue = getFieldState('name');
+  const surnameValue = getFieldState('surname');
+  const ageValue = getFieldState('age');
+
+  let emailClass = styles.input;
+  let nameClass = styles.input;
+  let surnameClass = styles.input;
+  let ageClass = styles.input;
+
+  if (emailValue.isDirty) {
+    emailClass += emailValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (nameValue.isDirty) {
+    nameClass += nameValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (surnameValue.isDirty) {
+    surnameClass += surnameValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
+  if (ageValue.isDirty) {
+    ageClass += ageValue.invalid ? ` ${styles.invalid}` : ` ${styles.valid}`;
+  }
+
   useEffect(() => {
     const findAddress = (addresses: Address[], id: string): AddressCustom | undefined =>
       (addresses as AddressCustom[]).find((address) => address.id === id);
@@ -76,6 +124,10 @@ export function Profile(): JSX.Element {
             billingAddressIds: customer.billingAddressIds || [],
             shippingAddressIds: customer.shippingAddressIds || [],
           });
+          setValue('name', customer.firstName || '');
+          setValue('surname', customer.lastName || '');
+          setValue('age', customer.dateOfBirth || '');
+          setValue('email', customer.email || '');
 
           const addressOptionsBill = findAllAddressForOptions(customer.addresses, customer.billingAddressIds || []);
           const addressOptionsShip = findAllAddressForOptions(customer.addresses, customer.shippingAddressIds || []);
@@ -91,7 +143,44 @@ export function Profile(): JSX.Element {
     };
 
     fetchProfile().catch(() => {});
-  }, []);
+  }, [setValue]);
+
+  const handleChangeInfo = (): void => {
+    const formValues = watch();
+    const actions: MyCustomerUpdateAction[] = [
+      {
+        action: 'changeEmail',
+        email: formValues.email,
+      },
+      {
+        action: 'setFirstName',
+        firstName: formValues.name,
+      },
+      {
+        action: 'setLastName',
+        lastName: formValues.surname,
+      },
+      {
+        action: 'setDateOfBirth',
+        dateOfBirth: formValues.age,
+      },
+    ];
+
+    const setDefaultBody: MyCustomerUpdate = {
+      version: personInfo.version,
+      actions,
+    };
+
+    crudAddress(setDefaultBody)
+      .then((response: ClientResponse<Customer>) => {
+        if (response) {
+          toast('User information successfully changed', { type: 'success' });
+        }
+      })
+      .catch((err: Error) => {
+        toast(`Error changing information: ${err.message}`, { type: 'error' });
+      });
+  };
 
   return (
     <main className={classNames('main', styles.main)}>
@@ -130,56 +219,124 @@ export function Profile(): JSX.Element {
           </div>
           <div className={styles.detailInfoBlock}>
             {personStatus && (
-              <form className={styles.form}>
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  if (isValid) {
+                    handleChangeInfo();
+                  } else {
+                    toast('Invalid form', { type: 'error' });
+                  }
+                }}
+                className={styles.form}
+              >
                 <div className={styles.detailPerson}>
                   <h2>Person info</h2>
                   <div className={styles.mainFormProfile}>
-                    <div className={styles.name_block}>
-                      <label htmlFor="name-profile" className={styles.formInput}>
-                        Name:
+                    <div className={classNames(styles.inputWithError, styles.bigInput)}>
+                      <label htmlFor="name" className={styles.formInput}>
+                        <div className={styles.requiredTitle}>Name</div>
                         <input
-                          id="name-profile"
-                          placeholder="name"
-                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
-                          value={`${personInfo.firstName}`}
+                          id="name"
+                          className={modeFix ? nameClass : `${nameClass} ${styles.noMode}`}
+                          onChange={(event) => {
+                            onChangeName(event).catch(() => {});
+                          }}
+                          ref={refName}
+                          name={Name}
+                          type="text"
+                          placeholder="John"
+                          aria-invalid={errors.name || !nameValue.isDirty ? 'true' : 'false'}
+                          required
+                          readOnly={!modeFix}
                         />
                       </label>
+                      {errors.name && (
+                        <span role="alert" className={styles.errorMsg}>
+                          {errors.name.message}
+                        </span>
+                      )}
                     </div>
-                    <div className={styles.surname_block}>
-                      <label htmlFor="surname-profile" className={styles.formInput}>
-                        Surname:
+                    <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+                      <label htmlFor="last" className={styles.formInput}>
+                        <div className={styles.requiredTitle}>Surname</div>
                         <input
-                          id="surname-profile"
-                          placeholder="surname"
-                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
-                          value={`${personInfo.lastName}`}
+                          id="last"
+                          onChange={(event) => {
+                            onChangeSurname(event).catch(() => {});
+                          }}
+                          ref={refSurname}
+                          name={Surname}
+                          type="text"
+                          className={modeFix ? surnameClass : `${surnameClass} ${styles.noMode}`}
+                          aria-invalid={errors.surname || !surnameValue.isDirty ? 'true' : 'false'}
+                          placeholder="Smith"
+                          required
+                          readOnly={!modeFix}
                         />
                       </label>
+                      {errors.surname && (
+                        <span role="alert" className={styles.errorMsg}>
+                          {errors.surname.message}
+                        </span>
+                      )}
                     </div>
-                    <div className={styles.date_block}>
-                      <label htmlFor="date-profile" className={styles.formInput}>
-                        Birthday:
+
+                    <div className={`${styles.inputWithError}  ${styles.smallInput}`}>
+                      <label htmlFor="date" className={styles.formInput}>
+                        <div className={styles.requiredTitle}>Birthday</div>
                         <input
+                          id="date"
+                          onChange={(event) => {
+                            onChangeData(event).catch(() => {});
+                          }}
+                          ref={refData}
+                          name={Data}
                           type={modeFix ? 'date' : 'text'}
-                          id="date-profile"
-                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
-                          value={`${personInfo.dateOfBirth}`}
+                          className={modeFix ? ageClass : classNames(ageClass, styles.noMode)}
+                          aria-invalid={errors.age || !ageValue.isDirty ? 'true' : 'false'}
+                          required
+                          readOnly={!modeFix}
                         />
                       </label>
+                      {errors.age && (
+                        <span role="alert" className={styles.errorMsg}>
+                          {errors.age.message}
+                        </span>
+                      )}
                     </div>
-                    <div className={styles.email_block}>
-                      <label htmlFor="email-profile" className={styles.formInput}>
-                        Email:
+
+                    <div className={`${styles.inputWithError}  ${styles.bigInput}`}>
+                      <label htmlFor="mail" className={styles.formInput}>
+                        <div className={styles.requiredTitle}>Email</div>
                         <input
-                          id="email-profile"
-                          placeholder="email"
+                          onChange={(event) => {
+                            onChangeEmail(event).catch(() => {});
+                          }}
+                          id="mail"
+                          ref={refEmail}
+                          type="text"
+                          name={Email}
+                          className={modeFix ? emailClass : classNames(emailClass, styles.noMode)}
                           autoComplete="email"
-                          className={modeFix ? styles.input : classNames(styles.input, styles.noMode)}
-                          value={`${personInfo.email}`}
+                          placeholder="user@example.com"
+                          aria-invalid={errors.email || !emailValue.isDirty ? 'true' : 'false'}
+                          required
+                          readOnly={!modeFix}
                         />
                       </label>
+                      {errors.email && (
+                        <span role="alert" className={styles.errorMsg}>
+                          {errors.email.message}
+                        </span>
+                      )}
                     </div>
-                    <button onClick={() => handleMode(!modeFix)} type="button" className={styles.button}>
+
+                    <button
+                      onClick={() => handleMode(!modeFix)}
+                      type={modeFix ? 'button' : 'submit'}
+                      className={!isValid && modeFix ? `${styles.button} ${styles.disabled}` : styles.button}
+                    >
                       {modeFix ? 'Save' : 'Change'}
                     </button>
                   </div>

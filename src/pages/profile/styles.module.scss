@@ -86,7 +86,27 @@
 }
 
 .mainFormProfile {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: start;
   margin-top: 20px;
+}
+
+.disabled {
+  background-color: var(--disabled-color);
+  border-color: var(--disabled-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.valid {
+  box-shadow: 0 0 7px var(--secondary-color);
+}
+
+.invalid {
+  box-shadow: 0 0 7px var(--error-color);
 }
 
 .formInput {
@@ -113,6 +133,7 @@
 
 .input.noMode {
   border: 1px solid var(--background-color);
+  box-shadow: none;
 }
 
 .input.noMode:focus {
@@ -121,6 +142,19 @@
 
 .newInput {
   border: none;
+}
+
+.errorMsg {
+  width: 100%;
+  margin: -20px 0 -10px;
+  font-size: 14px;
+  text-align: right;
+  color: var(--error-color);
+}
+
+.invalid,
+.input.invalid:focus {
+  box-shadow: 0 0 7px var(--error-color);
 }
 
 @media (width <= 900px) {
