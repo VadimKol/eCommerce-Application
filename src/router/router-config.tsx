@@ -1,6 +1,5 @@
 import { createRoutesFromElements, Route } from 'react-router-dom';
 
-import { getCategories } from '@/api/client-actions';
 import { App } from '@/App';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { AuthRoute } from '@/components/auth-route/AuthRoute';

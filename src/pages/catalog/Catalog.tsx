@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 import { getProducts } from '@/api/client-actions';
-import type { CategoriesData, Product } from '@/common/types';
-import { fandoms, PRICE_FILTER_MAX, PRICE_FILTER_MIN, QUERY_LIMIT, sortingTypes } from '@/common/utils';
+import type { Product } from '@/common/types';
+import { fandoms, PRICE_FILTER_MAX, PRICE_FILTER_MIN, QUERY_LIMIT, sortingTypes, StatusError } from '@/common/utils';
 import { Breadcrumbs } from '@/components/breadcrumbs/Breadcrumbs';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { CustomSelect } from '@/components/custom-select/CustomSelect';
 import { Filters } from '@/components/filters/Filters';
 import { ProductCard } from '@/components/product-card/ProductCard';
-import { StatusError } from '@/common/utils';
 import { useCategories } from '@/hooks/useCategories';
 import { NoMatch } from '@/pages/no-match/NoMatch';
 
 import styles from './styles.module.scss';
 
 export function Catalog(): JSX.Element {
-  const categoriesData = useLoaderData() as CategoriesData;
+  const { error, categories: categoriesData, loading } = useCategories();
   const [products, setProducts] = useState<Product[]>([]);
   const { categoryName, subcategoryName } = useParams<{ categoryName?: string; subcategoryName?: string }>();
   const [page, setPage] = useState(0);
@@ -29,15 +29,9 @@ export function Catalog(): JSX.Element {
 
   const [priceFilter, setPriceFilter] = useState<[number, number]>([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
   const [franchises, setFranchises] = useState(Array<boolean>(fandoms.length).fill(false));
-    
-  const { error } = useCategories();
-
-  if (error instanceof StatusError && error.statusCode === 404) {
-    return <NoMatch />;
-  }
 
   useEffect(() => {
-    const categoryID = categoriesData.find((category) => category.key === categoryName);
+    const categoryID = categoriesData?.find((category) => category.key === categoryName);
     /*     title.current = 'All Products';
     if (categoryID) {
       title.current = categoryID.name;
@@ -50,7 +44,7 @@ export function Catalog(): JSX.Element {
       .then((data) => {
         total.current = data.total;
         data.products.forEach((product) => {
-          const category = categoriesData.find((c) => c.id === product.categoryId);
+          const category = categoriesData?.find((c) => c.id === product.categoryId);
           if (category) {
             product.slugCategory = category.slug;
             product.keyCategory = category.key;
@@ -63,7 +57,7 @@ export function Catalog(): JSX.Element {
         });
         setProducts(data.products);
       })
-      .catch((error: Error) => toast(error.message, { type: 'error' }));
+      .catch((e: Error) => toast(e.message, { type: 'error' }));
   }, [categoryName, subcategoryName, categoriesData, page, sortType, priceFilter, franchises, search]);
 
   useEffect(() => {
@@ -76,6 +70,18 @@ export function Catalog(): JSX.Element {
       searchField.current.value = '';
     }
   }, [categoryName, subcategoryName]);
+
+  if (error instanceof StatusError && error.statusCode === 404) {
+    return <NoMatch />;
+  }
+
+  if (loading) {
+    return <div>Loading data...</div>;
+  }
+
+  if (!categoriesData) {
+    return <div>No categories data</div>;
+  }
 
   return (
     <main className="main">
