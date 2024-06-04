@@ -216,28 +216,28 @@ export function Profile(): JSX.Element {
             <button
               type="button"
               onClick={() => handleBlock(true, false, false, false)}
-              className={styles.chooseInfoItem}
+              className={personStatus ? `${styles.chooseInfoItem} ${styles.activeBtn}` : styles.chooseInfoItem}
             >
               Person
             </button>
             <button
               type="button"
               onClick={() => handleBlock(false, true, false, false)}
-              className={styles.chooseInfoItem}
+              className={shippingStatus ? `${styles.chooseInfoItem} ${styles.activeBtn}` : styles.chooseInfoItem}
             >
               Shipping
             </button>
             <button
               type="button"
               onClick={() => handleBlock(false, false, true, false)}
-              className={styles.chooseInfoItem}
+              className={billingStatus ? `${styles.chooseInfoItem} ${styles.activeBtn}` : styles.chooseInfoItem}
             >
               Billing
             </button>
             <button
               type="button"
               onClick={() => handleBlock(false, false, false, true)}
-              className={styles.chooseInfoItem}
+              className={passwordStatus ? `${styles.chooseInfoItem} ${styles.activeBtn}` : styles.chooseInfoItem}
             >
               Password
             </button>
