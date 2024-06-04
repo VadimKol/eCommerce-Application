@@ -6,6 +6,8 @@ export interface FormAddresses {
   defaultAddress: string;
   isBilling: boolean;
   setPersonInfo: (personInfo: CustomerProfile) => void;
+  setAddressesShip: (addressesShip: AddressCustom[]) => void;
+  setAddressesBill: (addressesBill: AddressCustom[]) => void;
 }
 
 export interface AddressOption {

@@ -389,6 +389,8 @@ export function Profile(): JSX.Element {
                 defaultAddress={personInfo.defaultShippingAddressId}
                 isBilling={false}
                 setPersonInfo={setPersonInfo}
+                setAddressesShip={setAddressesShip}
+                setAddressesBill={setAddressesBill}
               />
             )}
             {billingStatus && (
@@ -398,6 +400,8 @@ export function Profile(): JSX.Element {
                 defaultAddress={personInfo.defaultBillingAddressId}
                 isBilling
                 setPersonInfo={setPersonInfo}
+                setAddressesShip={setAddressesShip}
+                setAddressesBill={setAddressesBill}
               />
             )}
             {passwordStatus && (

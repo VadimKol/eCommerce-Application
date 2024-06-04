@@ -23,13 +23,14 @@ export function FormProfileAddresses({
   defaultAddress,
   isBilling,
   setPersonInfo,
+  setAddressesShip,
+  setAddressesBill,
 }: FormAddresses): JSX.Element {
   const [formStatus, setFormStatus] = useState(false);
 
   const firstCountry: Country = 'US';
   const [selectedCountry, setSelectedCountry] = useState<Country>(firstCountry);
   const [currentAddress, setCurrentAddress] = useState<AddressCustom | null>(null);
-  const [addressesTable, setAddressesTable] = useState<AddressCustom[]>(addresses);
   const [modeWait, setModeWait] = useState<boolean>(false);
 
   const {
@@ -124,11 +125,11 @@ export function FormProfileAddresses({
     return addressOptions;
   };
 
-  const defaultAddressObject = findAddress(addressesTable, defaultAddress);
+  const defaultAddressObject = findAddress(addresses, defaultAddress);
 
   const handleChange = (addressId: string): void => {
     handleForm(true);
-    const changeAddress = findAddress(addressesTable, addressId);
+    const changeAddress = findAddress(addresses, addressId);
     setCurrentAddress(changeAddress || null);
     if (changeAddress) {
       setSelectedCountry(isValidCountry(changeAddress.country) ? changeAddress.country : firstCountry);
@@ -164,9 +165,18 @@ export function FormProfileAddresses({
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-          setAddressesTable(addressOptions);
+
+          const addressOptionsBill = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.billingAddressIds || [],
+          );
+          const addressOptionsShip = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.shippingAddressIds || [],
+          );
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         }
       })
       .catch((err: Error) => {
@@ -213,9 +223,17 @@ export function FormProfileAddresses({
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-          setAddressesTable(addressOptions);
+          const addressOptionsBill = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.billingAddressIds || [],
+          );
+          const addressOptionsShip = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.shippingAddressIds || [],
+          );
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         }
       })
       .catch((err: Error) => {
@@ -286,11 +304,17 @@ export function FormProfileAddresses({
                   billingAddressIds: responseSet.body.billingAddressIds || [],
                   shippingAddressIds: responseSet.body.shippingAddressIds || [],
                 });
-                const findAddressArr = isBilling
-                  ? responseSet.body.billingAddressIds
-                  : responseSet.body.shippingAddressIds;
-                const addressOptions = findAllAddressForOptions(responseSet.body.addresses, findAddressArr || []);
-                setAddressesTable(addressOptions);
+                const addressOptionsBill = findAllAddressForOptions(
+                  responseSet.body.addresses,
+                  responseSet.body.billingAddressIds || [],
+                );
+                const addressOptionsShip = findAllAddressForOptions(
+                  responseSet.body.addresses,
+                  responseSet.body.shippingAddressIds || [],
+                );
+
+                setAddressesShip(addressOptionsShip);
+                setAddressesBill(addressOptionsBill);
                 toast('The address was added and set as default successfully', { type: 'success' });
               })
               .catch((err: Error) => {
@@ -353,9 +377,18 @@ export function FormProfileAddresses({
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-          setAddressesTable(addressOptions);
+
+          const addressOptionsBill = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.billingAddressIds || [],
+          );
+          const addressOptionsShip = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.shippingAddressIds || [],
+          );
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         }
       })
       .catch((err: Error) => {
@@ -402,7 +435,7 @@ export function FormProfileAddresses({
         Default {isBilling ? 'billing' : 'shipping'} address :{' '}
         {defaultAddressObject ? addressToString(defaultAddressObject) : 'No default address found'}
       </div>
-      {addressesTable.map((addressItem: AddressCustom) => (
+      {addresses.map((addressItem: AddressCustom) => (
         <div key={addressItem.id} className={styles.addressItem}>
           {addressToString(addressItem)}
           <div className={styles.addressControl}>
