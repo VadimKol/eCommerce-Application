@@ -22,11 +22,9 @@ export const fandoms = [
   'Genshin',
   'Disney',
   'Cyberpunk',
-  'Avengers',
   'Batman',
   'Doctor Who',
   'Star Wars',
-  'Iron Man',
   'Beetlejuice',
   'Marvel',
   'One Piece',
@@ -34,7 +32,6 @@ export const fandoms = [
   'Stranger Things',
   'Rick and Morty',
   'Supernatural',
-  'Aladdin',
 ];
 
 export const QUERY_LIMIT = 12;
