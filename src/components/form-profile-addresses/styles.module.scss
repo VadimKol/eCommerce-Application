@@ -237,6 +237,10 @@
   }
 }
 
+.hidden {
+  display: none;
+}
+
 .show {
   background-image: url("/src/assets/images/show.svg");
 }
