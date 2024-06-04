@@ -23,13 +23,15 @@ export function FormProfileAddresses({
   defaultAddress,
   isBilling,
   setPersonInfo,
+  setAddressesShip,
+  setAddressesBill,
 }: FormAddresses): JSX.Element {
   const [formStatus, setFormStatus] = useState(false);
 
   const firstCountry: Country = 'US';
   const [selectedCountry, setSelectedCountry] = useState<Country>(firstCountry);
   const [currentAddress, setCurrentAddress] = useState<AddressCustom | null>(null);
-  const [addressesTable, setAddressesTable] = useState<AddressCustom[]>(addresses);
+  const [modeWait, setModeWait] = useState<boolean>(false);
 
   const {
     register,
@@ -101,8 +103,12 @@ export function FormProfileAddresses({
   };
 
   const addressToString = (address: AddressCustom): string => {
+    const county = address.country ? `${address.country}` : '';
+    const city = address.city ? `, ${address.city}` : '';
+    const street = address.streetName ? `, ${address.streetName}` : '';
     const house = address.apartment ? `, ${address.apartment}` : '';
-    return `${address.country}, ${address.city}, ${address.streetName}${house}, ${address.postalCode}`;
+    const post = address.postalCode ? `, ${address.postalCode}` : '';
+    return `${county}${city}${street}${house}${post}`;
   };
 
   const findAddress = (addressesArr: AddressCustom[], id: string): AddressCustom | undefined =>
@@ -119,11 +125,11 @@ export function FormProfileAddresses({
     return addressOptions;
   };
 
-  const defaultAddressObject = findAddress(addressesTable, defaultAddress);
+  const defaultAddressObject = findAddress(addresses, defaultAddress);
 
   const handleChange = (addressId: string): void => {
     handleForm(true);
-    const changeAddress = findAddress(addressesTable, addressId);
+    const changeAddress = findAddress(addresses, addressId);
     setCurrentAddress(changeAddress || null);
     if (changeAddress) {
       setSelectedCountry(isValidCountry(changeAddress.country) ? changeAddress.country : firstCountry);
@@ -131,6 +137,7 @@ export function FormProfileAddresses({
   };
 
   const handleDelete = (addressId: string): void => {
+    setModeWait(true);
     const body: MyCustomerUpdate = {
       version,
       actions: [
@@ -158,17 +165,30 @@ export function FormProfileAddresses({
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-          setAddressesTable(addressOptions);
+
+          const addressOptionsBill = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.billingAddressIds || [],
+          );
+          const addressOptionsShip = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.shippingAddressIds || [],
+          );
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         }
       })
       .catch((err: Error) => {
         toast(`Error deleting address: ${err.message}`, { type: 'error' });
+      })
+      .finally(() => {
+        setModeWait(false);
       });
   };
 
   const handleSet = (addressId: string): void => {
+    setModeWait(true);
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
     let addressForSet: string | undefined;
     if (defaultAddress !== addressId) {
@@ -203,17 +223,29 @@ export function FormProfileAddresses({
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-          setAddressesTable(addressOptions);
+          const addressOptionsBill = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.billingAddressIds || [],
+          );
+          const addressOptionsShip = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.shippingAddressIds || [],
+          );
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         }
       })
       .catch((err: Error) => {
         toast(`Error set default address: ${err.message}`, { type: 'error' });
+      })
+      .finally(() => {
+        setModeWait(false);
       });
   };
 
   const createAddress = (newAddress: Address, isDefault: boolean): void => {
+    setModeWait(true);
     const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
 
@@ -272,13 +304,24 @@ export function FormProfileAddresses({
                   billingAddressIds: responseSet.body.billingAddressIds || [],
                   shippingAddressIds: responseSet.body.shippingAddressIds || [],
                 });
-                const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-                const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-                setAddressesTable(addressOptions);
+                const addressOptionsBill = findAllAddressForOptions(
+                  responseSet.body.addresses,
+                  responseSet.body.billingAddressIds || [],
+                );
+                const addressOptionsShip = findAllAddressForOptions(
+                  responseSet.body.addresses,
+                  responseSet.body.shippingAddressIds || [],
+                );
+
+                setAddressesShip(addressOptionsShip);
+                setAddressesBill(addressOptionsBill);
                 toast('The address was added and set as default successfully', { type: 'success' });
               })
               .catch((err: Error) => {
                 toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
+              })
+              .finally(() => {
+                setModeWait(false);
               });
           }
         }
@@ -289,6 +332,7 @@ export function FormProfileAddresses({
   };
 
   const updateAddress = (idAddress: string, newAddress: Address, isDefault: boolean): void => {
+    setModeWait(true);
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
 
     const actions: MyCustomerUpdateAction[] = [
@@ -333,13 +377,25 @@ export function FormProfileAddresses({
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-          const findAddressArr = isBilling ? response.body.billingAddressIds : response.body.shippingAddressIds;
-          const addressOptions = findAllAddressForOptions(response.body.addresses, findAddressArr || []);
-          setAddressesTable(addressOptions);
+
+          const addressOptionsBill = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.billingAddressIds || [],
+          );
+          const addressOptionsShip = findAllAddressForOptions(
+            response.body.addresses,
+            response.body.shippingAddressIds || [],
+          );
+
+          setAddressesShip(addressOptionsShip);
+          setAddressesBill(addressOptionsBill);
         }
       })
       .catch((err: Error) => {
         toast(`Error updating address: ${err.message}`, { type: 'error' });
+      })
+      .finally(() => {
+        setModeWait(false);
       });
   };
 
@@ -363,10 +419,12 @@ export function FormProfileAddresses({
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (isValid) {
-      saveAddress();
-    } else {
-      toast('Validation error', { type: 'error' });
+    if (!modeWait) {
+      if (isValid) {
+        saveAddress();
+      } else {
+        toast('Validation error', { type: 'error' });
+      }
     }
   };
 
@@ -377,19 +435,39 @@ export function FormProfileAddresses({
         Default {isBilling ? 'billing' : 'shipping'} address :{' '}
         {defaultAddressObject ? addressToString(defaultAddressObject) : 'No default address found'}
       </div>
-      {addressesTable.map((addressItem: AddressCustom) => (
+      {addresses.map((addressItem: AddressCustom) => (
         <div key={addressItem.id} className={styles.addressItem}>
           {addressToString(addressItem)}
           <div className={styles.addressControl}>
-            <button type="button" onClick={() => handleChange(addressItem.id)} className={styles.changeAddress}>
+            <button
+              type="button"
+              onClick={() => {
+                if (!modeWait) {
+                  handleChange(addressItem.id);
+                }
+              }}
+              className={styles.changeAddress}
+            >
               Change
             </button>
-            <button type="button" onClick={() => handleDelete(addressItem.id)} className={styles.deleteAddress}>
+            <button
+              type="button"
+              onClick={() => {
+                if (!modeWait) {
+                  handleDelete(addressItem.id);
+                }
+              }}
+              className={styles.deleteAddress}
+            >
               Delete
             </button>
             <button
               type="button"
-              onClick={() => handleSet(addressItem.id)}
+              onClick={() => {
+                if (!modeWait) {
+                  handleSet(addressItem.id);
+                }
+              }}
               className={addressItem.id === defaultAddress ? styles.setAddress : styles.emptyAddress}
             >
               Set

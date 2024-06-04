@@ -135,8 +135,10 @@ function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Elemen
                 (attribute) =>
                   attribute.name !== 'Description' && (
                     <div key={attribute.name} className={styles.attribute}>
-                      <strong>{attribute.name}:</strong>{' '}
-                      {Array.isArray(attribute.value) ? attribute.value.join(', ') : attribute.value}
+                      <strong className={styles.attributeName}>{attribute.name}:</strong>
+                      <span className={styles.attributeValue}>
+                        {Array.isArray(attribute.value) ? attribute?.value[0]?.key : attribute.value}
+                      </span>
                     </div>
                   ),
               )}

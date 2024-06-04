@@ -121,6 +121,8 @@
 }
 
 .attribute {
+  display: flex;
+  gap: 8px;
   width: fit-content;
 
   &:nth-child(2n+1) {
@@ -130,6 +132,14 @@
   &:nth-child(2n) {
     grid-column: 4;
   }
+}
+
+.attributeName {
+  text-transform: capitalize;
+}
+
+.attributeValue {
+  text-transform: capitalize;
 }
 
 .modal {

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-// import { apiRoot } from '@/api/build-client';
 import { fandoms, PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/common/utils';
 
 import { CustomButton } from '../custom-button/СustomButton';
@@ -8,7 +7,7 @@ import { RangeSlider } from '../range-slider/RangeSlider';
 import styles from './styles.module.scss';
 import type { FilterProps } from './types';
 
-export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises }: FilterProps): JSX.Element {
+export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises, setPage }: FilterProps): JSX.Element {
   const [isPrice, setIsPrice] = useState(false);
   const [isFranchise, setIsFranchise] = useState(false);
 
@@ -34,6 +33,7 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
               max={PRICE_FILTER_MAX}
               priceFilter={priceFilter}
               setPriceFilter={setPriceFilter}
+              setPage={setPage}
             />
           </div>
         </li>
@@ -64,10 +64,11 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
                       const temp = [...franchises];
                       temp[index] = !temp[index];
                       setFranchises(temp);
+                      setPage(0);
                     }}
                     checked={franchises[index]}
-                  />{' '}
-                  {fandom}
+                  />
+                  {` ${fandom}`}
                 </label>
               </li>
             ))}
@@ -79,6 +80,7 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
         onClick={() => {
           setPriceFilter([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
           setFranchises(Array<boolean>(fandoms.length).fill(false));
+          setPage(0);
         }}
       >
         Reset
@@ -86,17 +88,3 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
     </>
   );
 }
-
-/* apiRoot
-  .productProjections()
-  .search()
-  .get({
-    queryArgs: {
-      fuzzy: true,
-      fuzzyLevel: 0,
-      'text.en-US': 'doctor',
-    },
-  })
-  .execute()
-  .then(console.log)
-  .catch(console.error); */

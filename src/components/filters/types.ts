@@ -3,4 +3,5 @@ export interface FilterProps {
   setPriceFilter: (priceFilter: [number, number]) => void;
   franchises: boolean[];
   setFranchises: (franchises: boolean[]) => void;
+  setPage: (page: number) => void;
 }

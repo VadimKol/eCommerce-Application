@@ -7,9 +7,10 @@ interface RangeSliderProps {
   max: number;
   priceFilter: [number, number];
   setPriceFilter: (priceFilter: [number, number]) => void;
+  setPage: (page: number) => void;
 }
 
-export function RangeSlider({ min, max, priceFilter, setPriceFilter }: RangeSliderProps): JSX.Element {
+export function RangeSlider({ min, max, priceFilter, setPriceFilter, setPage }: RangeSliderProps): JSX.Element {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
   const minValRef = useRef(min);
@@ -61,6 +62,7 @@ export function RangeSlider({ min, max, priceFilter, setPriceFilter }: RangeSlid
         onMouseUp={(event: React.MouseEvent) => {
           if (event.target instanceof HTMLInputElement) {
             setPriceFilter([Math.min(Number(event.target.value), maxVal - 1), priceFilter[1]]);
+            setPage(0);
           }
         }}
         className="thumb thumb--left"
@@ -79,6 +81,7 @@ export function RangeSlider({ min, max, priceFilter, setPriceFilter }: RangeSlid
         onMouseUp={(event: React.MouseEvent) => {
           if (event.target instanceof HTMLInputElement) {
             setPriceFilter([priceFilter[0], Math.max(Number(event.target.value), minVal + 1)]);
+            setPage(0);
           }
         }}
         className="thumb thumb--right"

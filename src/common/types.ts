@@ -145,7 +145,7 @@ export type ProductDetails = {
   discountedPrice?: string | null;
   currency?: string | null;
   images?: string[];
-  attributes?: { name: string; value: string | number | string[] }[];
+  attributes?: { name: string; value: string | number | Array<{ key: string }> }[];
   availability?: {
     isOnStock?: boolean | null;
     availableQuantity?: number | null;
