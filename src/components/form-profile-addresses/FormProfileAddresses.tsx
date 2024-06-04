@@ -30,6 +30,7 @@ export function FormProfileAddresses({
   const [selectedCountry, setSelectedCountry] = useState<Country>(firstCountry);
   const [currentAddress, setCurrentAddress] = useState<AddressCustom | null>(null);
   const [addressesTable, setAddressesTable] = useState<AddressCustom[]>(addresses);
+  const [modeWait, setModeWait] = useState<boolean>(false);
 
   const {
     register,
@@ -135,6 +136,7 @@ export function FormProfileAddresses({
   };
 
   const handleDelete = (addressId: string): void => {
+    setModeWait(true);
     const body: MyCustomerUpdate = {
       version,
       actions: [
@@ -169,10 +171,14 @@ export function FormProfileAddresses({
       })
       .catch((err: Error) => {
         toast(`Error deleting address: ${err.message}`, { type: 'error' });
+      })
+      .finally(() => {
+        setModeWait(false);
       });
   };
 
   const handleSet = (addressId: string): void => {
+    setModeWait(true);
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
     let addressForSet: string | undefined;
     if (defaultAddress !== addressId) {
@@ -214,10 +220,14 @@ export function FormProfileAddresses({
       })
       .catch((err: Error) => {
         toast(`Error set default address: ${err.message}`, { type: 'error' });
+      })
+      .finally(() => {
+        setModeWait(false);
       });
   };
 
   const createAddress = (newAddress: Address, isDefault: boolean): void => {
+    setModeWait(true);
     const addressTypeAction = isBilling ? 'addBillingAddressId' : 'addShippingAddressId';
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
 
@@ -285,6 +295,9 @@ export function FormProfileAddresses({
               })
               .catch((err: Error) => {
                 toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
+              })
+              .finally(() => {
+                setModeWait(false);
               });
           }
         }
@@ -295,6 +308,7 @@ export function FormProfileAddresses({
   };
 
   const updateAddress = (idAddress: string, newAddress: Address, isDefault: boolean): void => {
+    setModeWait(true);
     const addressSetDefaultAction = isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress';
 
     const actions: MyCustomerUpdateAction[] = [
@@ -346,6 +360,9 @@ export function FormProfileAddresses({
       })
       .catch((err: Error) => {
         toast(`Error updating address: ${err.message}`, { type: 'error' });
+      })
+      .finally(() => {
+        setModeWait(false);
       });
   };
 
@@ -369,10 +386,12 @@ export function FormProfileAddresses({
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (isValid) {
-      saveAddress();
-    } else {
-      toast('Validation error', { type: 'error' });
+    if (!modeWait) {
+      if (isValid) {
+        saveAddress();
+      } else {
+        toast('Validation error', { type: 'error' });
+      }
     }
   };
 
@@ -387,15 +406,35 @@ export function FormProfileAddresses({
         <div key={addressItem.id} className={styles.addressItem}>
           {addressToString(addressItem)}
           <div className={styles.addressControl}>
-            <button type="button" onClick={() => handleChange(addressItem.id)} className={styles.changeAddress}>
+            <button
+              type="button"
+              onClick={() => {
+                if (!modeWait) {
+                  handleChange(addressItem.id);
+                }
+              }}
+              className={styles.changeAddress}
+            >
               Change
             </button>
-            <button type="button" onClick={() => handleDelete(addressItem.id)} className={styles.deleteAddress}>
+            <button
+              type="button"
+              onClick={() => {
+                if (!modeWait) {
+                  handleDelete(addressItem.id);
+                }
+              }}
+              className={styles.deleteAddress}
+            >
               Delete
             </button>
             <button
               type="button"
-              onClick={() => handleSet(addressItem.id)}
+              onClick={() => {
+                if (!modeWait) {
+                  handleSet(addressItem.id);
+                }
+              }}
               className={addressItem.id === defaultAddress ? styles.setAddress : styles.emptyAddress}
             >
               Set
