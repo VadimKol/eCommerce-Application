@@ -43,11 +43,12 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  width: 100%;
-  max-width: 377px;
-  height: 100%;
-  max-height: 377px;
+  height: 265px;
   border-radius: 10px;
+
+  @media screen and (width <= 1455px) {
+    height: 300px;
+  }
 }
 
 .product_img {
@@ -61,7 +62,6 @@
 }
 
 .product_name {
-  max-width: 377px;
   height: 4.5rem;
   padding: 0 30px;
   text-align: left;
@@ -69,11 +69,11 @@
 
 .product_description {
   overflow: hidden;
-  max-width: 377px;
   max-height: 0;
   margin-top: 0;
   padding: 0 30px;
-  text-align: justify;
+  font-size: 0.8rem;
+  text-align: left;
   transition: max-height 0.5s;
 }
 

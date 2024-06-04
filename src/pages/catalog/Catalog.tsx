@@ -20,6 +20,7 @@ export function Catalog(): JSX.Element {
   const { error, categories: categoriesData, loading } = useCategories();
   const [products, setProducts] = useState<Product[]>([]);
   const { categoryName, subcategoryName } = useParams<{ categoryName?: string; subcategoryName?: string }>();
+  const [categoriesURL, setCaterogiesURL] = useState({ categoryName, subcategoryName });
   const [page, setPage] = useState(0);
   const [sortType, setSortType] = useState('Sort');
   const [search, setSearch] = useState('');
@@ -34,37 +35,42 @@ export function Catalog(): JSX.Element {
 
   useEffect(() => {
     setLoadingProducts(true);
-    const categoryID = categoriesData?.find((category) => category.key === categoryName);
-    /*     title.current = 'All Products';
-    if (categoryID) {
-      title.current = categoryID.name;
-    } */
-    const subcategoryID = categoryID?.subcategories.find((subcategory) => subcategory.key === subcategoryName);
-    /*     if (subcategoryID) {
-      title.current = subcategoryID.name;
-    } */
-    getProducts(page, sortType, priceFilter, franchises, search, categoryID?.id, subcategoryID?.id)
-      .then((data) => {
-        total.current = data.total;
-        data.products.forEach((product) => {
-          const category = categoriesData?.find((c) => c.id === product.categoryId);
-          if (category) {
-            product.slugCategory = category.slug;
-            product.keyCategory = category.key;
-          }
-          const subcategory = category?.subcategories.find((sc) => sc.id === product.subcategoryId);
-          if (subcategory) {
-            product.slugSubCategory = subcategory.slug;
-            product.keySubCategory = subcategory.key;
-          }
-        });
-        setProducts(data.products);
-      })
-      .catch((e: Error) => toast(e.message, { type: 'error' }))
-      .finally(() => setLoadingProducts(false));
-  }, [categoryName, subcategoryName, categoriesData, page, sortType, priceFilter, franchises, search]);
+    if (categoriesData) {
+      const categoryID = categoriesData?.find((category) => category.key === categoriesURL.categoryName);
+      /*     title.current = 'All Products';
+      if (categoryID) {
+        title.current = categoryID.name;
+      } */
+      const subcategoryID = categoryID?.subcategories.find(
+        (subcategory) => subcategory.key === categoriesURL.subcategoryName,
+      );
+      /*     if (subcategoryID) {
+        title.current = subcategoryID.name;
+      } */
+      getProducts(page, sortType, priceFilter, franchises, search, categoryID?.id, subcategoryID?.id)
+        .then((data) => {
+          total.current = data.total;
+          data.products.forEach((product) => {
+            const category = categoriesData?.find((c) => c.id === product.categoryId);
+            if (category) {
+              product.slugCategory = category.slug;
+              product.keyCategory = category.key;
+            }
+            const subcategory = category?.subcategories.find((sc) => sc.id === product.subcategoryId);
+            if (subcategory) {
+              product.slugSubCategory = subcategory.slug;
+              product.keySubCategory = subcategory.key;
+            }
+          });
+          setProducts(data.products);
+        })
+        .catch((e: Error) => toast(e.message, { type: 'error' }))
+        .finally(() => setLoadingProducts(false));
+    }
+  }, [categoriesURL, categoriesData, page, sortType, priceFilter, franchises, search]);
 
   useEffect(() => {
+    setCaterogiesURL({ categoryName, subcategoryName });
     setPage(0);
     setSortType('Sort');
     setPriceFilter([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
@@ -110,6 +116,7 @@ export function Catalog(): JSX.Element {
               setPriceFilter={setPriceFilter}
               franchises={franchises}
               setFranchises={setFranchises}
+              setPage={setPage}
             />
           </aside>
           {loadingProducts ? (
@@ -123,6 +130,7 @@ export function Catalog(): JSX.Element {
                     e.preventDefault();
                     if (typeof searchField.current?.value === 'string') {
                       setSearch(searchField.current?.value.trim());
+                      setPage(0);
                     }
                   }}
                 >
