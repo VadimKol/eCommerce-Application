@@ -81,13 +81,15 @@
 }
 
 .groupSection,
-.inputWithError,
 .optionShipping {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
   width: 100%;
 }
 
 .inputWithError {
-  padding-bottom: 10px;
+  width: 350px;
 }
 
 .contextTitle {
@@ -114,13 +116,6 @@
   width: 100%;
   height: 1px;
   background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-}
-
-.groupSection,
-.optionShipping {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
 }
 
 .groupSection.groupCenter {
@@ -211,6 +206,10 @@
 
   .smallInput {
     width: 100%;
+  }
+
+  .inputWithError {
+    width: 250px;
   }
 }
 
