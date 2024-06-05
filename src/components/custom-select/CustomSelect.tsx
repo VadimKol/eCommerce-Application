@@ -4,7 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import type { SelectProps } from './types';
 
-export function CustomSelect({ selectItems, selectState, setSelectState, className }: SelectProps): JSX.Element {
+export function CustomSelect({
+  selectItems,
+  selectState,
+  setSelectState,
+  className,
+  setLoadingProducts,
+}: SelectProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const selectBoxRef = useRef(null);
   const ListRef = useRef(null);
@@ -52,6 +58,7 @@ export function CustomSelect({ selectItems, selectState, setSelectState, classNa
           if (selectItem instanceof HTMLLIElement) {
             setSelectState(selectItem.textContent as string);
             setIsOpen(false);
+            setLoadingProducts(true);
           }
         }}
         onKeyUp={() => {}}

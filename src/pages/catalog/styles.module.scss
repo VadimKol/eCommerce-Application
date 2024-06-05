@@ -253,14 +253,15 @@
 .pag_right {
   width: 45px;
   height: 45px;
-  background-color: transparent;
-  background-image: url("/src/assets/images/arrow_down.svg");
-  background-size: cover;
+  background-color: var(--primary-color);
   border: none;
-  transition: transform 0.5s;
+  transition: transform 0.5s, background-color 0.5s;
+  mask-image: url("/src/assets/images/arrow_down.svg");
+  mask-size: cover;
 
   @media (hover: hover) {
     &:hover {
+      background-color: var(--tertiary-color);
       cursor: pointer;
     }
   }

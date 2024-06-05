@@ -50,11 +50,6 @@ export function Login(): JSX.Element {
             login({ email, password })
               .then((response) => {
                 localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
-
-                // не даст выполнить запросы для анонима
-                // apiRoot.me().get().execute().then(console.log).catch(console.error);
-                // apiRoot.me().get().execute().then(console.log).catch(console.error);
-
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
               })

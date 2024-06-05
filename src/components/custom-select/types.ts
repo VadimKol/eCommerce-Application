@@ -3,4 +3,5 @@ export interface SelectProps {
   selectState: string;
   setSelectState: (selectState: string) => void;
   className?: string;
+  setLoadingProducts: (loadingProducts: boolean) => void;
 }

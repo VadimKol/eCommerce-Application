@@ -4,4 +4,5 @@ export interface FilterProps {
   franchises: boolean[];
   setFranchises: (franchises: boolean[]) => void;
   setPage: (page: number) => void;
+  setLoadingProducts: (loadingProducts: boolean) => void;
 }

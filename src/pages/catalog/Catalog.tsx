@@ -31,7 +31,7 @@ export function Catalog(): JSX.Element {
   const [priceFilter, setPriceFilter] = useState<[number, number]>([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
   const [franchises, setFranchises] = useState(Array<boolean>(fandoms.length).fill(false));
 
-  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [loadingProducts, setLoadingProducts] = useState(true);
 
   if (categories.categoryName !== categoryName || categories.subcategoryName !== subcategoryName) {
     setCategories({ categoryName, subcategoryName });
@@ -40,6 +40,7 @@ export function Catalog(): JSX.Element {
     setPriceFilter([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
     setFranchises(Array(fandoms.length).fill(false));
     setSearch('');
+    setLoadingProducts(true);
     if (searchField.current?.value) {
       searchField.current.value = '';
     }
@@ -47,7 +48,6 @@ export function Catalog(): JSX.Element {
 
   useEffect(() => {
     if (categoriesData) {
-      setLoadingProducts(true);
       const categoryID = categoriesData?.find((category) => category.key === categories.categoryName);
       const subcategoryID = categoryID?.subcategories.find(
         (subcategory) => subcategory.key === categories.subcategoryName,
@@ -81,7 +81,7 @@ export function Catalog(): JSX.Element {
   if (loading) {
     return (
       <main className={classNames('main', styles.main)}>
-        <div className={styles.infoContainer}>Loading data...</div>
+        <div className={styles.infoContainer}>Loading products...</div>
       </main>
     );
   }
@@ -109,6 +109,7 @@ export function Catalog(): JSX.Element {
               franchises={franchises}
               setFranchises={setFranchises}
               setPage={setPage}
+              setLoadingProducts={setLoadingProducts}
             />
           </aside>
           {loadingProducts ? (
@@ -123,6 +124,7 @@ export function Catalog(): JSX.Element {
                     if (typeof searchField.current?.value === 'string') {
                       setSearch(searchField.current?.value.trim());
                       setPage(0);
+                      setLoadingProducts(true);
                     }
                   }}
                 >
@@ -137,7 +139,12 @@ export function Catalog(): JSX.Element {
                     <button type="submit" className={styles.search_button} aria-label="Search-button" />
                   </div>
                 </form>
-                <CustomSelect selectItems={sortingTypes} selectState={sortType} setSelectState={setSortType} />
+                <CustomSelect
+                  selectItems={sortingTypes}
+                  selectState={sortType}
+                  setSelectState={setSortType}
+                  setLoadingProducts={setLoadingProducts}
+                />
               </div>
               <ul className={products.length ? styles.products : `${styles.products} ${styles.products_not_found}`}>
                 {products.map((product) => (

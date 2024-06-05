@@ -7,7 +7,14 @@ import { RangeSlider } from '../range-slider/RangeSlider';
 import styles from './styles.module.scss';
 import type { FilterProps } from './types';
 
-export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises, setPage }: FilterProps): JSX.Element {
+export function Filters({
+  priceFilter,
+  setPriceFilter,
+  franchises,
+  setFranchises,
+  setPage,
+  setLoadingProducts,
+}: FilterProps): JSX.Element {
   const [isPrice, setIsPrice] = useState(false);
   const [isFranchise, setIsFranchise] = useState(false);
 
@@ -34,6 +41,7 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
               priceFilter={priceFilter}
               setPriceFilter={setPriceFilter}
               setPage={setPage}
+              setLoadingProducts={setLoadingProducts}
             />
           </div>
         </li>
@@ -65,6 +73,7 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
                       temp[index] = !temp[index];
                       setFranchises(temp);
                       setPage(0);
+                      setLoadingProducts(true);
                     }}
                     checked={franchises[index]}
                   />
@@ -81,6 +90,7 @@ export function Filters({ priceFilter, setPriceFilter, franchises, setFranchises
           setPriceFilter([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
           setFranchises(Array<boolean>(fandoms.length).fill(false));
           setPage(0);
+          setLoadingProducts(true);
         }}
       >
         Reset

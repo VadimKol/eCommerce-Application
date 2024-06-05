@@ -650,7 +650,7 @@ export function Register(): JSX.Element {
               </label>
               <button
                 type="button"
-                className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
+                className={revealPassword ? `${styles.reveal} ${styles.hidden}` : styles.reveal}
                 aria-label="Reveal"
                 onClick={() => setRevealPassword(!revealPassword)}
               />

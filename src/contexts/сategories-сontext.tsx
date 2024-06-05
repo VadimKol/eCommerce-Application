@@ -57,7 +57,6 @@ export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.E
     }
 
     if (!location.pathname.startsWith(NavigationPaths.CATALOG)) {
-      setLoading(false);
       return;
     }
 

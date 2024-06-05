@@ -54,7 +54,6 @@ export function logout(): Promise<void> {
 export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
   Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
   return apiRoot.me().signup().post({ body: myCustomerDraft }).execute();
-  // return apiRoot.customers().post({ body: myCustomerDraft }).execute(); // с анонима можно
 }
 
 export function profile(): Promise<ClientResponse<Customer>> {
