@@ -22,6 +22,10 @@
   padding: 0;
   list-style: none;
 
+  @media (width <= 900px) {
+    gap: 8px;
+  }
+
   @media (width <= 768px) {
     flex-direction: column;
     gap: 10px;
@@ -38,6 +42,10 @@
   padding: 0;
   list-style: none;
 
+  @media (width <= 900px) {
+    gap: 5px;
+  }
+
   @media (width <= 768px) {
     display: none;
   }
@@ -53,13 +61,22 @@
   }
 }
 
-.actionsItem:not(:last-child) {
-  &::after {
-    content: "|";
-    margin-left: 10px;
+.actionsItem {
+  display: flex;
+  align-items: center;
 
-    @media (width <= 768px) {
-      content: none;
+  &:not(:last-child) {
+    &::after {
+      content: "|";
+      margin-left: 10px;
+
+      @media (width <= 900px) {
+        margin-left: 5px;
+      }
+
+      @media (width <= 768px) {
+        content: none;
+      }
     }
   }
 }
