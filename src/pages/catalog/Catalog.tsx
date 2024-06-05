@@ -20,33 +20,38 @@ export function Catalog(): JSX.Element {
   const { error, categories: categoriesData, loading } = useCategories();
   const [products, setProducts] = useState<Product[]>([]);
   const { categoryName, subcategoryName } = useParams<{ categoryName?: string; subcategoryName?: string }>();
-  const [categoriesURL, setCaterogiesURL] = useState({ categoryName, subcategoryName });
+  const [categories, setCategories] = useState({ categoryName, subcategoryName });
   const [page, setPage] = useState(0);
   const [sortType, setSortType] = useState('Sort');
   const [search, setSearch] = useState('');
   const searchField = useRef<HTMLInputElement>(null);
 
-  // const title = useRef('All Products');
   const total = useRef(0);
 
   const [priceFilter, setPriceFilter] = useState<[number, number]>([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
   const [franchises, setFranchises] = useState(Array<boolean>(fandoms.length).fill(false));
+
   const [loadingProducts, setLoadingProducts] = useState(false);
 
+  if (categories.categoryName !== categoryName || categories.subcategoryName !== subcategoryName) {
+    setCategories({ categoryName, subcategoryName });
+    setPage(0);
+    setSortType('Sort');
+    setPriceFilter([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
+    setFranchises(Array(fandoms.length).fill(false));
+    setSearch('');
+    if (searchField.current?.value) {
+      searchField.current.value = '';
+    }
+  }
+
   useEffect(() => {
-    setLoadingProducts(true);
     if (categoriesData) {
-      const categoryID = categoriesData?.find((category) => category.key === categoriesURL.categoryName);
-      /*     title.current = 'All Products';
-      if (categoryID) {
-        title.current = categoryID.name;
-      } */
+      setLoadingProducts(true);
+      const categoryID = categoriesData?.find((category) => category.key === categories.categoryName);
       const subcategoryID = categoryID?.subcategories.find(
-        (subcategory) => subcategory.key === categoriesURL.subcategoryName,
+        (subcategory) => subcategory.key === categories.subcategoryName,
       );
-      /*     if (subcategoryID) {
-        title.current = subcategoryID.name;
-      } */
       getProducts(page, sortType, priceFilter, franchises, search, categoryID?.id, subcategoryID?.id)
         .then((data) => {
           total.current = data.total;
@@ -67,19 +72,7 @@ export function Catalog(): JSX.Element {
         .catch((e: Error) => toast(e.message, { type: 'error' }))
         .finally(() => setLoadingProducts(false));
     }
-  }, [categoriesURL, categoriesData, page, sortType, priceFilter, franchises, search]);
-
-  useEffect(() => {
-    setCaterogiesURL({ categoryName, subcategoryName });
-    setPage(0);
-    setSortType('Sort');
-    setPriceFilter([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
-    setFranchises(Array(fandoms.length).fill(false));
-    setSearch('');
-    if (searchField.current?.value) {
-      searchField.current.value = '';
-    }
-  }, [categoryName, subcategoryName]);
+  }, [categories, categoriesData, page, sortType, priceFilter, franchises, search]);
 
   if (error instanceof StatusError && error.statusCode === 404) {
     return <NoMatch />;
@@ -108,7 +101,6 @@ export function Catalog(): JSX.Element {
       </div>
       <Breadcrumbs parentClass={styles.breadcrumbs} />
       <div className={styles.container}>
-        {/* <h1>{title.current}</h1> */}
         <section className={styles.product_box}>
           <aside className={styles.filters}>
             <Filters
