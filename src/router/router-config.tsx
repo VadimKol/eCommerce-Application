@@ -5,6 +5,7 @@ import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { AuthRoute } from '@/components/auth-route/AuthRoute';
 import { NonAuthRoute } from '@/components/non-auth-route/NonAuthRoute';
 import { About } from '@/pages/about/About';
+import { Cart } from '@/pages/cart/Cart';
 import { Catalog } from '@/pages/catalog/Catalog';
 import { ErrorPage } from '@/pages/error/ErrorPage';
 import { Home } from '@/pages/home/Home';
@@ -47,6 +48,7 @@ export const routerConfig = createRoutesFromElements(
           </AuthRoute>
         }
       />
+      <Route path={ActionPaths.CART} element={<Cart />} />
       <Route path="*" element={<NoMatch />} />
     </Route>
   </Route>,

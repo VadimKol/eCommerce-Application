@@ -8,6 +8,7 @@ export enum ActionPaths {
   LOGIN = '/login',
   REGISTER = '/register',
   PROFILE = '/profile',
+  CART = '/cart',
 }
 
 export enum CurrencySymbols {

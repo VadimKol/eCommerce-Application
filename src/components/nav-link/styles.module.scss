@@ -1,6 +1,9 @@
 
 .link {
-  display: inline-block;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-self: center;
   padding: 5px;
   font-size: inherit;
   text-decoration: none;
@@ -16,11 +19,41 @@
   }
 }
 
+.linkIcon {
+  &::after {
+    content: "";
+    width: 30px;
+    height: 30px;
+    background-color: var(--text-color);
+    transition: background-color 0.3s ease-in-out;
+    mask-size: cover;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+
+  &:hover,
+  &:focus-visible {
+    &::after {
+      background-color: var(--tertiary-color);
+    }
+  }
+
+  &--cart {
+    &::after {
+      mask-image: url("/src/assets/images/cart.svg");
+    }
+  }
+}
+
 .linkCurrent {
   text-decoration: underline;
   text-underline-offset: 10px;
   text-decoration-thickness: 2px;
   text-decoration-color: var(--text-color);
+
+  &::after {
+    background-color: var(--tertiary-color);
+  }
 }
 
 span.linkCurrent {

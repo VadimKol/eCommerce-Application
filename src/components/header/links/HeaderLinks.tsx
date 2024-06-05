@@ -79,6 +79,9 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
             </li>
           </>
         )}
+        <li className={styles.actionsItem}>
+          <NavLink to={ActionPaths.CART} label="Cart" icon="cart" />
+        </li>
       </ul>
     </>
   );
