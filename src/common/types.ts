@@ -6,6 +6,12 @@ export interface AuthContextInterface {
   handleLogout: () => void;
 }
 
+export type CategoriesContextType = {
+  categories: CategoriesData | null;
+  loading: boolean;
+  error: Error | null;
+};
+
 export interface Credentials {
   clientId: string;
   clientSecret: string;
@@ -131,3 +137,66 @@ export interface GeekShopCustomerDraft {
    */
   readonly stores?: StoreResourceIdentifier[];
 }
+
+export type ProductDetails = {
+  name?: string;
+  description?: string;
+  price?: string | null;
+  discountedPrice?: string | null;
+  currency?: string | null;
+  images?: string[];
+  attributes?: { name: string; value: string | number | Array<{ key: string }> }[];
+  availability?: {
+    isOnStock?: boolean | null;
+    availableQuantity?: number | null;
+  };
+};
+
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  slug: string;
+  key: string;
+  sku: string;
+  quantity: number;
+  price: string;
+  discount: string;
+  images: string[];
+  categoryId: string;
+  slugCategory: string;
+  keyCategory: string;
+  subcategoryId: string;
+  slugSubCategory: string;
+  keySubCategory: string;
+};
+
+export type Subcategory = {
+  id: string;
+  name: string;
+  slug: string;
+  key: string;
+  products: Product[];
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  key: string;
+  subcategories: Subcategory[];
+};
+
+export type CategoriesData = Category[];
+
+export type UrlParams = {
+  categoryName?: string;
+  subcategoryName?: string;
+  productName?: string;
+};
+
+export type LoaderData = {
+  category?: Category;
+  subcategory?: Subcategory;
+  product?: Product;
+};

@@ -1,36 +1,87 @@
-import { render } from '@testing-library/react';
-import { slide as Menu } from 'react-burger-menu';
+import '@testing-library/jest-dom';
+
+import type { RenderResult } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 
 import { BurgerMenu } from '@/components/header/burger-menu/BurgerMenu';
-import { HeaderLinks } from '@/components/header/links/HeaderLinks';
-
-jest.mock('@/components/header/links/HeaderLinks', () => ({
-  HeaderLinks: jest.fn(() => <div>Mock HeaderLinks</div>), // Mocking HeaderLinks component
-}));
 
 jest.mock('react-burger-menu', () => ({
-  slide: jest.fn(({ children }) => <div>Mock Menu {children}</div>), // Mocking Menu component
+  slide: jest.fn(
+    ({
+      isOpen,
+      onStateChange,
+      children,
+    }: {
+      isOpen: boolean;
+      onStateChange: (state: { isOpen: boolean }) => void;
+      children: React.ReactNode;
+    }) => (
+      <div>
+        <button data-testid="burger-button" onClick={() => onStateChange({ isOpen: !isOpen })}>
+          Toggle Menu
+        </button>
+        {isOpen && <div data-testid="menu-content">{children}</div>}
+      </div>
+    ),
+  ),
 }));
 
-describe('BurgerMenu Component', () => {
-  it('renders BurgerMenu component correctly with HeaderLinks inside Menu', () => {
-    render(<BurgerMenu />);
+jest.mock('@/components/header/links/HeaderLinks', () => ({
+  HeaderLinks: jest.fn(() => (
+    <div>
+      <Link to="/test">Test Page</Link>
+    </div>
+  )),
+}));
 
-    expect(Menu).toHaveBeenCalledWith(
-      expect.objectContaining({
-        right: true,
-        disableCloseOnEsc: true,
-        width: 280,
-        itemListElement: 'div',
-      }),
-      {},
+describe('BurgerMenu', () => {
+  function TestComponent(): JSX.Element {
+    return (
+      <div>
+        <BurgerMenu />
+      </div>
     );
+  }
 
-    expect(HeaderLinks).toHaveBeenCalledWith(
-      expect.objectContaining({
-        isInsideBurgerMenu: true,
-      }),
-      {},
+  const renderWithRouter = (initialRoute = '/'): RenderResult => {
+    window.history.pushState({}, 'Test page', initialRoute);
+
+    return render(
+      <Router>
+        <Routes>
+          <Route path="/" element={<TestComponent />} />
+          <Route path="/test" element={<div>Test Page</div>} />
+        </Routes>
+      </Router>,
     );
+  };
+
+  it('closes the menu when the location changes', async () => {
+    renderWithRouter();
+
+    fireEvent.click(screen.getByTestId('burger-button'));
+
+    expect(screen.getByTestId('menu-content')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Test Page'));
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('menu-content')).not.toBeInTheDocument();
+    });
+  });
+
+  it('handles menu open and close', () => {
+    renderWithRouter();
+
+    const button = screen.getByTestId('burger-button');
+
+    expect(screen.queryByTestId('menu-content')).not.toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(screen.getByTestId('menu-content')).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(screen.queryByTestId('menu-content')).not.toBeInTheDocument();
   });
 });

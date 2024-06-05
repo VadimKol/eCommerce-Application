@@ -30,7 +30,7 @@
     "stylelint:fix": "stylelint ./src/**/*.{css,scss} --fix --quiet-deprecation-warnings",
     "test": "jest",
     "prepare": "husky",
-    "deploy-sprint-2": "npm run build && npx gh-pages -b netlify-sprint-2 -d dist"
+    "deploy-sprint-3": "npm run build && npx gh-pages -b netlify-sprint-3 -d dist"
   },
   "repository": {
     "type": "git",
@@ -66,7 +66,9 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
     "react-router-dom": "^6.23.1",
+    "react-select": "^5.8.0",
     "react-toastify": "^10.0.5",
+    "swiper": "^11.1.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {

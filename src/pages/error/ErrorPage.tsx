@@ -2,6 +2,9 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
+import { StatusError } from '@/common/utils';
+
+import { NoMatch } from '../no-match/NoMatch';
 import styles from './styles.module.scss';
 
 export function ErrorPage(): JSX.Element {
@@ -19,6 +22,10 @@ export function ErrorPage(): JSX.Element {
       }
     }
   }, [error]);
+
+  if (error instanceof StatusError && error.statusCode === 404) {
+    return <NoMatch />;
+  }
 
   return (
     <main className={classNames('main', styles.main)}>

@@ -1,0 +1,96 @@
+.accordeon,
+.checkboxesList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.accordeon {
+  margin-bottom: 20px;
+}
+
+.range,
+.checkboxesList {
+  overflow: hidden;
+  max-height: 0;
+  padding: 0 15px;
+  transition: max-height 0.5s;
+}
+
+.range {
+  &_active {
+    max-height: 60px;
+  }
+}
+
+.prices {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.83em;
+  font-weight: 100;
+}
+
+.checkboxesList {
+  font-weight: 100;
+  text-align: left;
+
+  &_active {
+    max-height: 576px;
+  }
+}
+
+.item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 0 15px;
+
+  @media (hover: hover) {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  @media screen and (width <= 768px) {
+    justify-content: center;
+  }
+
+  @media screen and (width <= 590px) {
+    justify-content: initial;
+  }
+}
+
+.title {
+  display: inline-block;
+}
+
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("/src/assets/images/arrow_down.svg");
+  background-size: cover;
+  transition: transform 0.5s;
+
+  &_show {
+    transform: rotate(180deg);
+  }
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox_label,
+.checkbox {
+  @media (hover: hover) {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.reset {
+  padding: 0.3em 1.2em;
+}

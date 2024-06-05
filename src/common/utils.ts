@@ -8,3 +8,55 @@ export const calculateAge = (birthDate: string): boolean => {
   }
   return age >= 13;
 };
+
+export const sortingTypes = [
+  'Alphabetically, A-Z',
+  'Alphabetically, Z-A',
+  'Price, low to high',
+  'Price, high to low',
+  /*   'Date, old to new',
+  'Date, new to old', */
+];
+
+export const fandoms = [
+  'Genshin',
+  'Disney',
+  'Cyberpunk',
+  'Batman',
+  'Doctor Who',
+  'Star Wars',
+  'Beetlejuice',
+  'Marvel',
+  'One Piece',
+  'Harry Potter',
+  'Stranger Things',
+  'Rick and Morty',
+  'Supernatural',
+];
+
+export const QUERY_LIMIT = 12;
+export const PRICE_FILTER_MIN = 1;
+export const PRICE_FILTER_MAX = 100;
+
+export function getFandomsFilter(franchises: boolean[]): string {
+  const filter: string[] = [];
+
+  franchises.forEach((franchise, index) => {
+    fandoms.forEach((fandom, i) => {
+      if (index === i && franchise) {
+        filter.push(`"${fandom}"`);
+      }
+    });
+  });
+
+  return filter.length > 0 ? `variants.attributes.Fandom:${filter.join(',')}` : '';
+}
+
+export class StatusError extends Error {
+  public statusCode: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.statusCode = status;
+  }
+}

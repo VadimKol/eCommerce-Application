@@ -1,0 +1,221 @@
+.filler {
+  padding: 20px;
+  font-size: 20px;
+  visibility: hidden;
+
+  @media (width <= 768px) {
+    display: none;
+  }
+
+  &.insideMenu {
+    display: none;
+  }
+}
+
+.categoriesList,
+.subcategoriesList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.categoriesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-evenly;
+  width: fit-content;
+  padding: 10px;
+  font-size: 20px;
+  color: var(--text-color);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+
+  @media (width <= 768px) {
+    display: none;
+  }
+
+  &.opaque {
+    opacity: 1;
+  }
+
+  &.insideMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    justify-content: unset;
+    align-items: center;
+    padding: 0;
+    text-align: center;
+    color: var(--text-color);
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-block: 10px;
+      background-color: var(--text-color);
+    }
+  }
+}
+
+.subcategoriesList {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  width: fit-content;
+  min-width: 100%;
+  padding: 48px 10px 15px;
+  background-image: linear-gradient(to bottom, var(--primary-color), #073283);
+  border-radius: 15px;
+  box-shadow: 0 2px 6px 6px rgb(0 0 0 / 10%);
+
+  .insideMenu & {
+    position: static;
+    left: 0;
+    z-index: 10000;
+    align-items: center;
+    width: fit-content;
+    min-width: 140px;
+    padding: 10px;
+    background-image: none;
+  }
+
+  &.subcategoriesListOpen {
+    display: flex;
+  }
+}
+
+.categoryLink {
+  position: relative;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--text-color);
+  border-radius: 15px;
+  transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
+
+  .insideMenu & {
+    width: fit-content;
+    padding: 10px;
+    font-size: 18px;
+    color: var(--text-color);
+  }
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
+
+      .insideMenu & {
+        color: var(--tertiary-color);
+        text-decoration-color: var(--tertiary-color);
+      }
+    }
+  }
+}
+
+.categoryItem {
+  position: relative;
+  border-radius: 15px;
+
+  .insideMenu & {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    width: fit-content;
+  }
+
+  &:hover {
+    .categoryLink {
+      z-index: 20;
+    }
+
+    & .subcategoriesList {
+      display: flex;
+    }
+  }
+}
+
+.subcategoryLink {
+  display: block;
+  width: max-content;
+  padding: 4px 10px;
+  line-height: 1.2;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
+
+      .insideMenu & {
+        text-decoration: none;
+        color: var(--tertiary-color);
+      }
+    }
+  }
+
+  .insideMenu & {
+    padding: 4px;
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--text-color);
+  }
+}
+
+.subcategoryLinkCurrent {
+  text-decoration: underline dotted;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--text-color);
+
+  &:hover {
+    @media (hover: hover) {
+      text-underline-offset: 10px;
+      text-decoration-thickness: 2px;
+
+      .insideMenu & {
+        color: var(--tertiary-color);
+        text-underline-offset: 10px;
+        text-decoration-thickness: 2px;
+        text-decoration-color: var(--tertiary-color);
+      }
+    }
+  }
+
+  .insideMenu & {
+    text-decoration-color: var(--text-color);
+    text-underline-offset: 10px;
+    text-decoration-thickness: 2px;
+  }
+}
+
+
+.categoryLink.categoryLinkCurrent {
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--text-color);
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
+    }
+  }
+}
