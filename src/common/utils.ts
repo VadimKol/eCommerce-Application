@@ -1,3 +1,5 @@
+import type { CatalogAction, CatalogState } from './types';
+
 export const calculateAge = (birthDate: string): boolean => {
   const today = new Date();
   const birth = new Date(birthDate);
@@ -51,5 +53,63 @@ export class StatusError extends Error {
   constructor(message: string, status: number) {
     super(message);
     this.statusCode = status;
+  }
+}
+
+export const initialState: CatalogState = {
+  products: [],
+  page: 0,
+  sortType: 'Sort',
+  search: '',
+  priceFilter: [PRICE_FILTER_MIN, PRICE_FILTER_MAX],
+  franchises: Array(fandoms.length).fill(false),
+  loadingProducts: true,
+  categories: {},
+};
+
+export function reducerCatalog(
+  state: CatalogState,
+  {
+    type,
+    products = [],
+    page = 0,
+    sortType = 'Sort',
+    search = '',
+    priceFilter = [PRICE_FILTER_MIN, PRICE_FILTER_MAX],
+    franchises = Array(fandoms.length).fill(false),
+    loadingProducts = true,
+    categories = {},
+  }: CatalogAction,
+): CatalogState {
+  switch (type) {
+    case 'SET_CATEGORIES':
+      return {
+        ...state,
+        categories,
+        page,
+        sortType,
+        priceFilter,
+        franchises,
+        search,
+        loadingProducts,
+      };
+    case 'SET_PRODUCTS':
+      return { ...state, products };
+    case 'SET_LOADING_PRODUCTS':
+      return { ...state, loadingProducts };
+    case 'SET_SEARCH':
+      return { ...state, search, page, loadingProducts };
+    case 'SET_SORT_TYPE':
+      return { ...state, sortType, loadingProducts };
+    case 'SET_PRICE':
+      return { ...state, priceFilter, page, loadingProducts };
+    case 'SET_FRANCHISES':
+      return { ...state, franchises, page, loadingProducts };
+    case 'RESET_FILTERS':
+      return { ...state, priceFilter, franchises, page, loadingProducts };
+    case 'SET_PAGE':
+      return { ...state, page, loadingProducts };
+    default:
+      return state;
   }
 }

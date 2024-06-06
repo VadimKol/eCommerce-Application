@@ -3,7 +3,7 @@ import { QUERY_LIMIT } from '@/common/utils';
 import styles from './styles.module.scss';
 import { type PaginationProps } from './types';
 
-export function Pagination({ page, setPage, setLoadingProducts, total }: PaginationProps): JSX.Element {
+export function Pagination({ page, dispatch, total }: PaginationProps): JSX.Element {
   return (
     <div className={styles.pagination}>
       {Boolean(page) && (
@@ -12,8 +12,7 @@ export function Pagination({ page, setPage, setLoadingProducts, total }: Paginat
           aria-label="Left"
           className={styles.pag_left}
           onClick={() => {
-            setPage(page - 1);
-            setLoadingProducts(true);
+            dispatch({ type: 'SET_PAGE', page: page - 1 });
           }}
         />
       )}
@@ -27,8 +26,7 @@ export function Pagination({ page, setPage, setLoadingProducts, total }: Paginat
           aria-label="Right"
           className={styles.pag_right}
           onClick={() => {
-            setPage(page + 1);
-            setLoadingProducts(true);
+            dispatch({ type: 'SET_PAGE', page: page + 1 });
           }}
         />
       )}

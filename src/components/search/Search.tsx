@@ -1,16 +1,14 @@
 import styles from './styles.module.scss';
 import type { SearchProps } from './types';
 
-export function Search({ searchField, setSearch, setPage, setLoadingProducts }: SearchProps): JSX.Element {
+export function Search({ searchField, dispatch }: SearchProps): JSX.Element {
   return (
     <form
       className={styles.search_form}
       onSubmit={(e) => {
         e.preventDefault();
         if (typeof searchField.current?.value === 'string') {
-          setSearch(searchField.current?.value.trim());
-          setPage(0);
-          setLoadingProducts(true);
+          dispatch({ type: 'SET_SEARCH', search: searchField.current?.value.trim() });
         }
       }}
     >
