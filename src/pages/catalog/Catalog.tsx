@@ -10,7 +10,9 @@ import { Breadcrumbs } from '@/components/breadcrumbs/Breadcrumbs';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { CustomSelect } from '@/components/custom-select/CustomSelect';
 import { Filters } from '@/components/filters/Filters';
+import { Pagination } from '@/components/pagination/Pagination';
 import { ProductCard } from '@/components/product-card/ProductCard';
+import { Search } from '@/components/search/Search';
 import { useCategories } from '@/hooks/useCategories';
 import { NoMatch } from '@/pages/no-match/NoMatch';
 
@@ -117,28 +119,12 @@ export function Catalog(): JSX.Element {
           ) : (
             <section className={styles.products_section}>
               <div className={styles.sort_n_search_form}>
-                <form
-                  className={styles.search_form}
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (typeof searchField.current?.value === 'string') {
-                      setSearch(searchField.current?.value.trim());
-                      setPage(0);
-                      setLoadingProducts(true);
-                    }
-                  }}
-                >
-                  <div className={styles.search_box}>
-                    <input
-                      id="search"
-                      className={styles.search}
-                      type="text"
-                      placeholder="Search..."
-                      ref={searchField}
-                    />
-                    <button type="submit" className={styles.search_button} aria-label="Search-button" />
-                  </div>
-                </form>
+                <Search
+                  searchField={searchField}
+                  setSearch={setSearch}
+                  setPage={setPage}
+                  setLoadingProducts={setLoadingProducts}
+                />
                 <CustomSelect
                   selectItems={sortingTypes}
                   selectState={sortType}
@@ -155,34 +141,7 @@ export function Catalog(): JSX.Element {
                 {!products.length && <li className={styles.not_found}>Products not found</li>}
               </ul>
               {total.current > QUERY_LIMIT && (
-                <div className={styles.pagination}>
-                  {Boolean(page) && (
-                    <button
-                      type="button"
-                      aria-label="Left"
-                      className={styles.pag_left}
-                      onClick={() => {
-                        setPage(page - 1);
-                        setLoadingProducts(true);
-                      }}
-                    />
-                  )}
-                  <div className={styles.pages}>
-                    <span>{page + 1}</span>-
-                    <span>{Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0)}</span>
-                  </div>
-                  {page + 1 < Math.floor(total.current / QUERY_LIMIT) + (total.current % QUERY_LIMIT > 0 ? 1 : 0) && (
-                    <button
-                      type="button"
-                      aria-label="Right"
-                      className={styles.pag_right}
-                      onClick={() => {
-                        setPage(page + 1);
-                        setLoadingProducts(true);
-                      }}
-                    />
-                  )}
-                </div>
+                <Pagination page={page} setPage={setPage} setLoadingProducts={setLoadingProducts} total={total} />
               )}
             </section>
           )}

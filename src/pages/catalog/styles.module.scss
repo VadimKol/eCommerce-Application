@@ -114,67 +114,6 @@
   }
 }
 
-.search_form {
-  display: flex;
-  justify-content: flex-end;
-
-  & .search_box {
-    position: relative;
-
-    @media screen and (width <= 590px) {
-      width: 100%;
-    }
-  }
-
-  & .search {
-    box-sizing: border-box;
-    width: 250px;
-    height: 30px;
-    padding: 0 30px 0 5px;
-    font-family: var(--primary-font);
-    font-size: 1em;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 6px;
-
-    &:focus {
-      border: 1px solid #000000;
-    }
-
-    &:focus-visible {
-      outline: none;
-    }
-
-    @media screen and (width <= 590px) {
-      width: 100%;
-    }
-  }
-
-  & .search_button {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background-color: transparent;
-    background-image: url("/src/assets/images/search.svg");
-    background-size: cover;
-    border: none;
-
-
-    @media (hover: hover) {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-
-  @media screen and (width <= 590px) {
-    width: 100%;
-  }
-}
-
 .sort_n_search_form {
   display: flex;
   gap: 15px;
@@ -234,55 +173,5 @@
   @media screen and (width <= 768px) {
     width: 100%;
     margin-top: 0;
-  }
-}
-
-.pagination {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-}
-
-.pages {
-  font-size: 1.5em;
-}
-
-.pag_left,
-.pag_right {
-  width: 45px;
-  height: 45px;
-  background-color: var(--primary-color);
-  border: none;
-  transition: transform 0.5s, background-color 0.5s;
-  mask-image: url("/src/assets/images/arrow_down.svg");
-  mask-size: cover;
-
-  @media (hover: hover) {
-    &:hover {
-      background-color: var(--tertiary-color);
-      cursor: pointer;
-    }
-  }
-}
-
-.pag_left {
-  transform: rotate(90deg);
-
-  @media (hover: hover) {
-    &:hover {
-      transform: rotate(90deg) scale(1.2);
-    }
-  }
-}
-
-.pag_right {
-  transform: rotate(-90deg);
-
-  @media (hover: hover) {
-    &:hover {
-      transform: rotate(-90deg) scale(1.2);
-    }
   }
 }
