@@ -163,6 +163,7 @@ export function Catalog(): JSX.Element {
                       className={styles.pag_left}
                       onClick={() => {
                         setPage(page - 1);
+                        setLoadingProducts(true);
                       }}
                     />
                   )}
@@ -177,6 +178,7 @@ export function Catalog(): JSX.Element {
                       className={styles.pag_right}
                       onClick={() => {
                         setPage(page + 1);
+                        setLoadingProducts(true);
                       }}
                     />
                   )}
