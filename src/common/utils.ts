@@ -29,6 +29,28 @@ export const fandoms = [
   'Supernatural',
 ];
 
+export const countries = [
+  {
+    title: 'United States',
+    code: 'US',
+    errorMsg: 'It must be 5 digits or 5+4 digits',
+    postcode: /^\d{5}(-\d{4})?$/,
+  },
+  {
+    title: 'Belarus',
+    code: 'BY',
+    errorMsg: 'It must be exactly 6 digits.',
+    postcode: /^\d{6}$/,
+  },
+  {
+    title: 'Russia',
+    code: 'RU',
+    errorMsg: 'It must be exactly 6 digits.',
+    postcode: /^\d{6}$/,
+  },
+];
+
+export const DEFAULT_LOCALE = 'en-US';
 export const QUERY_LIMIT = 12;
 export const PRICE_FILTER_MIN = 1;
 export const PRICE_FILTER_MAX = 100;
@@ -46,6 +68,21 @@ export function getFandomsFilter(franchises: boolean[]): string {
   });
 
   return filter.length > 0 ? `variants.attributes.Fandom:${filter.join(',')}` : '';
+}
+
+export function getSort(sortType: string): string | undefined {
+  switch (sortType) {
+    case 'Alphabetically, A-Z':
+      return `name.${DEFAULT_LOCALE} asc`;
+    case 'Alphabetically, Z-A':
+      return `name.${DEFAULT_LOCALE} desc`;
+    case 'Price, low to high':
+      return 'price asc';
+    case 'Price, high to low':
+      return 'price desc';
+    default:
+      return undefined;
+  }
 }
 
 export class StatusError extends Error {

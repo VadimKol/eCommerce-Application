@@ -3,7 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { changePassword, login } from '@/api/client-actions.ts';
+import { login } from '@/api/client-actions.ts';
+import { changePassword } from '@/api/profile.ts';
 
 import { Tooltip } from '../tooltip/Tooltip.tsx';
 import { type FormValues, registerSchema } from './register-schema.ts';

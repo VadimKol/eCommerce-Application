@@ -3,7 +3,7 @@ import { useEffect, useReducer, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getProducts } from '@/api/client-actions';
+import { getProducts } from '@/api/catalog';
 import { initialState, QUERY_LIMIT, reducerCatalog, sortingTypes, StatusError } from '@/common/utils';
 import { Breadcrumbs } from '@/components/breadcrumbs/Breadcrumbs';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';

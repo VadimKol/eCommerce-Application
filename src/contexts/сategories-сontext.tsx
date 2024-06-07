@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { getCategories } from '@/api/client-actions';
+import { getCategories } from '@/api/catalog';
 import { NavigationPaths } from '@/common/enums';
 import type { CategoriesContextType, CategoriesData } from '@/common/types';
 import { StatusError } from '@/common/utils';

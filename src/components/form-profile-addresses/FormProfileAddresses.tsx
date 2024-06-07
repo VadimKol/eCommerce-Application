@@ -10,9 +10,9 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { crudAddress } from '@/api/client-actions.ts';
+import { crudAddress } from '@/api/profile.ts';
+import { countries } from '@/common/utils.ts';
 
-import { countries } from '../../constants/constants.ts';
 import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { AddressCustom, Country, FormAddresses } from './types.ts';

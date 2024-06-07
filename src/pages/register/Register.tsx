@@ -7,9 +7,9 @@ import { toast } from 'react-toastify';
 
 import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths } from '@/common/enums';
+import { countries } from '@/common/utils.ts';
 import { useAuth } from '@/hooks/useAuth.ts';
 
-import { countries } from '../../constants/constants.ts';
 import { type Country, type RegisterSchema, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 
