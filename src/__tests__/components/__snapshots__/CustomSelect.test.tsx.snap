@@ -13,7 +13,7 @@ exports[`renders correctly 1`] = `
       <span
         class="title"
       >
-        Price, low to high
+        Sort
       </span>
       <span
         class="icon"
