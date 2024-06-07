@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="pagination"
+  >
+    <div
+      class="pages"
+    >
+      <span>
+        1
+      </span>
+      -
+      <span>
+        0
+      </span>
+    </div>
+  </div>
+</div>
+`;

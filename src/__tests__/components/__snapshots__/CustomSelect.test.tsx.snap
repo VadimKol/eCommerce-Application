@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="select"
+  >
+    <div
+      class="select_box"
+      role="listbox"
+      tabindex="0"
+    >
+      <span
+        class="title"
+      >
+        Price, low to high
+      </span>
+      <span
+        class="icon"
+      />
+    </div>
+    <ul
+      class="list"
+      role="listbox"
+    >
+      <li
+        aria-selected="true"
+        class="list_item"
+        role="option"
+      >
+        Alphabetically, A-Z
+      </li>
+      <li
+        aria-selected="true"
+        class="list_item"
+        role="option"
+      >
+        Alphabetically, Z-A
+      </li>
+      <li
+        aria-selected="true"
+        class="list_item"
+        role="option"
+      >
+        Price, low to high
+      </li>
+      <li
+        aria-selected="true"
+        class="list_item"
+        role="option"
+      >
+        Price, high to low
+      </li>
+    </ul>
+  </div>
+</div>
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="detailShipping"
+  >
+    <h2>
+      Shipping
+       addresses
+    </h2>
+    <div>
+      Default 
+      shipping
+       address :
+       
+      No default address found
+    </div>
+    <button
+      class="button"
+      type="button"
+    >
+      Add new address
+    </button>
+  </div>
+</div>
+`;

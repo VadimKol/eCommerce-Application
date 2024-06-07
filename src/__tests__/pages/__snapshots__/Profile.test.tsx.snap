@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <main
+    class="main main"
+  >
+    <div
+      class="container"
+    >
+      <h1>
+        Profile
+      </h1>
+      <div
+        class="profileBlock"
+      >
+        <div
+          class="chooseInfoBlock"
+        >
+          <button
+            class="chooseInfoItem activeBtn"
+            type="button"
+          >
+            Person
+          </button>
+          <button
+            class="chooseInfoItem"
+            type="button"
+          >
+            Shipping
+          </button>
+          <button
+            class="chooseInfoItem"
+            type="button"
+          >
+            Billing
+          </button>
+          <button
+            class="chooseInfoItem"
+            type="button"
+          >
+            Password
+          </button>
+        </div>
+        <div
+          class="detailInfoBlock"
+        >
+          <form
+            class="form"
+          >
+            <div
+              class="detailPerson"
+            >
+              <h2>
+                Person info
+              </h2>
+              <div
+                class="mainFormProfile"
+              >
+                <div
+                  class="inputWithError bigInput"
+                >
+                  <label
+                    class="formInput"
+                    for="name"
+                  >
+                    <div
+                      class="requiredTitle"
+                    >
+                      Name:
+                    </div>
+                    <input
+                      aria-invalid="true"
+                      class="input noMode"
+                      id="name"
+                      name="name"
+                      placeholder="John"
+                      readonly=""
+                      required=""
+                      type="text"
+                    />
+                  </label>
+                </div>
+                <div
+                  class="inputWithError  bigInput"
+                >
+                  <label
+                    class="formInput"
+                    for="last"
+                  >
+                    <div
+                      class="requiredTitle"
+                    >
+                      Surname:
+                    </div>
+                    <input
+                      aria-invalid="true"
+                      class="input noMode"
+                      id="last"
+                      name="surname"
+                      placeholder="Smith"
+                      readonly=""
+                      required=""
+                      type="text"
+                    />
+                  </label>
+                </div>
+                <div
+                  class="inputWithError  smallInput"
+                >
+                  <label
+                    class="formInput"
+                    for="date"
+                  >
+                    <div
+                      class="requiredTitle"
+                    >
+                      Birthday:
+                    </div>
+                    <input
+                      aria-invalid="true"
+                      class="input noMode"
+                      id="date"
+                      name="age"
+                      readonly=""
+                      required=""
+                      type="text"
+                    />
+                  </label>
+                </div>
+                <div
+                  class="inputWithError  bigInput"
+                >
+                  <label
+                    class="formInput"
+                    for="mail"
+                  >
+                    <div
+                      class="requiredTitle"
+                    >
+                      Email:
+                    </div>
+                    <input
+                      aria-invalid="true"
+                      autocomplete="email"
+                      class="input noMode"
+                      id="mail"
+                      name="email"
+                      placeholder="user@example.com"
+                      readonly=""
+                      required=""
+                      type="text"
+                    />
+                  </label>
+                </div>
+                <div
+                  class="buttonBlock"
+                >
+                  <button
+                    class="button"
+                    type="submit"
+                  >
+                    Change
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;
