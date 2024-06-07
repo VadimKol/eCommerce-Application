@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths } from '@/common/enums';
 import { useAuth } from '@/hooks/useAuth.ts';
@@ -229,7 +228,7 @@ export function Register(): JSX.Element {
       });
 
       const response = await login({ email, password });
-      localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+      localStorage.setItem('geek-shop-auth', 'true');
       toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
     } catch (error) {

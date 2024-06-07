@@ -9,22 +9,15 @@ import type {
 import { toast } from 'react-toastify';
 
 import { CurrencySymbols } from '@/common/enums';
-import { CustomTokenCache } from '@/common/token-cache';
 import type { CategoriesData, GeekShopCustomerDraft, Product, ProductDetails } from '@/common/types';
 import { getFandomsFilter, QUERY_LIMIT } from '@/common/utils';
 
-import {
-  apiRoot,
-  getAnonymousFlowApiRoot,
-  getClientCridentialsFlowApiRoot,
-  getPasswordFlowApiRoot,
-  tokenCache,
-} from './build-client';
+import { AnonymousFlow, apiRoot, ClientCridentialsFlow, PasswordFlow, tokenCache } from './build-client';
 
 const DEFAULT_LOCALE = 'en-US';
 
 export function login(customerSignin: CustomerSignin): Promise<ClientResponse<CustomerSignInResult>> {
-  Object.assign(apiRoot, getPasswordFlowApiRoot(customerSignin.email, customerSignin.password));
+  Object.assign(apiRoot, PasswordFlow(customerSignin.email, customerSignin.password));
   return apiRoot.login().post({ body: customerSignin }).execute();
 }
 
@@ -40,9 +33,10 @@ export function logout(): Promise<void> {
     });
 
     if (response.ok) {
-      localStorage.removeItem('geek-shop-token');
-      Object.assign(tokenCache, new CustomTokenCache());
-      Object.assign(apiRoot, getAnonymousFlowApiRoot());
+      localStorage.removeItem('geek-shop-auth');
+      localStorage.removeItem('geek-shop-refresh');
+      localStorage.removeItem('geek-shop-expires');
+      Object.assign(apiRoot, AnonymousFlow());
     } else {
       throw new Error(`Failed to revoke token ${response.status} ${await response.text()}`);
     }
@@ -52,7 +46,7 @@ export function logout(): Promise<void> {
 }
 
 export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
-  Object.assign(apiRoot, getClientCridentialsFlowApiRoot());
+  Object.assign(apiRoot, ClientCridentialsFlow());
   return apiRoot.me().signup().post({ body: myCustomerDraft }).execute();
 }
 

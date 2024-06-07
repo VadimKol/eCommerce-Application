@@ -5,6 +5,7 @@ import {
   ClientBuilder,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
+  type RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 
@@ -26,8 +27,8 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 
 export const tokenCache = new CustomTokenCache();
 
-// Client cridentials flow api root
-export const getClientCridentialsFlowApiRoot = (): ByProjectKeyRequestBuilder => {
+// Client cridentials flow
+export const ClientCridentialsFlow = (): ByProjectKeyRequestBuilder => {
   Object.assign(tokenCache, new CustomTokenCache());
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host,
@@ -46,8 +47,8 @@ export const getClientCridentialsFlowApiRoot = (): ByProjectKeyRequestBuilder =>
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-// Password flow api root
-export const getPasswordFlowApiRoot = (email: string, password: string): ByProjectKeyRequestBuilder => {
+// Password flow
+export const PasswordFlow = (email: string, password: string): ByProjectKeyRequestBuilder => {
   Object.assign(tokenCache, new CustomTokenCache());
   const user: User = { username: email, password };
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
@@ -67,8 +68,8 @@ export const getPasswordFlowApiRoot = (email: string, password: string): ByProje
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-// Anonymous session flow api root
-export const getAnonymousFlowApiRoot = (): ByProjectKeyRequestBuilder => {
+// Anonymous flow
+export const AnonymousFlow = (): ByProjectKeyRequestBuilder => {
   Object.assign(tokenCache, new CustomTokenCache());
   const anonymousAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     host,
@@ -87,8 +88,8 @@ export const getAnonymousFlowApiRoot = (): ByProjectKeyRequestBuilder => {
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-// Existing access token flow api root
-export const getExistingTokenFlowApiRoot = (token: string): ByProjectKeyRequestBuilder => {
+// Existing flow
+export const ExistingTokenFlow = (token: string): ByProjectKeyRequestBuilder => {
   const client = new ClientBuilder()
     .withExistingTokenFlow(`Bearer ${token}`, {})
     .withHttpMiddleware(httpMiddlewareOptions)
@@ -97,6 +98,31 @@ export const getExistingTokenFlowApiRoot = (token: string): ByProjectKeyRequestB
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-const accessToken = localStorage.getItem('geek-shop-token');
+// Refresh flow
+export const RefreshTokenFlow = (refreshToken: string): ByProjectKeyRequestBuilder => {
+  const refreshAuthMiddlewareOptions: RefreshAuthMiddlewareOptions = {
+    host,
+    projectKey,
+    credentials,
+    tokenCache,
+    refreshToken,
+    fetch,
+  };
 
-export const apiRoot = accessToken !== null ? getExistingTokenFlowApiRoot(accessToken) : getAnonymousFlowApiRoot();
+  const client = new ClientBuilder()
+    .withRefreshTokenFlow(refreshAuthMiddlewareOptions)
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .build();
+
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+};
+
+const expirationTime = localStorage.getItem('geek-shop-expires');
+if (expirationTime !== null && Number(expirationTime) < Date.now()) {
+  localStorage.removeItem('geek-shop-auth');
+  localStorage.removeItem('geek-shop-refresh');
+  localStorage.removeItem('geek-shop-expires');
+}
+const refreshToken = localStorage.getItem('geek-shop-refresh');
+
+export const apiRoot = refreshToken !== null ? RefreshTokenFlow(refreshToken) : AnonymousFlow();

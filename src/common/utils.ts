@@ -32,6 +32,7 @@ export const fandoms = [
 export const QUERY_LIMIT = 12;
 export const PRICE_FILTER_MIN = 1;
 export const PRICE_FILTER_MAX = 100;
+export const REFRESH_TOKEN_EXPIRATION_DAYS = 150;
 
 export function getFandomsFilter(franchises: boolean[]): string {
   const filter: string[] = [];

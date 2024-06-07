@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { tokenCache } from '@/api/build-client';
 import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/СustomButton';
@@ -49,7 +48,7 @@ export function Login(): JSX.Element {
           if (isValid) {
             login({ email, password })
               .then((response) => {
-                localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+                localStorage.setItem('geek-shop-auth', 'true');
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
               })
