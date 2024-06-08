@@ -6,15 +6,19 @@ exports[`renders correctly 1`] = `
     class="pagination"
   >
     <div
-      class="pages"
+      class="pagination_box_after"
     >
-      <span>
-        1
-      </span>
-      -
-      <span>
-        0
-      </span>
+      <div
+        class="pages"
+      >
+        <span>
+          1
+        </span>
+        -
+        <span>
+          0
+        </span>
+      </div>
     </div>
   </div>
 </div>
