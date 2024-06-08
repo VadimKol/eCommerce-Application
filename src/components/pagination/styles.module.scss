@@ -1,9 +1,35 @@
 .pagination {
   display: flex;
-  gap: 10px;
   justify-content: center;
-  align-items: center;
   margin-top: 30px;
+}
+
+.pagination_box,
+.pagination_box_before,
+.pagination_box_after {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: var(--background-color);
+  border-radius: 6px;
+}
+
+.pagination_box_before {
+  &::before {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.pagination_box_after {
+  &::after {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 45px;
+  }
 }
 
 .pages {
