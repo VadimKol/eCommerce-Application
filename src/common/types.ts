@@ -200,3 +200,18 @@ export type LoaderData = {
   subcategory?: Subcategory;
   product?: Product;
 };
+
+export interface CatalogState {
+  products: Product[];
+  page: number;
+  sortType: string;
+  search: string;
+  priceFilter: [number, number];
+  franchises: boolean[];
+  loadingProducts: boolean;
+  categories: { categoryName?: string; subcategoryName?: string };
+}
+
+export interface CatalogAction extends Partial<CatalogState> {
+  type: string;
+}

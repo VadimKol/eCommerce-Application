@@ -3,8 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { tokenCache } from '@/api/build-client';
-import { changePassword, login } from '@/api/client-actions.ts';
+import { login } from '@/api/client-actions.ts';
+import { changePassword } from '@/api/profile.ts';
 
 import { Tooltip } from '../tooltip/Tooltip.tsx';
 import { type FormValues, registerSchema } from './register-schema.ts';
@@ -72,7 +72,6 @@ export function FormChangePassword({ email, version, setPersonInfo }: FormChange
 
         login({ email, password })
           .then(() => {
-            localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
             toast(`Password change was successful`, { type: 'success' });
           })
           .catch(() => {

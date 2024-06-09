@@ -1,0 +1,75 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.pagination_box,
+.pagination_box_before,
+.pagination_box_after {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: var(--background-color);
+  border-radius: 6px;
+}
+
+.pagination_box_before {
+  &::before {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.pagination_box_after {
+  &::after {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.pages {
+  font-size: 1.5em;
+}
+
+.pag_left,
+.pag_right {
+  width: 45px;
+  height: 45px;
+  background-color: var(--primary-color);
+  border: none;
+  transition: transform 0.5s, background-color 0.5s;
+  mask-image: url("/src/assets/images/arrow_down.svg");
+  mask-size: cover;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--tertiary-color);
+      cursor: pointer;
+    }
+  }
+}
+
+.pag_left {
+  transform: rotate(90deg);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: rotate(90deg) scale(1.2);
+    }
+  }
+}
+
+.pag_right {
+  transform: rotate(-90deg);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: rotate(-90deg) scale(1.2);
+    }
+  }
+}

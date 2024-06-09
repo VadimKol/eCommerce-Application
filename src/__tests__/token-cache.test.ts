@@ -8,10 +8,10 @@ describe('CustomTokenCache', () => {
   });
 
   afterEach(() => {
-    localStorage.removeItem('geek-shop-token');
+    localStorage.removeItem('geek-shop-refresh');
   });
 
-  it('should initialize token store with default values if no token is found in localStorage', () => {
+  it('should initialize token store with default values', () => {
     expect(tokenCache.get()).toEqual({
       token: '',
       expirationTime: 0,
@@ -31,11 +31,15 @@ describe('CustomTokenCache', () => {
     expect(tokenCache.get()).toEqual(mockTokenStore);
   });
 
-  it('should initialize token store with token from localStorage if available', () => {
-    localStorage.setItem('geek-shop-token', 'stored-token');
+  it('should set token store in LocalStorage correctly', () => {
+    const mockTokenStore = {
+      token: 'mock-token',
+      expirationTime: Date.now() + 3600 * 1000,
+      refreshToken: 'mock-refresh-token',
+    };
 
-    tokenCache = new CustomTokenCache();
+    tokenCache.set(mockTokenStore);
 
-    expect(tokenCache.get().token).toEqual('stored-token');
+    expect(tokenCache.get().refreshToken).toEqual(localStorage.getItem('geek-shop-refresh'));
   });
 });

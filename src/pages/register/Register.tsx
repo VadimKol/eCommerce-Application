@@ -5,12 +5,11 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { tokenCache } from '@/api/build-client.ts';
 import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths } from '@/common/enums';
+import { countries } from '@/common/utils.ts';
 import { useAuth } from '@/hooks/useAuth.ts';
 
-import { countries } from '../../constants/constants.ts';
 import { type Country, type RegisterSchema, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 
@@ -229,7 +228,7 @@ export function Register(): JSX.Element {
       });
 
       const response = await login({ email, password });
-      localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
+      localStorage.setItem('geek-shop-auth', 'true');
       toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
     } catch (error) {
@@ -650,7 +649,7 @@ export function Register(): JSX.Element {
               </label>
               <button
                 type="button"
-                className={revealPassword ? `${styles.reveal} ${styles.show}` : styles.reveal}
+                className={revealPassword ? `${styles.reveal} ${styles.hidden}` : styles.reveal}
                 aria-label="Reveal"
                 onClick={() => setRevealPassword(!revealPassword)}
               />

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getProduct } from '@/api/client-actions';
+import { getProduct } from '@/api/catalog';
 import type { ProductDetails } from '@/common/types';
 import { StatusError } from '@/common/utils';
 import { Breadcrumbs } from '@/components/breadcrumbs/Breadcrumbs';

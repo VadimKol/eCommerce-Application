@@ -9,7 +9,7 @@ export const AuthContext = createContext({
 } as AuthContextInterface);
 
 export function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('geek-shop-token') !== null);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('geek-shop-auth') !== null);
 
   const handleLogin = useCallback(() => {
     setIsAuthenticated(true);

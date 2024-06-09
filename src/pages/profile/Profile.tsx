@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { crudAddress, profile } from '@/api/client-actions.ts';
+import { crudAddress, profile } from '@/api/profile.ts';
 
 import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx';
 import { FormProfileAddresses } from '../../components/form-profile-addresses/FormProfileAddresses.tsx';

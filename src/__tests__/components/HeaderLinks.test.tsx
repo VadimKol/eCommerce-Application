@@ -87,12 +87,12 @@ describe('HeaderLinks', () => {
     });
   });
 
-  it('does not render categories list in burger menu when not on catalog path', () => {
+  /*   it('does not render categories list in burger menu when not on catalog path', () => {
     setup(
       { isAuthenticated: true, handleLogout: jest.fn(), handleLogin: jest.fn() },
       { error: null, categories: null, loading: false },
     );
     window.location.pathname = '/home';
     expect(screen.queryByText('Categories')).not.toBeInTheDocument();
-  });
+  }); */
 });

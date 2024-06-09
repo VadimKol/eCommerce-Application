@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <a
+    class="product_link"
+    href="/catalog/Cosplay/Mask/"
+  >
+    <div
+      class="image_box"
+    >
+      <img
+        alt="Product"
+        class="product_img"
+        src=""
+      />
+    </div>
+    <div
+      class="item_box"
+    >
+      <p
+        class="product_name"
+      />
+      <p
+        class="product_description"
+        style="max-height: 0;"
+      />
+      <p
+        class="price_block"
+      >
+        <span>
+          $
+          00.00
+        </span>
+        <span
+          class="product_discount"
+        >
+          $
+          00.00
+        </span>
+      </p>
+    </div>
+  </a>
+  <button
+    class="button button--primary btn_details"
+    id=""
+    type="button"
+  >
+    Show
+     details
+  </button>
+</div>
+`;

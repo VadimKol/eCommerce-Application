@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import type { SelectProps } from './types';
 
-export function CustomSelect({ selectItems, selectState, setSelectState, className }: SelectProps): JSX.Element {
+export function CustomSelect({ selectItems, selectState, dispatch, className }: SelectProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const selectBoxRef = useRef(null);
   const ListRef = useRef(null);
@@ -37,7 +37,6 @@ export function CustomSelect({ selectItems, selectState, setSelectState, classNa
         }}
         role="listbox"
         tabIndex={0}
-        onKeyUp={() => {}}
         ref={selectBoxRef}
       >
         <span className={styles.title}>{selectState}</span>
@@ -50,11 +49,10 @@ export function CustomSelect({ selectItems, selectState, setSelectState, classNa
         onClick={(e) => {
           const selectItem = e.target;
           if (selectItem instanceof HTMLLIElement) {
-            setSelectState(selectItem.textContent as string);
+            dispatch({ type: 'SET_SORT_TYPE', sortType: selectItem.textContent ?? '' });
             setIsOpen(false);
           }
         }}
-        onKeyUp={() => {}}
       >
         {selectItems.map((selectItem) => (
           <li key={selectItem} className={styles.list_item} role="option" aria-selected>
