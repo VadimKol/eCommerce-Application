@@ -115,10 +115,11 @@
 
 .divider {
   width: 100%;
-  height: 5px;
+  height: 2px;
   margin-bottom: 15px;
   background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
   border-radius: 5px;
+  box-shadow: 0 0 2px 4px var(--background-color);
 }
 
 .sort_n_search_form {

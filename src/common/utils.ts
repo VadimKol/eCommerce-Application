@@ -30,7 +30,7 @@ export const fandoms = [
 ];
 
 export const countriesFilter = ['China', 'France', 'Germany', 'India', 'Italy', 'Korea', 'US'];
-export const materials = ['Aluminum', 'Cardboard', 'Ceramic', 'Coir', 'Paper', 'Plastic', 'Polyester', 'PVC'];
+export const materials = ['Aluminum', 'Cardboard', 'Ceramic', 'Coir', 'Paper', 'Plastic', 'Polyester'];
 export const countries = [
   {
     title: 'United States',
