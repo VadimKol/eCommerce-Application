@@ -8,7 +8,7 @@ exports[`renders correctly 1`] = `
     <div
       class="infoContainer"
     >
-      Loading products...
+      Loading categories...
     </div>
   </main>
 </div>
