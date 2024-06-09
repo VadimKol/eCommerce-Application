@@ -476,19 +476,6 @@ exports[`renders correctly 1`] = `
              Polyester
           </label>
         </li>
-        <li>
-          <label
-            class="checkbox_label"
-            for="PVC"
-          >
-            <input
-              class="checkbox"
-              id="PVC"
-              type="checkbox"
-            />
-             PVC
-          </label>
-        </li>
       </ul>
     </li>
   </ul>
