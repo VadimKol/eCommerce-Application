@@ -45,10 +45,6 @@
   overflow: hidden;
   height: 265px;
   border-radius: 10px;
-
-  @media screen and (width <= 1455px) {
-    height: 300px;
-  }
 }
 
 .product_img {

@@ -97,9 +97,10 @@ export function Catalog(): JSX.Element {
 
           <section className={styles.products_section}>
             <div className={styles.sort_n_search_form}>
-              <Search searchField={searchField} dispatch={dispatch} />
               <CustomSelect selectItems={sortingTypes} selectState={sortType} dispatch={dispatch} />
+              <Search searchField={searchField} dispatch={dispatch} />
             </div>
+            <div className={styles.divider} />
             {loadingProducts ? (
               <div className={styles.infoContainer}>Loading products...</div>
             ) : (

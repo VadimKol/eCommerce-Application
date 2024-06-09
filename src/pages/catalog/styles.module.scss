@@ -108,20 +108,28 @@
     border-radius: 10px;
   }
 
-  @media screen and (width <= 1455px) {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  @media screen and (width > 1024px) {
+    grid-template-columns: repeat(auto-fit, minmax(265px, 0.34fr));
   }
+}
+
+.divider {
+  width: 100%;
+  height: 5px;
+  margin-bottom: 15px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  border-radius: 5px;
 }
 
 .sort_n_search_form {
   display: flex;
   gap: 15px;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 15px;
 
   @media screen and (width <= 820px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   @media screen and (width <= 768px) {
@@ -129,7 +137,7 @@
   }
 
   @media screen and (width <= 590px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 }
 
@@ -143,14 +151,8 @@
   padding: 0 30px;
   font-size: 4rem;
 
-  @media screen and (width <= 1250px) {
+  @media screen and (width <= 1000px) {
     font-size: 2rem;
-    font-weight: 600;
-  }
-
-  @media screen and (width <= 900px) {
-    padding: 0 15px;
-    font-size: 1.5rem;
   }
 }
 
