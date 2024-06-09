@@ -208,6 +208,8 @@ export interface CatalogState {
   search: string;
   priceFilter: [number, number];
   franchises: boolean[];
+  countriesF: boolean[];
+  materialsF: boolean[];
   loadingProducts: boolean;
   categories: { categoryName?: string; subcategoryName?: string };
 }

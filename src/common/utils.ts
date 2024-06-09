@@ -29,6 +29,8 @@ export const fandoms = [
   'Supernatural',
 ];
 
+export const countriesFilter = ['China', 'France', 'Germany', 'India', 'Italy', 'Korea', 'US'];
+export const materials = ['Aluminum', 'Cardboard', 'Ceramic', 'Coir', 'Paper', 'Plastic', 'Polyester'];
 export const countries = [
   {
     title: 'United States',
@@ -56,18 +58,36 @@ export const PRICE_FILTER_MIN = 1;
 export const PRICE_FILTER_MAX = 100;
 export const REFRESH_TOKEN_EXPIRATION_DAYS = 150;
 
-export function getFandomsFilter(franchises: boolean[]): string {
+export function getCheckboxFilter(checkboxes: boolean[], attribute: string): string {
   const filter: string[] = [];
+  let constantsFilter: string[] = [];
 
-  franchises.forEach((franchise, index) => {
-    fandoms.forEach((fandom, i) => {
-      if (index === i && franchise) {
-        filter.push(`"${fandom}"`);
+  switch (attribute) {
+    case 'Fandom': {
+      constantsFilter = fandoms;
+      break;
+    }
+    case 'Country': {
+      constantsFilter = countriesFilter;
+      break;
+    }
+    case 'Material': {
+      constantsFilter = materials;
+      break;
+    }
+    default:
+      break;
+  }
+
+  checkboxes.forEach((checkbox, index) => {
+    constantsFilter.forEach((element, i) => {
+      if (index === i && checkbox) {
+        filter.push(`"${element}"`);
       }
     });
   });
 
-  return filter.length > 0 ? `variants.attributes.Fandom:${filter.join(',')}` : '';
+  return filter.length > 0 ? `variants.attributes.${attribute}:${filter.join(',')}` : '';
 }
 
 export function getSort(sortType: string): string | undefined {
@@ -101,6 +121,8 @@ export const initialState: CatalogState = {
   search: '',
   priceFilter: [PRICE_FILTER_MIN, PRICE_FILTER_MAX],
   franchises: Array(fandoms.length).fill(false),
+  countriesF: Array(countriesFilter.length).fill(false),
+  materialsF: Array(materials.length).fill(false),
   loadingProducts: true,
   categories: {},
 };
@@ -115,6 +137,8 @@ export function reducerCatalog(
     search = '',
     priceFilter = [PRICE_FILTER_MIN, PRICE_FILTER_MAX],
     franchises = Array(fandoms.length).fill(false),
+    countriesF = Array(countriesFilter.length).fill(false),
+    materialsF = Array(materials.length).fill(false),
     loadingProducts = true,
     categories = {},
   }: CatalogAction,
@@ -128,6 +152,8 @@ export function reducerCatalog(
         sortType,
         priceFilter,
         franchises,
+        countriesF,
+        materialsF,
         search,
         loadingProducts,
       };
@@ -143,8 +169,12 @@ export function reducerCatalog(
       return { ...state, priceFilter, page, loadingProducts };
     case 'SET_FRANCHISES':
       return { ...state, franchises, page, loadingProducts };
+    case 'SET_COUNTRIES':
+      return { ...state, countriesF, page, loadingProducts };
+    case 'SET_MATERIALS':
+      return { ...state, materialsF, page, loadingProducts };
     case 'RESET_FILTERS':
-      return { ...state, priceFilter, franchises, page, loadingProducts };
+      return { ...state, priceFilter, franchises, countriesF, materialsF, page, loadingProducts };
     case 'SET_PAGE':
       return { ...state, page, loadingProducts };
     default:

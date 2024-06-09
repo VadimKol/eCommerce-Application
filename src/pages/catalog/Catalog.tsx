@@ -22,11 +22,13 @@ export function Catalog(): JSX.Element {
   const { categoryName, subcategoryName } = useParams<{ categoryName?: string; subcategoryName?: string }>();
   const searchField = useRef<HTMLInputElement>(null);
   const total = useRef(0);
-  const [{ products, page, sortType, search, priceFilter, franchises, loadingProducts, categories }, dispatch] =
-    useReducer(reducerCatalog, {
-      ...initialState,
-      categories: { categoryName, subcategoryName },
-    });
+  const [
+    { products, page, sortType, search, priceFilter, franchises, countriesF, materialsF, loadingProducts, categories },
+    dispatch,
+  ] = useReducer(reducerCatalog, {
+    ...initialState,
+    categories: { categoryName, subcategoryName },
+  });
 
   if (categories.categoryName !== categoryName || categories.subcategoryName !== subcategoryName) {
     dispatch({ type: 'SET_CATEGORIES', categories: { categoryName, subcategoryName } });
@@ -41,7 +43,17 @@ export function Catalog(): JSX.Element {
       const subcategoryID = categoryID?.subcategories.find(
         (subcategory) => subcategory.key === categories.subcategoryName,
       );
-      getProducts(page, sortType, priceFilter, franchises, search, categoryID?.id, subcategoryID?.id)
+      getProducts(
+        page,
+        sortType,
+        priceFilter,
+        franchises,
+        countriesF,
+        materialsF,
+        search,
+        categoryID?.id,
+        subcategoryID?.id,
+      )
         .then((data) => {
           total.current = data.total;
           data.products.forEach((product) => {
@@ -61,7 +73,7 @@ export function Catalog(): JSX.Element {
         .catch((e: Error) => toast(e.message, { type: 'error' }))
         .finally(() => dispatch({ type: 'SET_LOADING_PRODUCTS', loadingProducts: false }));
     }
-  }, [categories, categoriesData, page, sortType, priceFilter, franchises, search]);
+  }, [categories, categoriesData, page, sortType, priceFilter, franchises, countriesF, materialsF, search]);
 
   if (error instanceof StatusError && error.statusCode === 404) {
     return <NoMatch />;
@@ -92,14 +104,21 @@ export function Catalog(): JSX.Element {
       <div className={styles.container}>
         <section className={styles.product_box}>
           <aside className={styles.filters}>
-            <Filters priceFilter={priceFilter} franchises={franchises} dispatch={dispatch} />
+            <Filters
+              priceFilter={priceFilter}
+              franchises={franchises}
+              countriesF={countriesF}
+              materialsF={materialsF}
+              dispatch={dispatch}
+            />
           </aside>
 
           <section className={styles.products_section}>
             <div className={styles.sort_n_search_form}>
-              <Search searchField={searchField} dispatch={dispatch} />
               <CustomSelect selectItems={sortingTypes} selectState={sortType} dispatch={dispatch} />
+              <Search searchField={searchField} dispatch={dispatch} />
             </div>
+            <div className={styles.divider} />
             {loadingProducts ? (
               <div className={styles.infoContainer}>Loading products...</div>
             ) : (

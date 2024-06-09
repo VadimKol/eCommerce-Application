@@ -1,7 +1,7 @@
 import {
   calculateAge,
   fandoms,
-  getFandomsFilter,
+  getCheckboxFilter,
   getSort,
   initialState,
   PRICE_FILTER_MIN,
@@ -21,13 +21,13 @@ describe('Testing utils functions', () => {
   });
 
   it('should be empty', () => {
-    expect(getFandomsFilter(franchises)).toBe('');
+    expect(getCheckboxFilter(franchises, 'Fandom')).toBe('');
   });
 
   it('should be firstFandom', () => {
     const firstFandom = fandoms[0];
     franchises[0] = true;
-    expect(getFandomsFilter(franchises)).toBe(`variants.attributes.Fandom:"${firstFandom}"`);
+    expect(getCheckboxFilter(franchises, 'Fandom')).toBe(`variants.attributes.Fandom:"${firstFandom}"`);
   });
 
   it('should be undefined, because this type is not in sortingTypes', () => {

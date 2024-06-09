@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 import { CurrencySymbols } from '@/common/enums';
 import type { CategoriesData, Product, ProductDetails } from '@/common/types';
-import { DEFAULT_LOCALE, getFandomsFilter, getSort, QUERY_LIMIT } from '@/common/utils';
+import { DEFAULT_LOCALE, getCheckboxFilter, getSort, QUERY_LIMIT } from '@/common/utils';
 
 import { apiRoot } from './build-client';
 
@@ -52,6 +52,8 @@ export async function getProducts(
   sortType: string,
   priceFilter: [number, number],
   franchises: boolean[],
+  countriesF: boolean[],
+  materialsF: boolean[],
   search: string,
   categoryID?: string,
   subcategoryID?: string,
@@ -68,9 +70,17 @@ export async function getProducts(
   if (categoryRequest) {
     queryArgs.filter.push(`categories.id:"${categoryRequest}"`);
   }
-  const fandomsFilter = getFandomsFilter(franchises);
+  const fandomsFilter = getCheckboxFilter(franchises, 'Fandom');
   if (fandomsFilter) {
     queryArgs.filter.push(fandomsFilter);
+  }
+  const countriesFilter = getCheckboxFilter(countriesF, 'Country');
+  if (countriesFilter) {
+    queryArgs.filter.push(countriesFilter);
+  }
+  const materialsFilter = getCheckboxFilter(materialsF, 'Material');
+  if (materialsFilter) {
+    queryArgs.filter.push(materialsFilter);
   }
   if (search) {
     Object.assign(queryArgs, { fuzzy: true, fuzzyLevel: 0, [`text.${DEFAULT_LOCALE}`]: search });
