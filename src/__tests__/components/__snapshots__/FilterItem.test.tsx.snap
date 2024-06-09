@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="item"
+    role="listbox"
+    tabindex="0"
+  >
+    <span
+      class="title"
+    >
+      Price
+    </span>
+    <span
+      class="icon"
+    />
+  </div>
+  <div
+    class="range"
+  >
+    <div
+      class="container"
+    >
+      <input
+        class="thumb thumb--left"
+        max="100"
+        min="1"
+        style="z-index: 5;"
+        type="range"
+        value="1"
+      />
+      <input
+        class="thumb thumb--right"
+        max="100"
+        min="1"
+        type="range"
+        value="100"
+      />
+      <div
+        class="slider"
+      >
+        <div
+          class="slider__track"
+        />
+        <div
+          class="slider__range"
+          style="left: 0%; width: 100%;"
+        />
+        <div
+          class="slider__left-value"
+        >
+          $
+          1
+        </div>
+        <div
+          class="slider__right-value"
+        >
+          $
+          100
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
