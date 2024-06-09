@@ -70,7 +70,7 @@ export function Catalog(): JSX.Element {
   if (loading) {
     return (
       <main className={classNames('main', styles.main)}>
-        <div className={styles.infoContainer}>Loading products...</div>
+        <div className={styles.infoContainer}>Loading categories...</div>
       </main>
     );
   }
@@ -94,25 +94,28 @@ export function Catalog(): JSX.Element {
           <aside className={styles.filters}>
             <Filters priceFilter={priceFilter} franchises={franchises} dispatch={dispatch} />
           </aside>
-          {loadingProducts ? (
-            <div className={styles.infoContainer}>Loading products...</div>
-          ) : (
-            <section className={styles.products_section}>
-              <div className={styles.sort_n_search_form}>
-                <Search searchField={searchField} dispatch={dispatch} />
-                <CustomSelect selectItems={sortingTypes} selectState={sortType} dispatch={dispatch} />
-              </div>
-              <ul className={products.length ? styles.products : `${styles.products} ${styles.products_not_found}`}>
-                {products.map((product) => (
-                  <li key={product.id} className={styles.products_item}>
-                    <ProductCard product={product} categoryName={categoryName} subcategoryName={subcategoryName} />
-                  </li>
-                ))}
-                {!products.length && <li className={styles.not_found}>Products not found</li>}
-              </ul>
-              {total.current > QUERY_LIMIT && <Pagination page={page} dispatch={dispatch} total={total} />}
-            </section>
-          )}
+
+          <section className={styles.products_section}>
+            <div className={styles.sort_n_search_form}>
+              <Search searchField={searchField} dispatch={dispatch} />
+              <CustomSelect selectItems={sortingTypes} selectState={sortType} dispatch={dispatch} />
+            </div>
+            {loadingProducts ? (
+              <div className={styles.infoContainer}>Loading products...</div>
+            ) : (
+              <>
+                <ul className={products.length ? styles.products : `${styles.products} ${styles.products_not_found}`}>
+                  {products.map((product) => (
+                    <li key={product.id} className={styles.products_item}>
+                      <ProductCard product={product} categoryName={categoryName} subcategoryName={subcategoryName} />
+                    </li>
+                  ))}
+                  {!products.length && <li className={styles.not_found}>Products not found</li>}
+                </ul>
+                {total.current > QUERY_LIMIT && <Pagination page={page} dispatch={dispatch} total={total} />}
+              </>
+            )}
+          </section>
         </section>
       </div>
     </main>
