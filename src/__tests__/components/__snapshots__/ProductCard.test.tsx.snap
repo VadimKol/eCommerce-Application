@@ -3,26 +3,30 @@
 exports[`renders correctly 1`] = `
 <div>
   <div
-    class="product_link"
+    class="card"
   >
-    <a
+    <div
       class="image_container"
-      href="/catalog/Cosplay/Mask/"
     >
       <img
         alt="Product"
         class="product_img"
         src=""
       />
-    </a>
+    </div>
     <div
       class="text_container"
     >
+      <a
+        class="card_link"
+        href="/catalog/Cosplay/Mask/"
+      >
+        <h2
+          class="card_title"
+        />
+      </a>
       <p
-        class="product_name"
-      />
-      <p
-        class="product_description"
+        class="card_description"
       />
       <p
         class="price_block"
@@ -39,7 +43,7 @@ exports[`renders correctly 1`] = `
         </span>
       </p>
       <button
-        class="button button--tertiary btn_details"
+        class="button button--tertiary btn_cart"
         id=""
         type="button"
       >
