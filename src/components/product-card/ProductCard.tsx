@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { NavigationPaths } from '@/common/enums';
@@ -8,36 +7,25 @@ import styles from './styles.module.scss';
 import { type ProductCardProps } from './types';
 
 export function ProductCard({ product, categoryName, subcategoryName }: ProductCardProps): JSX.Element {
-  const [details, setDetails] = useState(false);
-  const description = useRef<HTMLParagraphElement>(null);
-  useEffect(() => {
-    if (description.current) {
-      description.current.style.maxHeight = details ? `${description.current.scrollHeight}px` : '0';
-    }
-  });
   return (
-    <>
+    <div className={styles.product_link}>
       <Link
         to={`${NavigationPaths.CATALOG}/${categoryName || product.keyCategory}/${subcategoryName || product.keySubCategory}/${product.key}`}
-        className={styles.product_link}
+        className={styles.image_container}
       >
-        <div className={styles.image_box}>
-          <img className={styles.product_img} src={product.images[0]} alt="Product" />
-        </div>
-        <div className={styles.item_box}>
-          <p className={styles.product_name}>{product.name}</p>
-          <p className={styles.product_description} ref={description}>
-            {product.description}
-          </p>
-          <p className={styles.price_block}>
-            {product.discount && <span>${product.discount}</span>}
-            <span className={product.discount && styles.product_discount}>${product.price}</span>
-          </p>
-        </div>
+        <img className={styles.product_img} src={product.images[0]} alt="Product" />
       </Link>
-      <CustomButton className={styles.btn_details} onClick={() => setDetails(!details)}>
-        {details ? 'Hide' : 'Show'} details
-      </CustomButton>
-    </>
+      <div className={styles.text_container}>
+        <p className={styles.product_name}>{product.name}</p>
+        <p className={styles.product_description}>{product.description}</p>
+        <p className={styles.price_block}>
+          {product.discount && <span>${product.discount}</span>}
+          <span className={product.discount && styles.product_discount}>${product.price}</span>
+        </p>
+        <CustomButton className={styles.btn_details} variant="tertiary">
+          Add to cart
+        </CustomButton>
+      </div>
+    </div>
   );
 }

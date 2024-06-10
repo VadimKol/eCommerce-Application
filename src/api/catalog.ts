@@ -130,69 +130,65 @@ export async function getProducts(
 }
 
 export async function getProduct(productKey: string): Promise<ProductDetails> {
-  try {
-    const response = await apiRoot
-      .productProjections()
-      .get({
-        queryArgs: {
-          where: `key="${productKey}"`,
-        },
-      })
-      .execute();
-
-    const product = response.body.results[0];
-
-    if (!product) {
-      throw new Error('Product not found');
-    }
-
-    const productTypeId = product.productType.id;
-
-    const productTypeResponse = await apiRoot.productTypes().withId({ ID: productTypeId }).get().execute();
-
-    const productType = productTypeResponse.body;
-
-    const name = product.name[DEFAULT_LOCALE];
-    const description = product.description?.[DEFAULT_LOCALE];
-    const { masterVariant } = product;
-    const prices = masterVariant?.prices ?? [];
-    const images = masterVariant?.images ?? [];
-    const attributes = masterVariant?.attributes ?? [];
-    const availability = masterVariant?.availability;
-
-    const price = prices[0];
-    const priceAmount = price?.value?.centAmount ? (price.value.centAmount / 100).toFixed(2) : null;
-    const discountedAmount = price?.discounted ? (price.discounted.value.centAmount / 100).toFixed(2) : null;
-
-    const currencySymbol = price?.value?.currencyCode
-      ? CurrencySymbols[price.value.currencyCode as keyof typeof CurrencySymbols]
-      : null;
-
-    const attributeLabels = productType.attributes?.reduce(
-      (acc, attr) => {
-        acc[attr.name] = attr.label[DEFAULT_LOCALE]!;
-        return acc;
+  const response = await apiRoot
+    .productProjections()
+    .get({
+      queryArgs: {
+        where: `key="${productKey}"`,
       },
-      {} as Record<string, string>,
-    );
+    })
+    .execute();
 
-    return {
-      name,
-      description,
-      price: priceAmount || null,
-      discountedPrice: discountedAmount || null,
-      currency: currencySymbol,
-      images: images.map((image) => image.url),
-      attributes: attributes.map((attr) => ({
-        name: attributeLabels?.[attr.name] || attr.name,
-        value: attr.value,
-      })),
-      availability: {
-        isOnStock: availability?.isOnStock ?? null,
-        availableQuantity: availability?.availableQuantity ?? null,
-      },
-    };
-  } catch (error) {
-    throw new Error(`Error fetching product information: ${error}`);
+  const product = response.body.results[0];
+
+  if (!product) {
+    return Promise.reject(new Error('Product not found'));
   }
+
+  const productTypeId = product.productType.id;
+
+  const productTypeResponse = await apiRoot.productTypes().withId({ ID: productTypeId }).get().execute();
+
+  const productType = productTypeResponse.body;
+
+  const name = product.name[DEFAULT_LOCALE];
+  const description = product.description?.[DEFAULT_LOCALE];
+  const { masterVariant } = product;
+  const prices = masterVariant?.prices ?? [];
+  const images = masterVariant?.images ?? [];
+  const attributes = masterVariant?.attributes ?? [];
+  const availability = masterVariant?.availability;
+
+  const price = prices[0];
+  const priceAmount = price?.value?.centAmount ? (price.value.centAmount / 100).toFixed(2) : null;
+  const discountedAmount = price?.discounted ? (price.discounted.value.centAmount / 100).toFixed(2) : null;
+
+  const currencySymbol = price?.value?.currencyCode
+    ? CurrencySymbols[price.value.currencyCode as keyof typeof CurrencySymbols]
+    : null;
+
+  const attributeLabels = productType.attributes?.reduce(
+    (acc, attr) => {
+      acc[attr.name] = attr.label[DEFAULT_LOCALE]!;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
+  return {
+    name,
+    description,
+    price: priceAmount || null,
+    discountedPrice: discountedAmount || null,
+    currency: currencySymbol,
+    images: images.map((image) => image.url),
+    attributes: attributes.map((attr) => ({
+      name: attributeLabels?.[attr.name] || attr.name,
+      value: attr.value,
+    })),
+    availability: {
+      isOnStock: availability?.isOnStock ?? null,
+      availableQuantity: availability?.availableQuantity ?? null,
+    },
+  };
 }
