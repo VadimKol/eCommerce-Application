@@ -8,21 +8,23 @@ import { type ProductCardProps } from './types';
 
 export function ProductCard({ product, categoryName, subcategoryName }: ProductCardProps): JSX.Element {
   return (
-    <div className={styles.product_link}>
-      <Link
-        to={`${NavigationPaths.CATALOG}/${categoryName || product.keyCategory}/${subcategoryName || product.keySubCategory}/${product.key}`}
-        className={styles.image_container}
-      >
+    <div className={styles.card}>
+      <div className={styles.image_container}>
         <img className={styles.product_img} src={product.images[0]} alt="Product" />
-      </Link>
+      </div>
       <div className={styles.text_container}>
-        <p className={styles.product_name}>{product.name}</p>
-        <p className={styles.product_description}>{product.description}</p>
+        <Link
+          to={`${NavigationPaths.CATALOG}/${categoryName || product.keyCategory}/${subcategoryName || product.keySubCategory}/${product.key}`}
+          className={styles.card_link}
+        >
+          <h2 className={styles.card_title}>{product.name}</h2>
+        </Link>
+        <p className={styles.card_description}>{product.description}</p>
         <p className={styles.price_block}>
           {product.discount && <span>${product.discount}</span>}
           <span className={product.discount && styles.product_discount}>${product.price}</span>
         </p>
-        <CustomButton className={styles.btn_details} variant="tertiary">
+        <CustomButton className={styles.btn_cart} variant="tertiary">
           Add to cart
         </CustomButton>
       </div>
