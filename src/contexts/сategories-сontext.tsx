@@ -13,11 +13,9 @@ type CategoriesProviderProps = {
   children: ReactNode;
 };
 
-let categoriesCache: CategoriesData | null = null;
-
 export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.Element {
-  const [categories, setCategories] = useState<CategoriesData | null>(categoriesCache);
-  const [loading, setLoading] = useState(!categoriesCache);
+  const [categories, setCategories] = useState<CategoriesData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const location = useLocation();
 
@@ -47,24 +45,9 @@ export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.E
   };
 
   useEffect(() => {
-    setError(null);
-
-    if (categoriesCache) {
-      setLoading(false);
-      setCategories(categoriesCache);
-      validatePath(categoriesCache, location.pathname);
-      return;
-    }
-
-    if (!location.pathname.startsWith(NavigationPaths.CATALOG)) {
-      return;
-    }
-
     getCategories()
       .then((data) => {
-        categoriesCache = data;
         setCategories(data);
-        validatePath(data, location.pathname);
       })
       .catch((err) => {
         if (err instanceof Error) {
@@ -76,7 +59,13 @@ export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.E
       .finally(() => {
         setLoading(false);
       });
-  }, [location.pathname]);
+  }, []);
+
+  useEffect(() => {
+    if (categories) {
+      validatePath(categories, location.pathname);
+    }
+  }, [location.pathname, categories]);
 
   const value = useMemo(() => ({ categories, loading, error }), [categories, loading, error]);
 
