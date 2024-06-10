@@ -8,6 +8,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { ProductDetails } from '@/common/types';
+import { capitalizeFirstLetter } from '@/common/utils';
 
 import styles from './styles.module.scss';
 
@@ -135,9 +136,11 @@ function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Elemen
                 (attribute) =>
                   attribute.name !== 'Description' && (
                     <div key={attribute.name} className={styles.attribute}>
-                      <strong className={styles.attributeName}>{attribute.name}:</strong>
+                      <strong className={styles.attributeName}>{capitalizeFirstLetter(attribute.name)}:</strong>
                       <span className={styles.attributeValue}>
-                        {Array.isArray(attribute.value) ? attribute?.value[0]?.key : attribute.value}
+                        {Array.isArray(attribute.value) && attribute.value[0]
+                          ? capitalizeFirstLetter(attribute.value[0].key)
+                          : capitalizeFirstLetter(attribute.value.toString())}
                       </span>
                     </div>
                   ),
