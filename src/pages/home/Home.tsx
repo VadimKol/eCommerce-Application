@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { PromocodeLine } from '../../components/promocode-line/PromocodeLine.tsx';
 import styles from './styles.module.scss';
 
 export function Home(): JSX.Element {
@@ -40,14 +41,7 @@ export function Home(): JSX.Element {
               </SwiperSlide>
             ))}
         </Swiper>
-        <div className={styles.animateBlock}>
-          <div className={classNames(styles.animateLine, styles.animateLineFirst)}>
-            Apply Promo Code &quot;GEEK-SHOP&quot; and get 10% discount
-          </div>
-          <div className={classNames(styles.animateLine, styles.animateLineSecond)}>
-            Apply Promo Code &quot;GEEK-SHOP&quot; and get 10% discount
-          </div>
-        </div>
+        <PromocodeLine />
       </div>
     </main>
   );
