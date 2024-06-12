@@ -1,0 +1,20 @@
+.catalogBlock {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.catalogItem {
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #cccccc;
+}
+
+.catalogImage {
+  max-width: 100%;
+  height: auto;
+}
+
+.catalogTitle {
+  margin-top: 0.5rem;
+}
