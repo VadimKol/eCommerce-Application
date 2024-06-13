@@ -7,16 +7,19 @@ import { Header } from '@/components/header/Header.tsx';
 import { Toast } from '@/components/toast/Toast.tsx';
 
 import { AuthProvider } from './contexts/auth-context';
+import { CartProvider } from './contexts/cart-context';
 import { CategoriesProvider } from './contexts/сategories-сontext';
 
 export function App(): JSX.Element {
   return (
     <AuthProvider>
       <CategoriesProvider>
-        <Header />
-        <Outlet />
-        <Footer />
-        <Toast />
+        <CartProvider>
+          <Header />
+          <Outlet />
+          <Footer />
+          <Toast />
+        </CartProvider>
       </CategoriesProvider>
     </AuthProvider>
   );

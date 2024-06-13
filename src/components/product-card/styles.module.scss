@@ -106,11 +106,12 @@
   z-index: 5;
   display: flex;
   gap: 8px;
+  justify-content: center;
   align-items: center;
-  min-width: 8.5rem;
+  min-width: 12rem;
   margin-inline: auto;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
 
   &::before {
     content: "";
@@ -120,6 +121,10 @@
     mask-image: url("../../assets/images/cart.svg");
     mask-size: cover;
     mask-repeat: no-repeat;
+  }
+
+  &:disabled {
+    background-color: #088d2e;
   }
 }
 
