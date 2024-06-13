@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { deleteCart } from '@/api/cart.ts';
 import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths } from '@/common/enums';
 import { countries } from '@/common/utils.ts';
@@ -241,7 +240,6 @@ export function Register(): JSX.Element {
       toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
       updateCart(response.body.cart || null);
-      await deleteCart(cart?.id || '');
     } catch (error) {
       if (error instanceof Error) {
         toast(error.message, { type: 'error' });

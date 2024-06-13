@@ -11,11 +11,8 @@ export const createCart = async (): Promise<ClientResponse<Cart>> =>
     .post({ body: { currency: 'USD', deleteDaysAfterLastModification: REFRESH_TOKEN_EXPIRATION_DAYS } })
     .execute();
 
-export const deleteCart = async (ID: string): Promise<ClientResponse<Cart> | null> => {
+export const deleteCart = async (ID: string): Promise<ClientResponse<Cart>> => {
   const response = await apiRoot.carts().withId({ ID }).get().execute();
-  if (response.body.cartState === 'Active') {
-    return null;
-  }
   return apiRoot
     .carts()
     .withId({ ID })
