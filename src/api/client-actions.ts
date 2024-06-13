@@ -26,10 +26,11 @@ export function logout(): Promise<void> {
       localStorage.removeItem('geek-shop-refresh');
       localStorage.removeItem('geek-shop-expires');
       Object.assign(apiRoot, AnonymousFlow());
-
-      createCart().catch(() => {
+      try {
+        await createCart();
+      } catch {
         throw new Error('Failed to create cart');
-      });
+      }
     } else {
       throw new Error(`Failed to revoke token ${response.status} ${await response.text()}`);
     }
@@ -39,6 +40,6 @@ export function logout(): Promise<void> {
 }
 
 export function signup(body: GeekShopCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
-  Object.assign(apiRoot, ClientCredentialsFlow());
+  Object.assign(apiRoot, ClientCridentialsFlow());
   return apiRoot.me().signup().post({ body }).execute();
 }

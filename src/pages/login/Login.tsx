@@ -55,11 +55,15 @@ export function Login(): JSX.Element {
               anonymousId: cart?.anonymousId,
               anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
             })
-              .then((response) => {
+              .then(async (response) => {
                 localStorage.setItem('geek-shop-auth', 'true');
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
-                updateCart().catch(() => toast(`Failed to update cart`, { type: 'error' }));
+                try {
+                  await updateCart();
+                } catch {
+                  toast(`Failed to update cart`, { type: 'error' });
+                }
               })
               .catch((error: Error) => toast(error.message, { type: 'error' }));
           } else {
