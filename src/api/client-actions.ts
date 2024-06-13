@@ -4,9 +4,9 @@ import type { GeekShopCustomerDraft } from '@/common/types';
 
 import { AnonymousFlow, apiRoot, ClientCridentialsFlow, PasswordFlow, tokenCache } from './build-client';
 
-export function login(customerSignin: CustomerSignin): Promise<ClientResponse<CustomerSignInResult>> {
-  Object.assign(apiRoot, PasswordFlow(customerSignin.email, customerSignin.password));
-  return apiRoot.login().post({ body: customerSignin }).execute();
+export function login(body: CustomerSignin): Promise<ClientResponse<CustomerSignInResult>> {
+  Object.assign(apiRoot, PasswordFlow(body.email, body.password));
+  return apiRoot.login().post({ body }).execute();
 }
 
 export function logout(): Promise<void> {
@@ -25,6 +25,15 @@ export function logout(): Promise<void> {
       localStorage.removeItem('geek-shop-refresh');
       localStorage.removeItem('geek-shop-expires');
       Object.assign(apiRoot, AnonymousFlow());
+      try {
+        await apiRoot
+          .me()
+          .carts()
+          .post({ body: { currency: 'USD' } })
+          .execute();
+      } catch {
+        throw new Error('Failed to create cart');
+      }
     } else {
       throw new Error(`Failed to revoke token ${response.status} ${await response.text()}`);
     }
@@ -33,7 +42,7 @@ export function logout(): Promise<void> {
   return revokeToken();
 }
 
-export function signup(myCustomerDraft: GeekShopCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
+export function signup(body: GeekShopCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
   Object.assign(apiRoot, ClientCridentialsFlow());
-  return apiRoot.me().signup().post({ body: myCustomerDraft }).execute();
+  return apiRoot.me().signup().post({ body }).execute();
 }

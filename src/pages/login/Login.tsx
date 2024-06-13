@@ -46,7 +46,13 @@ export function Login(): JSX.Element {
         onSubmit={(event) => {
           event.preventDefault();
           if (isValid) {
-            login({ email, password })
+            login({
+              email,
+              password,
+              anonymousCart: { typeId: 'cart', id: '' },
+              anonymousId: '',
+              anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+            })
               .then((response) => {
                 localStorage.setItem('geek-shop-auth', 'true');
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });

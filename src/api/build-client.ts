@@ -126,3 +126,14 @@ if (expirationTime !== null && Number(expirationTime) < Date.now()) {
 const refreshToken = localStorage.getItem('geek-shop-refresh');
 
 export const apiRoot = refreshToken !== null ? RefreshTokenFlow(refreshToken) : AnonymousFlow();
+
+if (refreshToken === null) {
+  apiRoot
+    .me()
+    .carts()
+    .post({ body: { currency: 'USD' } })
+    .execute()
+    .catch(() => {
+      throw new Error('Failed to create cart');
+    });
+}
