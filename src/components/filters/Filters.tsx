@@ -35,6 +35,7 @@ export function Filters({ priceFilter, franchises, countriesF, materialsF, dispa
 }
 
 /* apiRoot
+  .me()
   .carts()
   .get({ queryArgs: { limit: 500 } })
   .execute()
@@ -56,8 +57,8 @@ export function Filters({ priceFilter, franchises, countriesF, materialsF, dispa
 
 /* apiRoot
   .carts()
-  .withId({ ID: 'cdc09c1d-4542-42b0-8d03-e86ec05c884d' })
-  .delete({ queryArgs: { version: 4 } })
+  .withId({ ID: '99287a9b-3cba-4971-9199-59db72e77ff9' })
+  .delete({ queryArgs: { version: 16 } })
   .execute()
   .then(console.log)
   .catch(console.error); */

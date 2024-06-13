@@ -1,13 +1,27 @@
 import type { Cart, ClientResponse } from '@commercetools/platform-sdk';
 
+import { REFRESH_TOKEN_EXPIRATION_DAYS } from '@/common/utils';
+
 import { apiRoot } from './build-client';
 
 export const createCart = async (): Promise<ClientResponse<Cart>> =>
   apiRoot
     .me()
     .carts()
-    .post({ body: { currency: 'USD' } })
+    .post({ body: { currency: 'USD', deleteDaysAfterLastModification: REFRESH_TOKEN_EXPIRATION_DAYS } })
     .execute();
+
+export const deleteCart = async (ID: string): Promise<ClientResponse<Cart> | null> => {
+  const response = await apiRoot.carts().withId({ ID }).get().execute();
+  if (response.body.cartState === 'Active') {
+    return null;
+  }
+  return apiRoot
+    .carts()
+    .withId({ ID })
+    .delete({ queryArgs: { version: response.body.version } })
+    .execute();
+};
 
 export const getActiveCart = async (): Promise<ClientResponse<Cart>> => apiRoot.me().activeCart().get().execute();
 

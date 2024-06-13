@@ -70,7 +70,9 @@ export function ProductCard({ product, categoryName, subcategoryName }: ProductC
         <CustomButton
           className={styles.btn_cart}
           variant="tertiary"
-          onClick={() => handleAddToCart}
+          onClick={() => {
+            handleAddToCart().catch(() => {});
+          }}
           isDisabled={isLoading || isAdding || isInCart}
         >
           {getButtonText()}
