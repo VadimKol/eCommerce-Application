@@ -127,7 +127,7 @@ const refreshToken = localStorage.getItem('geek-shop-refresh');
 
 export const apiRoot = refreshToken !== null ? RefreshTokenFlow(refreshToken) : AnonymousFlow();
 
-if (refreshToken === null) {
+/* if (refreshToken === null) {
   apiRoot
     .me()
     .carts()
@@ -136,4 +136,4 @@ if (refreshToken === null) {
     .catch(() => {
       throw new Error('Failed to create cart');
     });
-}
+} */
