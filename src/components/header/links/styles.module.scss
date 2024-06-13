@@ -58,6 +58,15 @@
     align-items: center;
     padding-bottom: 10px;
     text-align: center;
+
+    &::before {
+      content: "";
+      display: block;
+      width: calc(100% + 40px);
+      height: 1px;
+      margin-block: 10px;
+      background-color: var(--text-color);
+    }
   }
 }
 

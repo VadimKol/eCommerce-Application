@@ -2,12 +2,11 @@
 
 exports[`renders correctly 1`] = `
 <div>
-  <a
-    class="product_link"
-    href="/catalog/Cosplay/Mask/"
+  <div
+    class="card"
   >
     <div
-      class="image_box"
+      class="image_container"
     >
       <img
         alt="Product"
@@ -16,14 +15,18 @@ exports[`renders correctly 1`] = `
       />
     </div>
     <div
-      class="item_box"
+      class="text_container"
     >
+      <a
+        class="card_link"
+        href="/catalog/Cosplay/Mask/"
+      >
+        <h2
+          class="card_title"
+        />
+      </a>
       <p
-        class="product_name"
-      />
-      <p
-        class="product_description"
-        style="max-height: 0;"
+        class="card_description"
       />
       <p
         class="price_block"
@@ -39,15 +42,14 @@ exports[`renders correctly 1`] = `
           00.00
         </span>
       </p>
+      <button
+        class="button button--tertiary btn_cart"
+        id=""
+        type="button"
+      >
+        Add to cart
+      </button>
     </div>
-  </a>
-  <button
-    class="button button--primary btn_details"
-    id=""
-    type="button"
-  >
-    Show
-     details
-  </button>
+  </div>
 </div>
 `;

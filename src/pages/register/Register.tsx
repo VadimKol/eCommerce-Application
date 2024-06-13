@@ -227,7 +227,13 @@ export function Register(): JSX.Element {
         defaultBillingAddress,
       });
 
-      const response = await login({ email, password });
+      const response = await login({
+        email,
+        password,
+        anonymousCart: { typeId: 'cart', id: '' },
+        anonymousId: '',
+        anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+      });
       localStorage.setItem('geek-shop-auth', 'true');
       toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
