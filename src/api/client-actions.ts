@@ -2,7 +2,8 @@ import type { ClientResponse, CustomerSignin, CustomerSignInResult } from '@comm
 
 import type { GeekShopCustomerDraft } from '@/common/types';
 
-import { AnonymousFlow, apiRoot, ClientCridentialsFlow, PasswordFlow, tokenCache } from './build-client';
+import { AnonymousFlow, apiRoot, ClientCredentialsFlow, PasswordFlow, tokenCache } from './build-client';
+import { createCart } from './cart';
 
 export function login(body: CustomerSignin): Promise<ClientResponse<CustomerSignInResult>> {
   Object.assign(apiRoot, PasswordFlow(body.email, body.password));
@@ -26,11 +27,7 @@ export function logout(): Promise<void> {
       localStorage.removeItem('geek-shop-expires');
       Object.assign(apiRoot, AnonymousFlow());
       try {
-        await apiRoot
-          .me()
-          .carts()
-          .post({ body: { currency: 'USD' } })
-          .execute();
+        await createCart();
       } catch {
         throw new Error('Failed to create cart');
       }

@@ -7,6 +7,7 @@ import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { NavLink } from '@/components/nav-link/NavLink';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 import { useCategories } from '@/hooks/useCategories';
 
 import styles from './styles.module.scss';
@@ -20,6 +21,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
   const location = useLocation();
   const navigate = useNavigate();
   const { error: error404 } = useCategories();
+  const { updateCart } = useCart();
 
   const onLogoutClick = (): void => {
     logout()
@@ -27,6 +29,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
         toast('Successfully logged out', { type: 'success' });
         handleLogout();
         navigate(ActionPaths.LOGIN);
+        updateCart().catch(() => toast(`Failed to update cart`, { type: 'error' }));
       })
       .catch(() => {
         toast(`Failed to logout`, { type: 'error' });

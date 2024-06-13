@@ -8,6 +8,7 @@ import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 import { type LoginSchema, loginSchema } from './login-schema';
 import styles from './styles.module.scss';
@@ -27,6 +28,7 @@ export function Login(): JSX.Element {
   const passwordState = getFieldState('password');
   const email = watch('email');
   const password = watch('password');
+  const { cart, updateCart } = useCart();
 
   let emailClass = styles.email;
   let passwordClass = styles.password;
@@ -49,14 +51,19 @@ export function Login(): JSX.Element {
             login({
               email,
               password,
-              anonymousCart: { typeId: 'cart', id: '' },
-              anonymousId: '',
+              anonymousCart: { typeId: 'cart', id: cart?.id },
+              anonymousId: cart?.anonymousId,
               anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
             })
-              .then((response) => {
+              .then(async (response) => {
                 localStorage.setItem('geek-shop-auth', 'true');
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
+                try {
+                  await updateCart();
+                } catch {
+                  toast(`Failed to update cart`, { type: 'error' });
+                }
               })
               .catch((error: Error) => toast(error.message, { type: 'error' }));
           } else {

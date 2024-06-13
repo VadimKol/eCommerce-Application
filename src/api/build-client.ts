@@ -27,8 +27,8 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 
 export const tokenCache = new CustomTokenCache();
 
-// Client cridentials flow
-export const ClientCridentialsFlow = (): ByProjectKeyRequestBuilder => {
+// Client credentials flow
+export const ClientCredentialsFlow = (): ByProjectKeyRequestBuilder => {
   Object.assign(tokenCache, new CustomTokenCache());
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host,
@@ -127,7 +127,7 @@ const refreshToken = localStorage.getItem('geek-shop-refresh');
 
 export const apiRoot = refreshToken !== null ? RefreshTokenFlow(refreshToken) : AnonymousFlow();
 
-/* if (refreshToken === null) {
+if (refreshToken === null) {
   apiRoot
     .me()
     .carts()
@@ -136,4 +136,4 @@ export const apiRoot = refreshToken !== null ? RefreshTokenFlow(refreshToken) : 
     .catch(() => {
       throw new Error('Failed to create cart');
     });
-} */
+}

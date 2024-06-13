@@ -17,7 +17,7 @@ export function Product(): JSX.Element {
   const { productName: productKey } = useParams();
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
-  const [subcategoryError, setError] = useState(false);
+  const [productError, setProductError] = useState(false);
   const { error: categoryError } = useCategories();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function Product(): JSX.Element {
         const productData = await getProduct(productKey || '');
         setProduct(productData);
       } catch {
-        setError(true);
+        setProductError(true);
       } finally {
         setLoading(false);
       }
@@ -35,11 +35,7 @@ export function Product(): JSX.Element {
     void fetchProduct();
   }, [productKey]);
 
-  if (subcategoryError) {
-    return <NoMatch />;
-  }
-
-  if (categoryError instanceof StatusError && categoryError.statusCode === 404) {
+  if (productError || (categoryError instanceof StatusError && categoryError.statusCode === 404)) {
     return <NoMatch />;
   }
 
