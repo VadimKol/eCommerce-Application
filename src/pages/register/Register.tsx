@@ -9,6 +9,7 @@ import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths } from '@/common/enums';
 import { countries } from '@/common/utils.ts';
 import { useAuth } from '@/hooks/useAuth.ts';
+import { useCart } from '@/hooks/useCart.ts';
 
 import { type Country, type RegisterSchema, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
@@ -17,6 +18,7 @@ export function Register(): JSX.Element {
   const { handleLogin } = useAuth();
   const [revealPassword, setRevealPassword] = useState(false);
   const [isBlockVisible, setIsBlockVisible] = useState(false);
+  const { cart, updateCart } = useCart();
 
   const {
     register,
@@ -230,18 +232,17 @@ export function Register(): JSX.Element {
       const response = await login({
         email,
         password,
-        anonymousCart: { typeId: 'cart', id: '' },
-        anonymousId: '',
+        anonymousCart: { typeId: 'cart', id: cart?.id },
+        anonymousId: cart?.anonymousId,
         anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
       });
       localStorage.setItem('geek-shop-auth', 'true');
       toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
+      updateCart(response.body.cart || null);
     } catch (error) {
       if (error instanceof Error) {
         toast(error.message, { type: 'error' });
-      } else {
-        toast('An unknown error occurred.', { type: 'error' });
       }
     }
   };

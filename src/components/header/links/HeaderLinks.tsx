@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { createCart } from '@/api/cart';
 import { logout } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
@@ -25,15 +26,18 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
 
   const onLogoutClick = (): void => {
     logout()
-      .then(() => {
+      .then(async () => {
         toast('Successfully logged out', { type: 'success' });
         handleLogout();
         navigate(ActionPaths.LOGIN);
-        updateCart().catch(() => toast(`Failed to update cart`, { type: 'error' }));
+        try {
+          const response = await createCart();
+          updateCart(response.body || null);
+        } catch {
+          throw new Error(`Failed to create cart`);
+        }
       })
-      .catch(() => {
-        toast(`Failed to logout`, { type: 'error' });
-      });
+      .catch((error: Error) => toast(error.message, { type: 'error' }));
   };
 
   const isCatalogPath = location.pathname.startsWith(`${NavigationPaths.CATALOG}`);

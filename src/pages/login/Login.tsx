@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { deleteCart } from '@/api/cart';
 import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/СustomButton';
@@ -59,10 +60,11 @@ export function Login(): JSX.Element {
                 localStorage.setItem('geek-shop-auth', 'true');
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
+                updateCart(response.body.cart || null);
                 try {
-                  await updateCart();
+                  await deleteCart(cart?.id || '');
                 } catch {
-                  toast(`Failed to update cart`, { type: 'error' });
+                  throw new Error(`Failed to delete cart`);
                 }
               })
               .catch((error: Error) => toast(error.message, { type: 'error' }));

@@ -8,10 +8,14 @@ exports[`renders correctly 1`] = `
     <div
       class="image_container"
     >
+      <div
+        class="loader"
+      />
       <img
         alt="Product"
         class="product_img"
         src=""
+        style="display: none;"
       />
     </div>
     <div
@@ -44,10 +48,11 @@ exports[`renders correctly 1`] = `
       </p>
       <button
         class="button button--tertiary btn_cart"
+        disabled=""
         id=""
         type="button"
       >
-        Add to cart
+        Loading...
       </button>
     </div>
   </div>

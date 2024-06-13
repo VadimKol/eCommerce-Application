@@ -1,11 +1,8 @@
 import type { Cart, LineItem } from '@commercetools/platform-sdk';
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import { addToCart, getActiveCart, removeFromCart } from '../api/cart';
-
-type CartProviderProps = {
-  children: React.ReactNode;
-};
+import { addToCart, createCart, getActiveCart, removeFromCart } from '../api/cart';
 
 export type CartContextProps = {
   cart: Cart | null;
@@ -16,26 +13,28 @@ export type CartContextProps = {
   removeItemFromCart: (id: string, quantity: number) => Promise<void>;
   getCartItemsCount: () => number | undefined;
   cartItems: LineItem[];
-  updateCart: () => Promise<void>;
+  updateCart: (updatedCard: Cart | null) => void;
 };
 
 export const CartContext = createContext({} as CartContextProps);
 
-export function CartProvider({ children }: CartProviderProps): React.ReactElement {
+export function CartProvider({ children }: { children: ReactNode }): React.ReactElement {
   const [cart, setCart] = useState<Cart | null>(null);
 
   useEffect(() => {
-    const fetchCart = async (): Promise<void> => {
-      const response = await getActiveCart();
-      setCart(response.body);
-    };
-
-    void fetchCart();
+    if (localStorage.getItem('geek-shop-refresh') === null) {
+      createCart()
+        .then((response) => setCart(response.body))
+        .catch(() => toast(`Failed to create cart`, { type: 'error' }));
+    } else {
+      getActiveCart()
+        .then((response) => setCart(response.body))
+        .catch(() => toast(`Failed to get cart`, { type: 'error' }));
+    }
   }, []);
 
-  const updateCart = useCallback(async (): Promise<void> => {
-    const response = await getActiveCart();
-    setCart(response.body);
+  const updateCart = useCallback((updatedCard: Cart | null): void => {
+    setCart(updatedCard);
   }, []);
 
   const cartItems = useMemo(() => (cart ? cart.lineItems : []), [cart]);
