@@ -1,13 +1,15 @@
 
 .animateBlock {
-  position: absolute;
-  bottom: 1.5rem;
+  position: relative;
+  bottom: 0;
   left: 0;
   overflow-x: hidden;
-  width: 100%;
-  height: 2rem;
-  border-top: 2px solid var(--primary-color);
-  border-bottom: 2px solid var(--secondary-color);
+  width: calc(100% + 40px);
+  height: 40px;
+  font-size: 17px;
+  background-color: var(--tertiary-color);
+  border-top: 3px solid var(--secondary-color);
+  border-bottom: 3px solid var(--secondary-color);
 }
 
 @keyframes ticker {
@@ -33,7 +35,7 @@
 
 .animateLine {
   position: absolute;
-  top: 0.25rem;
+  top: 15%;
   width: 100%;
   white-space: nowrap;
 }

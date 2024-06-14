@@ -16,7 +16,7 @@
   max-height: inherit;
 
   .modalSwiper & {
-    height: 80svh;
+    max-height: 55svh;
   }
 }
 
@@ -30,6 +30,7 @@
 
 .swiper-button-prev,
 .swiper-button-next {
+  text-shadow: 0 0 4px 4px var(--background-color);
   transition: color 0.3s ease-in-out;
 
   @media (hover: hover) {
@@ -46,6 +47,7 @@
 
   width: 10px;
   height: 10px;
+  box-shadow: 0 0 4px 4px var(--background-color);
   transition: background-color 0.3s ease-in-out;
 
   @media (hover: hover) {

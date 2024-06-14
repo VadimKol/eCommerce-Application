@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 import styles from './styles.module.scss';
 
 const sourceArr = [
@@ -12,6 +14,11 @@ const sourceArr = [
     link: '/catalog/cosplay/wigs',
   },
   {
+    title: 'Figure',
+    image: '/src/assets/images/home_figure.png',
+    link: '/catalog/decor/figures',
+  },
+  {
     title: 'Mugs',
     image: '/src/assets/images/home_mug.png',
     link: '/catalog/decor/mugs',
@@ -22,7 +29,7 @@ const sourceArr = [
     link: '/catalog/decor/pads',
   },
   {
-    title: 'Notebooks',
+    title: 'Notepads',
     image: '/src/assets/images/home_note.jpg',
     link: '/catalog/stationery/notepads',
   },
@@ -39,6 +46,11 @@ export function CatalogGrid(): JSX.Element {
           </a>
         </div>
       ))}
+      <div key="to catalog" className={classNames(styles.catalogItem, styles.catalogItemMore)}>
+        <a href="/catalog">
+          <h3 className={styles.catalogTitle}>Show more at Catalog</h3>
+        </a>
+      </div>
     </div>
   );
 }
