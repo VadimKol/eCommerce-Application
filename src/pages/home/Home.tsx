@@ -32,7 +32,7 @@ export function Home(): JSX.Element {
         <h1 className={styles.title}>Home page</h1>
         <Swiper
           initialSlide={0}
-          spaceBetween={0}
+          spaceBetween={15}
           slidesPerView={1}
           navigation
           lazyPreloadPrevNext={1}
