@@ -33,10 +33,10 @@
   & a {
     display: flex;
     flex-flow: column nowrap;
+    gap: 10px;
     justify-content: space-around;
     align-items: center;
     text-decoration: none;
-    gap: 10px;
   }
 }
 

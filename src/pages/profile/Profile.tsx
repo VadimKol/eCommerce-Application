@@ -256,7 +256,6 @@ export function Profile(): JSX.Element {
                 className={styles.form}
               >
                 <div className={styles.detailPerson}>
-                  <h2>Person info</h2>
                   <div className={styles.mainFormProfile}>
                     <div className={classNames(styles.inputWithError, styles.bigInput)}>
                       <label htmlFor="name" className={styles.formInput}>

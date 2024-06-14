@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { login } from '@/api/client-actions.ts';
 import { changePassword } from '@/api/profile.ts';
 
-import { Tooltip } from '../tooltip/Tooltip.tsx';
 import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { FormChangePasswordProps } from './types.ts';
@@ -95,62 +94,62 @@ export function FormChangePassword({ email, version, setPersonInfo }: FormChange
         }
       }}
     >
-      <div className={styles.blockPassword}>
-        <div className={styles.titleWithTooltip}>
-          <h2>Change password</h2>
-          <Tooltip
-            text=" To change your password, enter your current password and the new one. Once the current password has been
+      {/*
+      <div className={styles.titleWithTooltip}>
+        <h2>Change password</h2>
+        <Tooltip
+          text=" To change your password, enter your current password and the new one. Once the current password has been
         successfully verified, it will be replaced with a new password."
+        />
+      </div> */}
+
+      <div className={styles.inputWithError}>
+        <label htmlFor="password-was-login" className={styles.formInput}>
+          Current:
+          <input
+            onChange={(event) => {
+              onChangeCurrentPassword(event).catch(() => {});
+            }}
+            id="current-password"
+            placeholder="password"
+            autoComplete="current-password"
+            className={currentPasswordClass}
+            ref={refCurrentPassword}
+            aria-invalid={errors.currentPassword || !currentPasswordValue.isDirty ? 'true' : 'false'}
+            name={CurrentPassword}
           />
-        </div>
-        <div className={styles.inputWithError}>
-          <label htmlFor="password-was-login" className={styles.formInput}>
-            Current password:
-            <input
-              onChange={(event) => {
-                onChangeCurrentPassword(event).catch(() => {});
-              }}
-              id="current-password"
-              placeholder="password"
-              autoComplete="current-password"
-              className={currentPasswordClass}
-              ref={refCurrentPassword}
-              aria-invalid={errors.currentPassword || !currentPasswordValue.isDirty ? 'true' : 'false'}
-              name={CurrentPassword}
-            />
-          </label>
-          {errors.currentPassword && (
-            <span role="alert" className={styles.errorMsg}>
-              {errors.currentPassword.message}
-            </span>
-          )}
-        </div>
-        <div className={styles.inputWithError}>
-          <label htmlFor="password-login" className={styles.formInput}>
-            New password:
-            <input
-              onChange={(event) => {
-                onChangeNewPassword(event).catch(() => {});
-              }}
-              id="new-password"
-              placeholder="new password"
-              autoComplete="new-password"
-              className={newPasswordClass}
-              ref={refNewPassword}
-              aria-invalid={errors.currentPassword || !newPasswordValue.isDirty ? 'true' : 'false'}
-              name={NewPassword}
-            />
-          </label>
-          {errors.newPassword && (
-            <span role="alert" className={styles.errorMsg}>
-              {errors.newPassword.message}
-            </span>
-          )}
-        </div>
-        <button type="submit" className={!isValid ? `${styles.changeInfo} ${styles.disabled}` : styles.changeInfo}>
-          Change
-        </button>
+        </label>
+        {errors.currentPassword && (
+          <span role="alert" className={styles.errorMsg}>
+            {errors.currentPassword.message}
+          </span>
+        )}
       </div>
+      <div className={styles.inputWithError}>
+        <label htmlFor="password-login" className={styles.formInput}>
+          New:
+          <input
+            onChange={(event) => {
+              onChangeNewPassword(event).catch(() => {});
+            }}
+            id="new-password"
+            placeholder="new password"
+            autoComplete="new-password"
+            className={newPasswordClass}
+            ref={refNewPassword}
+            aria-invalid={errors.currentPassword || !newPasswordValue.isDirty ? 'true' : 'false'}
+            name={NewPassword}
+          />
+        </label>
+        {errors.newPassword && (
+          <span role="alert" className={styles.errorMsg}>
+            {errors.newPassword.message}
+          </span>
+        )}
+      </div>
+      <button type="submit" className={!isValid ? `${styles.changeInfo} ${styles.disabled}` : styles.changeInfo}>
+        Change
+      </button>
     </form>
   );
 }
