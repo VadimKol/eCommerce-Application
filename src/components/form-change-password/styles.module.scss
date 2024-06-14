@@ -2,6 +2,7 @@
 .form {
   display: flex;
   flex-flow: column nowrap;
+  gap: 20px;
   justify-content: space-around;
   align-items: center;
   max-width: 600px;
@@ -9,26 +10,27 @@
   color: var(--primary-color);
 }
 
-.inputWithError {
-  padding-bottom: 10px;
-}
-
 .formInput {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .input {
-  width: 100%;
+  width: 200px;
   height: 30px;
   padding: 0 5px;
   font-family: var(--primary-font);
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: 5px;
+}
+
+.inputWithError {
+  width: 350px;
 }
 
 .errorMsg {
@@ -42,7 +44,6 @@
 .changeInfo {
   width: 80px;
   height: 40px;
-  margin-top: 30px;
   font-size: 1em;
   color: var(--text-color);
   background: var(--primary-color);
@@ -100,5 +101,13 @@
 @media (width <= 900px) {
   .titleWithTooltip {
     gap: 10px;
+  }
+
+  .inputWithError {
+    width: 250px;
+  }
+
+  .input {
+    width: 150px;
   }
 }

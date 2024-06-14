@@ -5,14 +5,14 @@ exports[`Testing profile address component renders correctly 1`] = `
   <div
     class="detailShipping"
   >
-    <h2>
-      Shipping
-       addresses
-    </h2>
-    <div>
-      Default 
-      shipping
-       address :
+    <div
+      class="defaultAddress"
+    >
+      <b>
+        Default 
+        shipping
+         address:
+      </b>
        
       No default address found
     </div>

@@ -51,9 +51,6 @@ exports[`renders correctly 1`] = `
             <div
               class="detailPerson"
             >
-              <h2>
-                Person info
-              </h2>
               <div
                 class="mainFormProfile"
               >
