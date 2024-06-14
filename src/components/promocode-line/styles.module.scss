@@ -51,3 +51,10 @@
 .animateBlock:hover .animateLine {
   animation-play-state: paused;
 }
+
+
+@media (width <= 400px) {
+  .animateLineSecond {
+    display: none;
+  }
+}

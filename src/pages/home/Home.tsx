@@ -4,6 +4,7 @@ import 'swiper/css/pagination';
 import './swiper.scss';
 
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -14,11 +15,13 @@ import styles from './styles.module.scss';
 export function Home(): JSX.Element {
   const bannerImages = [
     {
-      image: '/src/assets/images/avatar_banner.png',
+      id: 1,
+      extraClass: 'avatar',
       link: '/catalog/decor/figures/aang-tubbz',
     },
     {
-      image: '/src/assets/images/war_banner.png',
+      id: 2,
+      extraClass: 'war',
       link: '/catalog/decor/figures/stormtrooper-mini-tubbz',
     },
   ];
@@ -29,7 +32,7 @@ export function Home(): JSX.Element {
         <h1 className={styles.title}>Home page</h1>
         <Swiper
           initialSlide={0}
-          spaceBetween={250}
+          spaceBetween={0}
           slidesPerView={1}
           navigation
           lazyPreloadPrevNext={1}
@@ -41,21 +44,15 @@ export function Home(): JSX.Element {
           className="modalSwiper"
         >
           {bannerImages &&
-            bannerImages.map((bannerItem, index) => (
-              <SwiperSlide key={bannerItem.image} className={styles.swiperSlide}>
-                <a href={bannerItem.link}>
-                  <img
-                    src={bannerItem.image}
-                    alt={`banner number ${index + 1}`}
-                    className={styles.modalImage}
-                    loading="lazy"
-                  />
-                  <div className="swiper-lazy-preloader" />
-                </a>
+            bannerImages.map((bannerItem) => (
+              <SwiperSlide key={bannerItem.id} className={classNames(styles.swiperSlide, bannerItem.extraClass)}>
+                <Link to={bannerItem.link} className={styles.link}>
+                  <div className="hide">Banner</div>
+                </Link>
               </SwiperSlide>
             ))}
         </Swiper>
-        <h2>Our Products </h2>
+        <h2 className={styles.h2Title}>Our Products </h2>
         <CatalogGrid />
       </div>
       <PromocodeLine />

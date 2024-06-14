@@ -2,11 +2,6 @@
   padding: 0 20px;
 }
 
-h1 {
-  background-color: var(--background-color);
-  border-radius: 5px;
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -45,6 +40,13 @@ h1 {
   border-radius: 10px;
 }
 
-h2 {
+.h2Title {
+  margin: 15px 0 10px;
   text-shadow: 0 0 4px 4px var(--background-color);
+}
+
+@media (width <= 500px) {
+  .container {
+    padding: 28px 10px 30px;
+  }
 }
