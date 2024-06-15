@@ -2,18 +2,29 @@ import type { Cart, LineItem } from '@commercetools/platform-sdk';
 import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { addToCart, createCart, getActiveCart, removeFromCart } from '../api/cart';
+import {
+  addPromocodeIntoCart,
+  addToCart,
+  changeQuantityFromCart,
+  clearCart,
+  createCart,
+  getActiveCart,
+  removeFromCart,
+} from '../api/cart';
 
 export type CartContextProps = {
   cart: Cart | null;
   isItemInCart: (id: string) => boolean;
   getItemCount: (id: string) => number;
   getLineItemId: (id: string) => string;
-  addItemToCart: (id: string, quantity: number) => Promise<void>;
-  removeItemFromCart: (id: string, quantity: number) => Promise<void>;
+  addItemToCart: (id: string, quantity?: number) => Promise<void>;
+  removeItemFromCart: (id: string, quantity?: number) => Promise<void>;
   getCartItemsCount: () => number | undefined;
   cartItems: LineItem[];
   updateCart: (updatedCard: Cart | null) => void;
+  clearFromCart: (lineItems: string[]) => Promise<void>;
+  changeItemQuantityFromCart: (id: string, quantity: number) => Promise<void>;
+  addPromocodeToCart: (code: string) => Promise<void>;
 };
 
 export const CartContext = createContext({} as CartContextProps);
@@ -61,7 +72,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
   );
 
   const addItemToCart = useCallback(
-    async (id: string, quantity: number): Promise<void> => {
+    async (id: string, quantity?: number): Promise<void> => {
       const response = await addToCart(cart!, id, quantity);
 
       setCart(response.body);
@@ -70,7 +81,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
   );
 
   const removeItemFromCart = useCallback(
-    async (id: string, quantity: number): Promise<void> => {
+    async (id: string, quantity?: number): Promise<void> => {
       const lineItemId = getLineItemId(id);
 
       if (lineItemId) {
@@ -87,6 +98,37 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
     [cartItems],
   );
 
+  const clearFromCart = useCallback(
+    async (lineItems: string[]): Promise<void> => {
+      const response = await clearCart(cart!, lineItems);
+
+      setCart(response.body);
+    },
+    [cart],
+  );
+
+  const changeItemQuantityFromCart = useCallback(
+    async (id: string, quantity: number): Promise<void> => {
+      const lineItemId = getLineItemId(id);
+
+      if (lineItemId) {
+        const response = await changeQuantityFromCart(cart!, lineItemId, quantity);
+
+        setCart(response.body);
+      }
+    },
+    [cart, getLineItemId],
+  );
+
+  const addPromocodeToCart = useCallback(
+    async (code: string): Promise<void> => {
+      const response = await addPromocodeIntoCart(cart!, code);
+
+      setCart(response.body);
+    },
+    [cart],
+  );
+
   const CartContextValue: CartContextProps = useMemo(
     () => ({
       cart,
@@ -98,6 +140,9 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
       cartItems,
       getCartItemsCount,
       updateCart,
+      clearFromCart,
+      changeItemQuantityFromCart,
+      addPromocodeToCart,
     }),
     [
       addItemToCart,
@@ -109,6 +154,9 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
       getCartItemsCount,
       cart,
       updateCart,
+      clearFromCart,
+      changeItemQuantityFromCart,
+      addPromocodeToCart,
     ],
   );
 

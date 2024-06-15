@@ -1,0 +1,118 @@
+.remove {
+  align-self: center;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  background-color: transparent;
+  background-image: url("/src/assets/images/delete.png");
+  background-size: cover;
+  border: none;
+  transition: transform 0.5s;
+
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.image_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 200px;
+  height: 200px;
+  border-radius: 6px;
+}
+
+.product_img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.product_desc {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.product_name {
+  flex-grow: 1;
+  margin: 0 0 10px;
+  font-size: 1.7rem;
+}
+
+.quantity_box {
+  margin: 0 0 10px;
+}
+
+.quantity_btn,
+.quantity_btn_loading {
+  width: 25px;
+  height: 25px;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 3px;
+  transition: all 0.5s;
+
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--background-color);
+      background-color: var(--primary-color);
+      cursor: pointer;
+    }
+  }
+}
+
+.quantity_btn {
+  &:disabled {
+    color: var(--background-color);
+    background-color: var(--disabled-color);
+    border: 1px solid var(--disabled-color);
+    cursor: default;
+  }
+}
+
+.quantity {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.price_n_discount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product_total_cost_block {
+  font-size: 1.7rem;
+}
+
+.product_total_cost {
+  margin-left: 20px;
+  font-weight: 600;
+}
+
+.price_block {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.product_discount {
+  margin-left: 15px;
+  font-size: 0.8em;
+  line-height: 1;
+  text-decoration: line-through;
+  color: var(--error-color);
+}
