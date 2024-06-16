@@ -22,123 +22,15 @@
   text-shadow: var(--background-color) 2px 0 5px;
 }
 
-.blockInfo {
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 20px;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px 40px 10px;
-  color: var(--primary-color);
-  background:
-    linear-gradient(var(--background-color) 0 0) padding-box,
-    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
-  border: 5px solid transparent;
-  border-radius: 10px;
-}
-
 .blocksInfo {
   display: flex;
   flex-flow: column nowrap;
   gap: 10px;
-
-  & .linkImage {
-    color: var(--primary-color);
-    background:
-      linear-gradient(var(--background-color) 0 0) padding-box,
-      linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
-    border: 5px solid transparent;
-    border-radius: 50%;
-  }
-}
-
-.blockInfo.rotate {
-  flex-flow: row-reverse nowrap;
-  background:
-    linear-gradient(var(--background-color) 0 0) padding-box,
-    linear-gradient(45deg, var(--secondary-color), var(--primary-color)) border-box;
-
-  & .linkImage {
-    background:
-      linear-gradient(var(--background-color) 0 0) padding-box,
-      linear-gradient(45deg, var(--secondary-color), var(--primary-color)) border-box;
-  }
-}
-
-
-.imageIzy {
-  background: url("../../assets/images/izy.jpg");
-}
-
-.imageVadim {
-  background: url("../../assets/images/vadim.png");
-}
-
-.imageAlex {
-  background: url("../../assets/images/alex.png");
-}
-
-.imageCommand.imageRss {
-  background: url("../../assets/images/rss.png");
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  border-radius: inherit;
-}
-
-.textInfo {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 10px;
-  justify-content: space-around;
-}
-
-.textInfo div {
-  margin-bottom: 10px;
-  line-height: 20px;
-  text-align: left;
-  text-indent: 20px;
-}
-
-.imageCommand {
-  width: 300px;
-  height: 300px;
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  border-radius: 50%;
-}
-
-.blockRss {
-  width: 100%;
-  margin: 20px auto 0;
-  text-align: center;
-  background-color: var(--tertiary-color);
-}
-
-
-.link {
-  text-decoration: none;
-  color: var(--primary-color);
-}
-
-@media (width <= 800px) {
-  .blockInfo {
-    flex-flow: column nowrap;
-
-    &.rotate {
-      flex-flow: column nowrap;
-    }
-  }
 }
 
 @media (width <= 500px) {
   .container {
-    margin: 0;
-    padding: 0;
+    margin: 2;
+    padding: 20px 0;
   }
 }
