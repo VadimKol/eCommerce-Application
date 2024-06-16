@@ -139,6 +139,7 @@ export interface GeekShopCustomerDraft {
 }
 
 export type ProductDetails = {
+  id: string;
   name?: string;
   description?: string;
   price?: string | null;

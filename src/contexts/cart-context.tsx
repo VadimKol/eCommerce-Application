@@ -10,7 +10,7 @@ export type CartContextProps = {
   getItemCount: (id: string) => number;
   getLineItemId: (id: string) => string;
   addItemToCart: (id: string, quantity: number) => Promise<void>;
-  removeItemFromCart: (id: string, quantity: number) => Promise<void>;
+  removeItemFromCart: (id: string, quantity?: number) => Promise<void>;
   getCartItemsCount: () => number | undefined;
   cartItems: LineItem[];
   updateCart: (updatedCard: Cart | null) => void;
@@ -70,7 +70,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
   );
 
   const removeItemFromCart = useCallback(
-    async (id: string, quantity: number): Promise<void> => {
+    async (id: string, quantity?: number): Promise<void> => {
       const lineItemId = getLineItemId(id);
 
       if (lineItemId) {
