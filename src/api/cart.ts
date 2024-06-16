@@ -1,4 +1,4 @@
-import type { Cart, ClientResponse } from '@commercetools/platform-sdk';
+import type { Cart, ClientResponse, DiscountCodePagedQueryResponse } from '@commercetools/platform-sdk';
 
 import { REFRESH_TOKEN_EXPIRATION_DAYS } from '@/common/utils';
 
@@ -121,3 +121,6 @@ export const addPromocodeIntoCart = async (cart: Cart, code: string): Promise<Cl
       },
     })
     .execute();
+
+export const getPromocodes = async (): Promise<ClientResponse<DiscountCodePagedQueryResponse>> =>
+  apiRoot.discountCodes().get().execute();

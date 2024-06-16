@@ -49,7 +49,7 @@
 
   &--cancel {
     background-color: var(--error-color);
-    background-image: none;
+    background-image: linear-gradient(45deg, #e43737, var(--error-color));
   }
 
   &--secondary {

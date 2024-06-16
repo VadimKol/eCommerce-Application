@@ -7,28 +7,52 @@ import { NavigationPaths } from '@/common/enums';
 import { CartItem } from '@/components/cart-item/CartItem';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useCart } from '@/hooks/useCart';
+import { usePromocodes } from '@/hooks/usePromocodes';
 
 import styles from './styles.module.scss';
 
 export function Cart(): JSX.Element {
   const { getCartItemsCount, cartItems, cart, clearFromCart, addPromocodeToCart } = useCart();
+  const { promocodes } = usePromocodes();
   const [isClearing, setIsClearing] = useState(false);
   const promocodeInput = useRef<HTMLInputElement>(null);
+  const [isModal, setIsModal] = useState(false);
 
-  if (!cart) {
+  if (isModal) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+
+  if (!cart || !promocodes) {
     return (
       <main className={classNames('main', styles.main)}>
         <div className={styles.infoContainer}>Loading cart...</div>
       </main>
     );
   }
+  const appliedPromocodes = promocodes
+    .filter(({ id }) => cart.discountCodes.map(({ discountCode }) => discountCode.id).includes(id))
+    .map(({ name }) => name);
+
+  const totalCost = (cart.totalPrice.centAmount / 100).toFixed(2);
+  const subtotal = (
+    cartItems.reduce((acc, item) => acc + item.price.value.centAmount * item.quantity, 0) / 100
+  ).toFixed(2);
+
+  const isDiscounted =
+    cartItems.some((item) => item.price.discounted !== undefined) ||
+    cartItems.some((item) => item.discountedPricePerQuantity.length > 0) ||
+    cart.discountOnTotalPrice;
+  const discount = (Number(subtotal) - Number(totalCost)).toFixed(2);
 
   return (
     <main className={classNames('main', styles.main)}>
       <div className={styles.container}>
         {getCartItemsCount() === 0 ? (
           <div className={styles.empty}>
-            <p className={styles.empty_desc}>Your cart is currently empty.</p>
+            <p className={styles.empty_desc}>Your cart is currently empty.</p>{' '}
+            {/* TODO меньше текст, как страницу ABOUT */}
             <CustomButton>
               <Link to={NavigationPaths.CATALOG} className={styles.link}>
                 Continue shopping
@@ -45,49 +69,51 @@ export function Cart(): JSX.Element {
                   </li>
                 ))}
               </ul>
-              <CustomButton
-                type="button"
-                aria-label="Clear cart"
-                className={styles.clear_cart}
-                onClick={() => {
-                  setIsClearing(true);
-                  clearFromCart(cartItems.map((cartItem) => cartItem.id))
-                    .then(() => toast('Successfully cleared', { type: 'success' }))
-                    .catch(() => toast('Failed to clear', { type: 'error' }))
-                    .finally(() => setIsClearing(false));
-                }}
-                isDisabled={isClearing}
-              >
-                {isClearing ? 'Clearing' : 'Clear cart'}
+              <CustomButton aria-label="Clear cart" className={styles.clear_cart} onClick={() => setIsModal(true)}>
+                Clear cart
               </CustomButton>
             </div>
             <div className={styles.total_price_block}>
               <p className={styles.total_price}>
-                <span>Subtotal</span>
-                <span className={styles.price}>${(cart.totalPrice.centAmount / 100).toFixed(2)}</span>
+                <span>Total:</span>
+                <span className={styles.price}>${totalCost}</span>
               </p>
-              {cart.discountOnTotalPrice && (
-                <p className={styles.discount_block}>
-                  <span>Discount</span>
-                  <span className={styles.discount}>
-                    ${' '}
-                    {(
-                      (cart.discountOnTotalPrice.discountedAmount.centAmount + cart.totalPrice.centAmount) /
-                      100
-                    ).toFixed(2)}
-                  </span>
-                </p>
+              {isDiscounted && (
+                <>
+                  <p className={styles.discount_block}>
+                    <span>Discount:</span>
+                    <span className={styles.price}>-${discount}</span>{' '}
+                    {/* TODO показывать только 10% скидку на всю корзину TODO кнопку МЕНЬШЕ CONTINUE SHOPPING */}
+                  </p>
+                  <p className={styles.original_price_block}>
+                    <span>Subtotal:</span>
+                    <span className={styles.discount}>${subtotal}</span> {/* TODO показывать синие суммые */}
+                  </p>
+                </>
               )}
+              {appliedPromocodes.map((promo) => (
+                <p key={promo} className={styles.promocodes}>
+                  <span>{`"${promo}"`}</span>
+                  <span className={styles.promocodes_applied}>Applied</span>{' '}
+                  {/* {Discounts.find((item) => item.name === promo)?.desc} */}
+                </p>
+              ))}
               <form
                 className={styles.promobox}
-                action=""
-                method="post"
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (promocodeInput.current?.value?.trim()) {
-                    addPromocodeToCart(promocodeInput.current?.value.trim())
-                      .then(() => toast('Successfully added Promocode', { type: 'success' }))
-                      .catch((error: Error) => toast(error.message, { type: 'error' }));
+                    const promocode = promocodeInput.current.value.trim();
+                    promocodeInput.current.value = '';
+                    if (!appliedPromocodes.includes(promocode)) {
+                      addPromocodeToCart(promocode)
+                        .then(() => {
+                          toast('Successfully added Promocode', { type: 'success' });
+                        })
+                        .catch((error: Error) => toast(error.message, { type: 'error' }));
+                    } else {
+                      toast(`The discount code '${promocode}' already applied`, { type: 'error' });
+                    }
                   }
                 }}
               >
@@ -111,6 +137,43 @@ export function Cart(): JSX.Element {
             </div>
           </>
         )}
+      </div>
+      <div
+        className={isModal ? styles.wrapper : `${styles.wrapper} ${styles.wrapper_hidden}`}
+        onTransitionEnd={(e) => {
+          if (e.target === e.currentTarget) {
+            setIsClearing(false);
+          }
+        }}
+      >
+        <div className={styles.modal}>
+          <p className={styles.question}>Are you sure you want to clear the cart?</p>
+          <div className={styles.buttons}>
+            <CustomButton
+              aria-label="Cancel"
+              onClick={() => setIsModal(false)}
+              isDisabled={!isModal}
+              className={styles.cancel}
+              variant="cancel"
+            >
+              Cancel
+            </CustomButton>
+            <CustomButton
+              aria-label="Confirm"
+              isDisabled={isClearing}
+              onClick={() => {
+                setIsClearing(true);
+                clearFromCart(cartItems.map((cartItem) => cartItem.id))
+                  .then(() => toast('Successfully cleared', { type: 'success' }))
+                  .catch(() => toast('Failed to clear', { type: 'error' }))
+                  .finally(() => setIsModal(false));
+              }}
+              className={styles.confirm}
+            >
+              {isClearing ? 'Clearing' : 'Confirm'}
+            </CustomButton>
+          </div>
+        </div>
       </div>
     </main>
   );

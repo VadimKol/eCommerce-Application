@@ -27,7 +27,6 @@
   justify-content: space-between;
   width: 100%;
   max-width: var(--max-width);
-  margin: 30px 0 0;
 }
 
 .empty {
@@ -119,8 +118,7 @@
 }
 
 .total_price_block {
-  display: flex;
-  flex-direction: column;
+  flex-shrink: 0;
   width: 400px;
   height: max-content;
   padding: 20px;
@@ -130,7 +128,8 @@
 }
 
 .total_price,
-.discount_block {
+.discount_block,
+.original_price_block {
   display: flex;
   justify-content: space-between;
 }
@@ -140,9 +139,14 @@
   font-size: 2rem;
 }
 
-.discount_block {
-  margin: 0 0 16px;
-  font-size: 1.7rem;
+.discount_block,
+.original_price_block {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.original_price_block {
+  margin-bottom: 16px;
 }
 
 .price,
@@ -155,8 +159,12 @@
   color: var(--error-color);
 }
 
+.promobox {
+  margin-top: 16px;
+}
+
 .promo_desc {
-  margin: 0;
+  margin: 0 0 5px;
   font-size: 1.3rem;
 }
 
@@ -191,10 +199,90 @@
   font-size: 1.3rem;
 }
 
+.check_out {
+  width: 100%;
+}
+
 .clear_cart {
   width: 9rem;
 
   &:disabled {
     background-color: var(--primary-color);
+  }
+}
+
+.promocodes {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  background-color: rgb(0 0 0 / 40%);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s, visibility 0.3s;
+  backdrop-filter: grayscale(1);
+
+  &_hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  & .modal {
+    width: 400px;
+    padding: 30px;
+    background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+    border: 5px solid transparent;
+    border-radius: 10px;
+
+    & .question {
+      margin-top: 0;
+      font-size: 1.7rem;
+      text-align: center;
+
+      @media (width <= 500px) {
+        font-size: 1.5rem;
+      }
+    }
+
+    & .buttons {
+      display: flex;
+      justify-content: space-around;
+      font-size: 1.5rem;
+
+      @media (width <= 500px) {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (width <= 500px) {
+      width: 350px;
+      padding: 25px;
+    }
+  }
+}
+
+.confirm {
+  &:disabled {
+    background-image: linear-gradient(45deg, #073283, var(--primary-color));
+  }
+}
+
+.cancel {
+  &:disabled {
+    background-image: linear-gradient(45deg, #e43737, var(--error-color));
   }
 }

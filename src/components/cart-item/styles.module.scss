@@ -1,4 +1,5 @@
 .remove {
+  flex-shrink: 0;
   align-self: center;
   width: 25px;
   height: 25px;
@@ -23,6 +24,7 @@
 
 .image_box {
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -45,17 +47,24 @@
 .product_name {
   flex-grow: 1;
   margin: 0 0 10px;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
+  line-height: 1.2;
+
+  @media (width <= 1300px) {
+    font-size: 1.2rem;
+  }
 }
 
 .quantity_box {
-  margin: 0 0 10px;
+  font-size: 1.3rem;
 }
 
 .quantity_btn,
 .quantity_btn_loading {
-  width: 25px;
-  height: 25px;
+  width: 1.25em;
+  padding: 0;
+  font-family: var(--primary-font);
+  font-size: 1em;
   color: var(--primary-color);
   background-color: var(--background-color);
   border: 1px solid var(--primary-color);
@@ -86,26 +95,30 @@
   margin: 0 10px;
 }
 
-.price_n_discount {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.product_total_cost_block {
-  font-size: 1.7rem;
-}
-
-.product_total_cost {
-  margin-left: 20px;
+.available_quantity,
+.quantity {
   font-weight: 600;
+}
+
+.max_quantity_desc {
+  margin-left: 10px;
+}
+
+.total_block {
+  display: flex;
+  margin: 10px 0 0;
+  font-size: 1.8rem;
 }
 
 .price_block {
   display: flex;
-  align-items: center;
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.price {
+  display: flex;
+  align-items: center;
   font-weight: 600;
 }
 
@@ -115,4 +128,9 @@
   line-height: 1;
   text-decoration: line-through;
   color: var(--error-color);
+}
+
+.text {
+  display: inline-block;
+  width: 10.5rem;
 }

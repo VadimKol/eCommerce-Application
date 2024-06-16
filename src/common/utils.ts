@@ -57,6 +57,16 @@ export const QUERY_LIMIT = 12;
 export const PRICE_FILTER_MIN = 1;
 export const PRICE_FILTER_MAX = 100;
 export const REFRESH_TOKEN_EXPIRATION_DAYS = 150;
+export const Discounts = [
+  {
+    name: 'GEEK-SHOP',
+    desc: '-10% cart',
+  },
+  {
+    name: 'COSPLAY',
+    desc: '-10% category',
+  },
+];
 
 export function getCheckboxFilter(checkboxes: boolean[], attribute: string): string {
   const filter: string[] = [];
