@@ -11,6 +11,7 @@
   display: flex;
   background-color: var(--background-color);
   border-radius: 5px;
+  box-shadow: 0 0 4px 4px var(--background-color);
 }
 
 .crumb:not(:last-child)::after,

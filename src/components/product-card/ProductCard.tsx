@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { NavigationPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/СustomButton.tsx';
@@ -12,7 +13,6 @@ import { type ProductCardProps } from './types';
 export function ProductCard({ product, categoryName, subcategoryName }: ProductCardProps): JSX.Element {
   const { isItemInCart, addItemToCart, cartItems } = useCart();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -20,25 +20,27 @@ export function ProductCard({ product, categoryName, subcategoryName }: ProductC
   useEffect(() => {
     if (cartItems) {
       setIsInCart(isItemInCart(product.id));
-      setIsLoading(false);
     }
   }, [cartItems, product.id, isItemInCart]);
 
   const handleAddToCart = async (): Promise<void> => {
     setIsAdding(true);
-    await addItemToCart(product.id, 1);
-    setIsAdding(false);
+    try {
+      await addItemToCart(product.id, 1);
+      toast('Item added to cart', { type: 'success' });
+    } catch {
+      toast('Failed to add item to cart', { type: 'error' });
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const getButtonText = (): string => {
-    if (isLoading) {
-      return 'Loading...';
-    }
     if (isAdding) {
       return 'Adding...';
     }
     if (isInCart) {
-      return 'In cart';
+      return 'Item in cart';
     }
     return 'Add to cart';
   };
@@ -73,7 +75,7 @@ export function ProductCard({ product, categoryName, subcategoryName }: ProductC
           onClick={() => {
             handleAddToCart().catch(() => {});
           }}
-          isDisabled={isLoading || isAdding || isInCart}
+          isDisabled={isAdding || isInCart}
         >
           {getButtonText()}
         </CustomButton>
