@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 
 export function Product(): JSX.Element {
   const { productName: productKey } = useParams();
-  const [product, setProduct] = useState<ProductDetails | null>(null);
+  const [product, setProduct] = useState<ProductDetails>({} as ProductDetails);
   const [loading, setLoading] = useState(true);
   const [productError, setProductError] = useState(false);
   const { error: categoryError } = useCategories();

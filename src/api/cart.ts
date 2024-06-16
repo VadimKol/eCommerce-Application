@@ -41,7 +41,11 @@ export const addToCart = async (cart: Cart, productId: string, quantity: number)
     })
     .execute();
 
-export const removeFromCart = async (cart: Cart, lineItemId: string, quantity: number): Promise<ClientResponse<Cart>> =>
+export const removeFromCart = async (
+  cart: Cart,
+  lineItemId: string,
+  quantity?: number,
+): Promise<ClientResponse<Cart>> =>
   apiRoot
     .me()
     .carts()
