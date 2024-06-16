@@ -68,6 +68,12 @@
   background-size: 100%;
   background-repeat: no-repeat;
   border-radius: 50%;
+  transition: all 500ms;
+
+  &:hover {
+    background-size: 110%;
+    transition: all 500ms;
+  }
 }
 
 .textInfo {
@@ -75,6 +81,7 @@
   flex-flow: column nowrap;
   gap: 10px;
   justify-content: space-around;
+  min-height: 300px;
 }
 
 .textInfo div {
@@ -87,6 +94,10 @@
 .link {
   text-decoration: none;
   color: var(--primary-color);
+}
+
+.infoTitle {
+  font-weight: 800;
 }
 
 @media (width <= 800px) {
