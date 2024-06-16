@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { NavigationPaths } from '@/common/enums';
+import { Discounts } from '@/common/utils';
 import { CartItem } from '@/components/cart-item/CartItem';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useCart } from '@/hooks/useCart';
@@ -35,24 +36,16 @@ export function Cart(): JSX.Element {
     .filter(({ id }) => cart.discountCodes.map(({ discountCode }) => discountCode.id).includes(id))
     .map(({ name }) => name);
 
-  const totalCost = (cart.totalPrice.centAmount / 100).toFixed(2);
-  const subtotal = (
-    cartItems.reduce((acc, item) => acc + item.price.value.centAmount * item.quantity, 0) / 100
-  ).toFixed(2);
-
-  const isDiscounted =
-    cartItems.some((item) => item.price.discounted !== undefined) ||
-    cartItems.some((item) => item.discountedPricePerQuantity.length > 0) ||
-    cart.discountOnTotalPrice;
-  const discount = (Number(subtotal) - Number(totalCost)).toFixed(2);
+  const total = (cart.totalPrice.centAmount / 100).toFixed(2);
+  const subtotal = (cartItems.reduce((acc, item) => acc + item.totalPrice.centAmount, 0) / 100).toFixed(2);
+  const discount = (Number(subtotal) - Number(total)).toFixed(2);
 
   return (
     <main className={classNames('main', styles.main)}>
       <div className={styles.container}>
         {getCartItemsCount() === 0 ? (
           <div className={styles.empty}>
-            <p className={styles.empty_desc}>Your cart is currently empty.</p>{' '}
-            {/* TODO меньше текст, как страницу ABOUT */}
+            <p className={styles.empty_desc}>Your cart is currently empty.</p>
             <CustomButton>
               <Link to={NavigationPaths.CATALOG} className={styles.link}>
                 Continue shopping
@@ -76,26 +69,22 @@ export function Cart(): JSX.Element {
             <div className={styles.total_price_block}>
               <p className={styles.total_price}>
                 <span>Total:</span>
-                <span className={styles.price}>${totalCost}</span>
+                <span className={styles.price}>${total}</span>
               </p>
-              {isDiscounted && (
-                <>
-                  <p className={styles.discount_block}>
-                    <span>Discount:</span>
-                    <span className={styles.price}>-${discount}</span>{' '}
-                    {/* TODO показывать только 10% скидку на всю корзину TODO кнопку МЕНЬШЕ CONTINUE SHOPPING */}
-                  </p>
-                  <p className={styles.original_price_block}>
-                    <span>Subtotal:</span>
-                    <span className={styles.discount}>${subtotal}</span> {/* TODO показывать синие суммые */}
-                  </p>
-                </>
-              )}
+              <p className={styles.discount_block}>
+                <span>Discount:</span>
+                <span className={styles.price}>-${discount}</span>
+              </p>
+              <p className={styles.original_price_block}>
+                <span>Subtotal:</span>
+                <span className={styles.discount}>${subtotal}</span>
+              </p>
               {appliedPromocodes.map((promo) => (
                 <p key={promo} className={styles.promocodes}>
                   <span>{`"${promo}"`}</span>
-                  <span className={styles.promocodes_applied}>Applied</span>{' '}
-                  {/* {Discounts.find((item) => item.name === promo)?.desc} */}
+                  <span className={styles.promocodes_applied}>
+                    {Discounts.find((item) => item.name === promo)?.desc}
+                  </span>
                 </p>
               ))}
               <form
@@ -169,6 +158,7 @@ export function Cart(): JSX.Element {
                   .finally(() => setIsModal(false));
               }}
               className={styles.confirm}
+              variant="secondary"
             >
               {isClearing ? 'Clearing' : 'Confirm'}
             </CustomButton>
