@@ -62,7 +62,12 @@ export function Cart(): JSX.Element {
                   </li>
                 ))}
               </ul>
-              <CustomButton aria-label="Clear cart" className={styles.clear_cart} onClick={() => setIsModal(true)}>
+              <CustomButton
+                aria-label="Clear cart"
+                className={styles.clear_cart}
+                onClick={() => setIsModal(true)}
+                variant="cancel"
+              >
                 Clear cart
               </CustomButton>
             </div>
@@ -72,8 +77,8 @@ export function Cart(): JSX.Element {
                 <span className={styles.price}>${total}</span>
               </p>
               <p className={styles.discount_block}>
-                <span>Discount:</span>
-                <span className={styles.price}>-${discount}</span>
+                <span>Cart discount:</span>
+                <span className={styles.price}>${discount}</span>
               </p>
               <p className={styles.original_price_block}>
                 <span>Subtotal:</span>

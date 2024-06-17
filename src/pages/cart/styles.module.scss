@@ -1,5 +1,9 @@
 .main {
   padding: 20px;
+
+  @media (width > 1300px) {
+    padding: 30px;
+  }
 }
 
 .infoContainer {
@@ -23,14 +27,10 @@
 .container {
   display: flex;
   flex-grow: 1;
-  gap: 100px;
+  gap: 70px;
   justify-content: space-between;
   width: 100%;
   max-width: var(--max-width);
-
-  @media (width <= 1300px) {
-    gap: 65px;
-  }
 
   @media (width <= 950px) {
     flex-direction: column;
@@ -106,9 +106,17 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
 
   @media (width <= 950px) {
+    width: 100%;
+  }
+
+  @media (width <= 570px) {
+    width: 80%;
+  }
+
+  @media (width <= 450px) {
     width: 100%;
   }
 }
@@ -116,7 +124,7 @@
 .products {
   width: 100%;
   margin: 0 0 30px;
-  padding: 20px;
+  padding: 30px;
   background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
   border: 5px solid transparent;
   border-radius: 10px;
@@ -124,6 +132,7 @@
 
   @media (width <= 1300px) {
     margin: 0 0 20px;
+    padding: 20px;
   }
 }
 
@@ -133,8 +142,8 @@
   gap: 30px;
 
   &:not(:last-child) {
-    margin: 0 0 20px;
-    padding: 0 0 20px;
+    margin: 0 0 30px;
+    padding: 0 0 30px;
 
     &::after {
       content: "";
@@ -145,10 +154,17 @@
       background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
       border-radius: 10px;
     }
+
+    @media (width <= 1300px) {
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
   }
+
 
   @media (width <= 570px) {
     flex-direction: column-reverse;
+    gap: 15px;
     align-items: center;
   }
 }
@@ -157,21 +173,25 @@
   flex-shrink: 0;
   width: 400px;
   height: max-content;
-  padding: 20px;
+  padding: 30px;
   background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
   border: 5px solid transparent;
   border-radius: 10px;
 
 
   @media (width <= 1300px) {
-    width: 300px;
-    padding: 15px;
+    width: 320px;
+    padding: 20px;
   }
 
   @media (width <= 950px) {
     display: flex;
     flex-direction: column;
     width: 80%;
+  }
+
+  @media (width <= 450px) {
+    width: 100%;
   }
 }
 
@@ -272,11 +292,9 @@
   @media (width <= 1300px) {
     font-size: 1rem;
   }
-}
 
-.clear_cart {
   @media (width <= 950px) {
-    margin: auto;
+    width: 240px;
     font-size: 1.3rem;
   }
 }
@@ -287,10 +305,6 @@
   @media (width <= 950px) {
     width: 240px;
     margin: auto;
-  }
-
-  @media (width <= 460px) {
-    width: 100%;
   }
 }
 
