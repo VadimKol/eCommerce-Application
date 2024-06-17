@@ -7,6 +7,7 @@
 .container {
   display: grid;
   grid-template-columns: 1fr max-content 1fr;
+  gap: 10px;
   align-items: center;
   width: 100%;
   max-width: var(--max-width);

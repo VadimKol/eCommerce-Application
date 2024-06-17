@@ -19,6 +19,35 @@
   }
 }
 
+.extraInfo {
+  z-index: 1;
+  grid-area: 1 / 1 / 2 / 2;
+  min-width: 27px;
+  padding: 2px 4px;
+  font-size: 16px;
+  text-align: center;
+  background-image: linear-gradient(to bottom, #0b7428, #0d812e);
+  border-radius: 14px;
+
+  .insideBurgerMenu & {
+    background-image: linear-gradient(to bottom, var(--primary-color), #002974);
+  }
+}
+
+.linkExtra {
+  display: grid;
+
+  &::after {
+    grid-area: 1 / 1 / 2 / 2;
+    align-self: center;
+  }
+
+  & .extraInfo {
+    align-self: start;
+    margin: -10px 0 10px 16px;
+  }
+}
+
 .linkIcon {
   &::after {
     content: "";
@@ -54,9 +83,16 @@
   &::after {
     background-color: var(--tertiary-color);
   }
+
+  &.linkExtra {
+    text-decoration: none;
+
+    & .extraInfo {
+      color: var(--tertiary-color);
+    }
+  }
 }
 
 span.linkCurrent {
   pointer-events: none;
 }
-

@@ -5,7 +5,7 @@ import './swiper.scss';
 
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CatalogGrid } from '../../components/catalog-grid/CatalogGrid.tsx';
@@ -43,6 +43,11 @@ export function Home(): JSX.Element {
         <Swiper
           initialSlide={0}
           spaceBetween={15}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
           slidesPerView={1}
           navigation
           lazyPreloadPrevNext={1}

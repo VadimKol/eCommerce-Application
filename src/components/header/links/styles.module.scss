@@ -36,6 +36,7 @@
 
 .actionsList {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: end;
   margin: 0;
@@ -55,6 +56,7 @@
   @media (width <= 768px) {
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: center;
     padding-bottom: 10px;
     text-align: center;

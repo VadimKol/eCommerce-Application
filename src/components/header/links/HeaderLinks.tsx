@@ -22,7 +22,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
   const location = useLocation();
   const navigate = useNavigate();
   const { error: error404 } = useCategories();
-  const { updateCart } = useCart();
+  const { updateCart, getCartItemsCount } = useCart();
 
   const onLogoutClick = (): void => {
     logout()
@@ -41,6 +41,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
   };
 
   const isCatalogPath = location.pathname.startsWith(`${NavigationPaths.CATALOG}`);
+  const cartItemCount = getCartItemsCount();
 
   return (
     <>
@@ -87,7 +88,14 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
           </>
         )}
         <li className={styles.actionsItem}>
-          <NavLink to={ActionPaths.CART} label="Cart" icon="cart" />
+          <NavLink
+            to={ActionPaths.CART}
+            className={styles.cartLink}
+            label="Items in cart:"
+            extraInfo={cartItemCount ? `${cartItemCount}` : ''}
+            icon="cart"
+            insideBurgerMenu={isInsideBurgerMenu}
+          />
         </li>
       </ul>
     </>
