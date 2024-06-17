@@ -28,13 +28,23 @@ export function Home(): JSX.Element {
 
   return (
     <main className={classNames('main', styles.main)}>
+      <PromocodeLine
+        colorClass="green"
+        text='Click and get the Promo Code "COSPLAY" with a 10% discount on the category'
+        copyText="COSPLAY"
+      />
+      <PromocodeLine
+        colorClass="tertiary"
+        text='Click and get the Promo Code "GEEK-SHOP" and get 10% discount for all'
+        copyText="GEEK-SHOP"
+      />
       <div className={styles.container}>
         <h1 className={styles.title}>Home page</h1>
         <Swiper
           initialSlide={0}
-          spaceBetween={15}
+          spaceBetween={0}
           autoplay={{
-            delay: 2500,
+            delay: 3000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
@@ -46,7 +56,7 @@ export function Home(): JSX.Element {
             clickable: true,
           }}
           modules={[Autoplay, Navigation, Pagination]}
-          className="modalSwiper"
+          className="homeSwiper"
         >
           {bannerImages &&
             bannerImages.map((bannerItem) => (
@@ -60,7 +70,6 @@ export function Home(): JSX.Element {
         <h2 className={styles.h2Title}>Our Products </h2>
         <CatalogGrid />
       </div>
-      <PromocodeLine />
     </main>
   );
 }

@@ -1,0 +1,139 @@
+.blockInfo {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 40px 10px;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+}
+
+.linkImage {
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 50%;
+}
+
+
+.blockInfo.rotate {
+  flex-flow: row-reverse nowrap;
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--secondary-color), var(--primary-color)) border-box;
+
+  & .linkImage {
+    background:
+      linear-gradient(var(--background-color) 0 0) padding-box,
+      linear-gradient(45deg, var(--secondary-color), var(--primary-color)) border-box;
+  }
+}
+
+
+.imageIzy {
+  background: url("../../assets/images/izy.jpg");
+}
+
+.imageVadim {
+  background: url("../../assets/images/vadim.png");
+}
+
+.imageAlex {
+  background: url("../../assets/images/alex.png");
+}
+
+.imageCommand.imageRss {
+  background: url("../../assets/images/rss.png");
+  background-position: center;
+  background-size: 80%;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+
+  &:hover {
+    background-size: 90%;
+    transition: all 500ms;
+  }
+}
+
+.imageCommand {
+  width: 300px;
+  height: 300px;
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  transition: all 500ms;
+
+  &:hover {
+    background-size: 110%;
+    transition: all 500ms;
+  }
+}
+
+.textInfo {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  justify-content: space-around;
+  min-height: 300px;
+}
+
+.textInfo div {
+  margin-bottom: 10px;
+  line-height: 20px;
+  text-align: left;
+}
+
+.link {
+  color: var(--primary-color);
+  text-underline-offset: 4px;
+}
+
+.titleBlock {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: all 500ms;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.infoTitle {
+  font-weight: 800;
+}
+
+.softStackItem {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: #8fe492;
+  border-radius: 4px;
+  transition: all 500ms;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+@media (width <= 800px) {
+  .blockInfo {
+    flex-flow: column nowrap;
+
+    &.rotate {
+      flex-flow: column nowrap;
+    }
+  }
+}

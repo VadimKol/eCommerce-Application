@@ -41,12 +41,15 @@
 }
 
 .h2Title {
-  margin: 15px 0 10px;
+  width: max-content;
+  margin: 15px auto 10px;
   font-size: 26px;
-  text-shadow: 0 0 4px 4px var(--background-color);
+  background-color: var(--background-color);
+  border-radius: 15px;
+  box-shadow: 0 0 7px var(--background-color);
 }
 
-@media (width <= 500px) {
+@media (width <= 800px) {
   .container {
     padding: 28px 10px 30px;
   }
