@@ -46,55 +46,58 @@ export function CartItem({ product }: { product: LineItem }): JSX.Element {
       </div>
       <div className={styles.product_desc}>
         <p className={styles.product_name}>{product.name[DEFAULT_LOCALE]}</p>
-        <div className={styles.quantity_box}>
-          <span className={styles.text}>Quantity:</span>
-          <button
-            type="button"
-            aria-label="minus"
-            className={isChangingQuantity ? styles.quantity_btn_loading : styles.quantity_btn}
-            onClick={() => {
-              setIsChangingQuantity(true);
-              changeItemQuantityFromCart(product.productId, product.quantity - 1)
-                .catch(() => toast('Failed to change quantity', { type: 'error' }))
-                .finally(() => setIsChangingQuantity(false));
-            }}
-            disabled={isChangingQuantity}
-          >
-            -
-          </button>
-          <span className={styles.quantity}>{product.quantity}</span>
-          <button
-            type="button"
-            aria-label="plus"
-            className={isChangingQuantity ? styles.quantity_btn_loading : styles.quantity_btn}
-            onClick={() => {
-              setIsChangingQuantity(true);
-              changeItemQuantityFromCart(product.productId, product.quantity + 1)
-                .catch(() => toast('Failed to change quantity', { type: 'error' }))
-                .finally(() => setIsChangingQuantity(false));
-            }}
-            disabled={product.quantity === product.variant.availability?.availableQuantity || isChangingQuantity}
-          >
-            +
-          </button>
-          <span className={styles.max_quantity_desc}>
-            out of <span className={styles.available_quantity}>{product.variant.availability?.availableQuantity}</span>
-          </span>
+        <div className={styles.product_details}>
+          <div className={styles.quantity_box}>
+            <span className={styles.text}>Quantity:</span>
+            <button
+              type="button"
+              aria-label="minus"
+              className={isChangingQuantity ? styles.quantity_btn_loading : styles.quantity_btn}
+              onClick={() => {
+                setIsChangingQuantity(true);
+                changeItemQuantityFromCart(product.productId, product.quantity - 1)
+                  .catch(() => toast('Failed to change quantity', { type: 'error' }))
+                  .finally(() => setIsChangingQuantity(false));
+              }}
+              disabled={isChangingQuantity}
+            >
+              -
+            </button>
+            <span className={styles.quantity}>{product.quantity}</span>
+            <button
+              type="button"
+              aria-label="plus"
+              className={isChangingQuantity ? styles.quantity_btn_loading : styles.quantity_btn}
+              onClick={() => {
+                setIsChangingQuantity(true);
+                changeItemQuantityFromCart(product.productId, product.quantity + 1)
+                  .catch(() => toast('Failed to change quantity', { type: 'error' }))
+                  .finally(() => setIsChangingQuantity(false));
+              }}
+              disabled={product.quantity === product.variant.availability?.availableQuantity || isChangingQuantity}
+            >
+              +
+            </button>
+            <span className={styles.max_quantity_desc}>
+              out of{' '}
+              <span className={styles.available_quantity}>{product.variant.availability?.availableQuantity}</span>
+            </span>
+          </div>
+          <p className={styles.price_block}>
+            <span className={styles.text}>Price per item:</span>
+            <div className={styles.price}>
+              {discount && <span>${discount}</span>}
+              <span className={discount && styles.product_discount}>${price}</span>
+            </div>
+          </p>
+          <p className={styles.total_block}>
+            <span className={styles.text}>Items cost:</span>
+            <div className={styles.price}>
+              {discount && <span>${discountOnTotalPrice}</span>}
+              <span className={discount && styles.product_discount}>${totalPrice}</span>
+            </div>
+          </p>
         </div>
-        <p className={styles.price_block}>
-          <span className={styles.text}>Price per item:</span>
-          <div className={styles.price}>
-            {discount && <span>${discount}</span>}
-            <span className={discount && styles.product_discount}>${price}</span>
-          </div>
-        </p>
-        <p className={styles.total_block}>
-          <span className={styles.text}>Items cost:</span>
-          <div className={styles.price}>
-            {discount && <span>${discountOnTotalPrice}</span>}
-            <span className={discount && styles.product_discount}>${totalPrice}</span>
-          </div>
-        </p>
       </div>
     </>
   );

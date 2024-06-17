@@ -27,6 +27,16 @@
   justify-content: space-between;
   width: 100%;
   max-width: var(--max-width);
+
+  @media (width <= 1300px) {
+    gap: 65px;
+  }
+
+  @media (width <= 950px) {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
 }
 
 .empty {
@@ -97,6 +107,10 @@
   flex-grow: 1;
   flex-direction: column;
   align-items: flex-end;
+
+  @media (width <= 950px) {
+    width: 100%;
+  }
 }
 
 .products {
@@ -107,6 +121,10 @@
   border: 5px solid transparent;
   border-radius: 10px;
   list-style-type: none;
+
+  @media (width <= 1300px) {
+    margin: 0 0 20px;
+  }
 }
 
 .products_item {
@@ -128,6 +146,11 @@
       border-radius: 10px;
     }
   }
+
+  @media (width <= 570px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 }
 
 .total_price_block {
@@ -138,6 +161,18 @@
   background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
   border: 5px solid transparent;
   border-radius: 10px;
+
+
+  @media (width <= 1300px) {
+    width: 300px;
+    padding: 15px;
+  }
+
+  @media (width <= 950px) {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
 }
 
 .total_price,
@@ -150,16 +185,24 @@
 .total_price {
   margin: 0;
   font-size: 2rem;
+
+  @media (width <= 1300px) {
+    font-size: 1.4rem;
+  }
 }
 
 .discount_block,
 .original_price_block {
   margin: 0;
   font-size: 1.5rem;
+
+  @media (width <= 1300px) {
+    font-size: 1rem;
+  }
 }
 
 .original_price_block {
-  margin-bottom: 16px;
+  margin-bottom: 0.66em;
 }
 
 .price,
@@ -174,22 +217,37 @@
 
 .promobox {
   margin-top: 16px;
+
+  @media (width <= 1300px) {
+    margin-top: 0.66em;
+  }
 }
 
 .promo_desc {
   margin: 0 0 5px;
   font-size: 1.3rem;
+
+  @media (width <= 1300px) {
+    margin: 0;
+    font-size: 0.91rem;
+  }
 }
 
 .promoblock {
   display: flex;
+  gap: 20px;
   justify-content: space-between;
   align-items: center;
   margin: 0 0 24px;
+
+  @media (width <= 1300px) {
+    margin: 0 0 16px;
+  }
 }
 
 .promocode {
   box-sizing: border-box;
+  width: 100%;
   height: 30px;
   padding: 0 5px;
   font-family: var(--primary-font);
@@ -210,17 +268,29 @@
 .check_out,
 .clear_cart {
   font-size: 1.3rem;
+
+  @media (width <= 1300px) {
+    font-size: 1rem;
+  }
+}
+
+.clear_cart {
+  @media (width <= 950px) {
+    margin: auto;
+    font-size: 1.3rem;
+  }
 }
 
 .check_out {
   width: 100%;
-}
 
-.clear_cart {
-  width: 9rem;
+  @media (width <= 950px) {
+    width: 240px;
+    margin: auto;
+  }
 
-  &:disabled {
-    background-color: var(--primary-color);
+  @media (width <= 460px) {
+    width: 100%;
   }
 }
 
@@ -230,6 +300,10 @@
   margin: 0;
   font-size: 1.2rem;
   color: var(--secondary-color);
+
+  @media (width <= 1300px) {
+    font-size: 0.84rem;
+  }
 }
 
 .wrapper {
