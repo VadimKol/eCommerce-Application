@@ -30,12 +30,12 @@ export function Home(): JSX.Element {
     <main className={classNames('main', styles.main)}>
       <PromocodeLine
         colorClass="green"
-        text='Apply Promo Code "COSPLAY" and get 10% discount for category'
+        text='Click and get the Promo Code "COSPLAY" with a 10% discount on the category'
         copyText="COSPLAY"
       />
       <PromocodeLine
         colorClass="tertiary"
-        text='Apply Promo Code "GEEK-SHOP" and get 10% discount for all'
+        text='Click and get the Promo Code "GEEK-SHOP" and get 10% discount for all'
         copyText="GEEK-SHOP"
       />
       <div className={styles.container}>

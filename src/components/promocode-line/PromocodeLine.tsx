@@ -24,8 +24,7 @@ export function PromocodeLine({ colorClass, text, copyText }: BlockInfoProps): J
         handleCopyClick().catch(() => {});
       }}
     >
-      <div className={classNames(styles.animateLine, styles.animateLineFirst)}>{text} </div>
-      <div className={classNames(styles.animateLine, styles.animateLineSecond)}>{text}</div>
+      <div className={styles.animateLine}>{text} </div>
     </div>
   );
 }
