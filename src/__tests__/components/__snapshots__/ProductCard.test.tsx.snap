@@ -48,11 +48,10 @@ exports[`renders correctly 1`] = `
       </p>
       <button
         class="button button--tertiary btn_cart"
-        disabled=""
         id=""
         type="button"
       >
-        Loading...
+        Add to cart
       </button>
     </div>
   </div>

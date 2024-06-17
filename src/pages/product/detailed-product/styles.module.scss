@@ -224,3 +224,62 @@
   font-size: 2rem;
   text-align: center;
 }
+
+.cartButton {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  min-width: 250px;
+  font-size: 20px;
+  font-weight: 500;
+  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+
+  &::before {
+    content: "";
+    width: 24px;
+    height: 24px;
+    background-color: var(--primary-color);
+    transition: none;
+    mask-image: url("@/assets/images/cart.svg");
+    mask-size: cover;
+    mask-repeat: no-repeat;
+  }
+
+  &:disabled {
+    color: var(--primary-color);
+    background-color: none;
+    background-image: linear-gradient(90deg, var(--tertiary-color), #feae00);
+
+    &::before {
+      background-color: var(--primary-color);
+    }
+  }
+
+  &.inCart {
+    color: var(--text-color);
+    background-color: none;
+    background-image: linear-gradient(90deg, #0b7428, #0d812e);
+
+    &::before {
+      background-color: var(--text-color);
+    }
+
+    &:disabled {
+      color: var(--text-color);
+      background-color: none;
+      background-image: linear-gradient(90deg, #0b7428, #0d812e);
+
+      &::before {
+        background-color: var(--text-color);
+      }
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled) {
+      @media (hover: hover) {
+        box-shadow: -5px 5px 5px var(--primary-color);
+      }
+    }
+  }
+}

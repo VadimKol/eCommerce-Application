@@ -65,6 +65,7 @@
 .card_link {
   display: flex;
   flex-grow: 1;
+  justify-content: center;
   align-items: center;
   text-decoration: none;
 
@@ -112,12 +113,14 @@
   margin-inline: auto;
   font-size: 20px;
   font-weight: 500;
+  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
 
   &::before {
     content: "";
     width: 24px;
     height: 24px;
     background-color: var(--primary-color);
+    transition: none;
     mask-image: url("../../assets/images/cart.svg");
     mask-size: cover;
     mask-repeat: no-repeat;
@@ -135,7 +138,6 @@ $lines-to-show: 5;
 .card_description {
   display: -webkit-box;
   overflow: hidden;
-  max-width: 400px;
   margin: 0 auto;
   font-size: $font-size;
   line-height: $line-height;

@@ -45,25 +45,30 @@ export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.E
   };
 
   useEffect(() => {
-    getCategories()
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((err) => {
-        if (err instanceof Error) {
-          setError(err);
-        } else {
-          setError(new Error('An unknown error occurred'));
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    const pathParts = location.pathname.split('/').filter(Boolean);
 
-  useEffect(() => {
-    if (categories) {
-      validatePath(categories, location.pathname);
+    if (pathParts.length > 0 && pathParts[0] === NavigationPaths.CATALOG.toString().slice(1)) {
+      if (!categories) {
+        setLoading(true);
+
+        getCategories()
+          .then((data) => {
+            setCategories(data);
+            validatePath(data, location.pathname);
+          })
+          .catch((err) => {
+            if (err instanceof Error) {
+              setError(err);
+            } else {
+              setError(new Error('An unknown error occurred'));
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        validatePath(categories, location.pathname);
+      }
     }
   }, [location.pathname, categories]);
 
