@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <button
+    aria-label="remove"
+    class="remove"
+    type="button"
+  />
+  <div
+    class="image_box"
+  >
+    <img
+      alt="Product"
+      class="product_img"
+      src=""
+    />
+  </div>
+  <div
+    class="product_desc"
+  >
+    <p
+      class="product_name"
+    />
+    <div
+      class="product_details"
+    >
+      <div
+        class="quantity_box"
+      >
+        <span
+          class="text"
+        >
+          Quantity:
+        </span>
+        <button
+          aria-label="minus"
+          class="quantity_btn"
+          type="button"
+        >
+          -
+        </button>
+        <span
+          class="quantity"
+        >
+          0
+        </span>
+        <button
+          aria-label="plus"
+          class="quantity_btn"
+          type="button"
+        >
+          +
+        </button>
+        <span
+          class="max_quantity_desc"
+        >
+          out of
+           
+          <span
+            class="available_quantity"
+          />
+        </span>
+      </div>
+      <div
+        class="price_block"
+      >
+        <span
+          class="text"
+        >
+          Price per item:
+        </span>
+        <div
+          class="price"
+        >
+          <span
+            class=""
+          >
+            $
+            0.00
+          </span>
+        </div>
+      </div>
+      <div
+        class="total_block"
+      >
+        <span
+          class="text"
+        >
+          Items cost:
+        </span>
+        <div
+          class="price"
+        >
+          <span
+            class=""
+          >
+            $
+            0.00
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

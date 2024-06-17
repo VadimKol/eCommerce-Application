@@ -83,20 +83,20 @@ export function CartItem({ product }: { product: LineItem }): JSX.Element {
               <span className={styles.available_quantity}>{product.variant.availability?.availableQuantity}</span>
             </span>
           </div>
-          <p className={styles.price_block}>
+          <div className={styles.price_block}>
             <span className={styles.text}>Price per item:</span>
             <div className={styles.price}>
               {discount && <span>${discount}</span>}
               <span className={discount && styles.product_discount}>${price}</span>
             </div>
-          </p>
-          <p className={styles.total_block}>
+          </div>
+          <div className={styles.total_block}>
             <span className={styles.text}>Items cost:</span>
             <div className={styles.price}>
               {discount && <span>${discountOnTotalPrice}</span>}
               <span className={discount && styles.product_discount}>${totalPrice}</span>
             </div>
-          </p>
+          </div>
         </div>
       </div>
     </>
