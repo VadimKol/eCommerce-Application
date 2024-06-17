@@ -1,16 +1,31 @@
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 
 import styles from './styles.module.scss';
 
-export function PromocodeLine(): JSX.Element {
+interface BlockInfoProps {
+  colorClass: string;
+  text: string;
+  copyText: string;
+}
+export function PromocodeLine({ colorClass, text, copyText }: BlockInfoProps): JSX.Element {
+  async function handleCopyClick(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(copyText);
+      toast.success(`You copied Promo Code '${copyText}'`);
+    } catch {
+      toast.error(`Failed to copy Promo Code`);
+    }
+  }
   return (
-    <div className={styles.animateBlock}>
-      <div className={classNames(styles.animateLine, styles.animateLineFirst)}>
-        Apply Promo Code &quot;GEEK-SHOP&quot; and get 10% discount
-      </div>
-      <div className={classNames(styles.animateLine, styles.animateLineSecond)}>
-        Apply Promo Code &quot;GEEK-SHOP&quot; and get 10% discount
-      </div>
+    <div
+      className={classNames(styles.animateBlock, styles[colorClass])}
+      onClick={() => {
+        handleCopyClick().catch(() => {});
+      }}
+    >
+      <div className={classNames(styles.animateLine, styles.animateLineFirst)}>{text} </div>
+      <div className={classNames(styles.animateLine, styles.animateLineSecond)}>{text}</div>
     </div>
   );
 }

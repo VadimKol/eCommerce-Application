@@ -7,18 +7,25 @@
   max-height: inherit;
 }
 
-.modalSwiper {
+.homeSwiper {
   max-width: 100%;
   height: 100%;
   background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
   border: 5px solid transparent;
   border-radius: 10px;
+
+  & a {
+    width: 100%;
+    height: 350px;
+    opacity: 0;
+    cursor: pointer;
+  }
 }
 
 .swiper-wrapper {
   max-height: inherit;
 
-  .modalSwiper & {
+  .homeSwiper & {
     max-height: 55svh;
   }
 }
@@ -67,8 +74,7 @@
 }
 
 .hide,
-.link,
-.modalSwiper a {
+.link {
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -89,7 +95,7 @@
     background-position: 60% 50%;
   }
 
-  .modalSwiper {
+  .homeSwiper {
     height: 300px;
   }
 }

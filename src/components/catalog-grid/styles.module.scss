@@ -44,9 +44,11 @@
     width: 100%;
     max-width: 100%;
     height: auto;
+    transition: all 500ms;
 
     &:hover {
       box-shadow: -5px 5px 5px var(--secondary-color);
+      transition: all 500ms;
       transform: translateY(-2px);
     }
   }

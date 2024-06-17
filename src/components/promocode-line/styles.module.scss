@@ -7,7 +7,14 @@
   width: calc(100% + 40px);
   height: 40px;
   font-size: 17px;
-  background-image: linear-gradient(to top, var(--tertiary-color), #ffb23e);
+}
+
+.tertiary {
+  background-image: linear-gradient(to top, #ffb23e, var(--tertiary-color));
+}
+
+.green {
+  background-image: linear-gradient(to bottom, #085a1f, #088d2e);
 }
 
 @keyframes ticker {
@@ -51,7 +58,7 @@
 }
 
 
-@media (width <= 500px) {
+@media (width <= 550px) {
   .animateLineSecond {
     display: none;
   }

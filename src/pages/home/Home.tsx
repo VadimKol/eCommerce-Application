@@ -28,6 +28,16 @@ export function Home(): JSX.Element {
 
   return (
     <main className={classNames('main', styles.main)}>
+      <PromocodeLine
+        colorClass="green"
+        text='Apply Promo Code "COSPLAY" and get 10% discount for category'
+        copyText="COSPLAY"
+      />
+      <PromocodeLine
+        colorClass="tertiary"
+        text='Apply Promo Code "GEEK-SHOP" and get 10% discount for all'
+        copyText="GEEK-SHOP"
+      />
       <div className={styles.container}>
         <h1 className={styles.title}>Home page</h1>
         <Swiper
@@ -41,7 +51,7 @@ export function Home(): JSX.Element {
             clickable: true,
           }}
           modules={[Navigation, Pagination]}
-          className="modalSwiper"
+          className="homeSwiper"
         >
           {bannerImages &&
             bannerImages.map((bannerItem) => (
@@ -55,7 +65,6 @@ export function Home(): JSX.Element {
         <h2 className={styles.h2Title}>Our Products </h2>
         <CatalogGrid />
       </div>
-      <PromocodeLine />
     </main>
   );
 }
