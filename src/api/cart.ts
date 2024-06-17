@@ -1,4 +1,4 @@
-import type { Cart, ClientResponse } from '@commercetools/platform-sdk';
+import type { Cart, ClientResponse, DiscountCodePagedQueryResponse } from '@commercetools/platform-sdk';
 
 import { REFRESH_TOKEN_EXPIRATION_DAYS } from '@/common/utils';
 
@@ -11,8 +11,12 @@ export const createCart = async (): Promise<ClientResponse<Cart>> =>
     .post({ body: { currency: 'USD', deleteDaysAfterLastModification: REFRESH_TOKEN_EXPIRATION_DAYS } })
     .execute();
 
-export const deleteCart = async (ID: string): Promise<ClientResponse<Cart>> => {
+export const deleteCart = async (ID: string): Promise<ClientResponse<Cart> | null> => {
   const response = await apiRoot.carts().withId({ ID }).get().execute();
+  if (response.body.cartState !== 'Merged') {
+    return null;
+  }
+
   return apiRoot
     .carts()
     .withId({ ID })
@@ -22,7 +26,7 @@ export const deleteCart = async (ID: string): Promise<ClientResponse<Cart>> => {
 
 export const getActiveCart = async (): Promise<ClientResponse<Cart>> => apiRoot.me().activeCart().get().execute();
 
-export const addToCart = async (cart: Cart, productId: string, quantity: number): Promise<ClientResponse<Cart>> =>
+export const addToCart = async (cart: Cart, productId: string, quantity?: number): Promise<ClientResponse<Cart>> =>
   apiRoot
     .me()
     .carts()
@@ -63,3 +67,60 @@ export const removeFromCart = async (
       },
     })
     .execute();
+
+export const clearCart = async (cart: Cart, lineItems: string[]): Promise<ClientResponse<Cart>> =>
+  apiRoot
+    .me()
+    .carts()
+    .withId({ ID: cart.id })
+    .post({
+      body: {
+        version: cart.version,
+        actions: lineItems.map((lineItemId) => ({ action: 'removeLineItem', lineItemId })),
+      },
+    })
+    .execute();
+
+export const changeQuantityFromCart = async (
+  cart: Cart,
+  lineItemId: string,
+  quantity: number,
+): Promise<ClientResponse<Cart>> =>
+  apiRoot
+    .me()
+    .carts()
+    .withId({ ID: cart.id })
+    .post({
+      body: {
+        version: cart.version,
+        actions: [
+          {
+            action: 'changeLineItemQuantity',
+            lineItemId,
+            quantity,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const addPromocodeIntoCart = async (cart: Cart, code: string): Promise<ClientResponse<Cart>> =>
+  apiRoot
+    .me()
+    .carts()
+    .withId({ ID: cart.id })
+    .post({
+      body: {
+        version: cart.version,
+        actions: [
+          {
+            action: 'addDiscountCode',
+            code,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const getPromocodes = async (): Promise<ClientResponse<DiscountCodePagedQueryResponse>> =>
+  apiRoot.discountCodes().get().execute();
