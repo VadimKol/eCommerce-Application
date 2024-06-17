@@ -11,7 +11,7 @@
   width: calc(100% - 40px);
   max-width: 600px;
   margin: 50px auto;
-  padding: 0 50px 10px;
+  padding: 30px 50px;
   font-size: 16px;
   color: var(--primary-color);
   background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
@@ -111,6 +111,10 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 500ms;
+
+  @media (width <= 700px) {
+    margin-top: 20px;
+  }
 }
 
 .button:hover {
@@ -145,7 +149,7 @@
 
 @media (width <= 700px) {
   .form {
-    padding: 0 20px 10px;
+    padding: 20px;
   }
 
   .smallInput {
@@ -182,7 +186,12 @@
 
 .registry_link {
   margin-top: 30px;
+  margin-bottom: 0;
   text-align: center;
+
+  @media (width <= 700px) {
+    margin-top: 20px;
+  }
 }
 
 .link {
