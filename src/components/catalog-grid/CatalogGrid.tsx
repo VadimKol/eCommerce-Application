@@ -21,7 +21,7 @@ const sourceArr = [
     link: '/catalog/cosplay/wigs',
   },
   {
-    title: 'Figure',
+    title: 'Figures',
     image: home_figure,
     link: '/catalog/decor/figures',
   },
