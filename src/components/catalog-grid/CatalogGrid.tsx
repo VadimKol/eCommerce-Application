@@ -2,10 +2,10 @@ import classNames from 'classnames';
 
 import home_figure from '@/assets/images/home_figure.png';
 import home_mug from '@/assets/images/home_mug.png';
-import home_note from '@/assets/images/home_note.jpg';
-import home_pad from '@/assets/images/home_pad.jpg';
-import home_weapon from '@/assets/images/home_weapon.jpg';
-import home_wig from '@/assets/images/home_wig.jpg';
+import home_note from '@/assets/images/home_note.png';
+import home_pad from '@/assets/images/home_pad.png';
+import home_weapon from '@/assets/images/home_weapon.png';
+import home_wig from '@/assets/images/home_wig.png';
 
 import styles from './styles.module.scss';
 
