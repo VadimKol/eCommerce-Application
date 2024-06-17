@@ -8,7 +8,7 @@
   width: 100%;
   max-width: 1200px;
   margin: auto;
-  padding: 20px 40px 10px;
+  padding: 20px 40px;
   color: var(--primary-color);
   background:
     linear-gradient(var(--background-color) 0 0) padding-box,
@@ -90,9 +90,12 @@
 }
 
 .textInfo div {
-  margin-bottom: 10px;
   line-height: 20px;
   text-align: left;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
 
 .link {

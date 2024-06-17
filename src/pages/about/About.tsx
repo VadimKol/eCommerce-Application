@@ -68,7 +68,7 @@ export function About(): JSX.Element {
         <h1 className="visually-hidden">About page</h1>
         <div className={styles.blocksInfo}>
           <div className={styles.blockIntro}>
-            <h2>Team work</h2>
+            <h2 className={styles.introTitle}>Team work</h2>
             <div className={styles.introParagraph}>
               To collaborate effectively, we held regular meetings to share progress, look for solutions to problems,
               and find the best ideas.
@@ -82,9 +82,9 @@ export function About(): JSX.Element {
               how queries work, which subsequently allowed the entire team to write their queries without any problems.
             </div>
             <div className={styles.introParagraph}>
-              Ivan figured it out and implemented a contextual system into React development, which allowed the site to
-              run smoothly and without errors. He also shared his knowledge among the participants, allowing them to use
-              it in the future without any problems.
+              Ivan implemented a contextual system into our React project, which allowed the site to run without extra
+              requests to the backend. He also shared his knowledge among the participants, allowing them to use it in
+              the future without any problems.
             </div>
             <div className={styles.introParagraph}>
               We implemented agile methods, including stand-ups every two days and sprint planning. When problems arose,
