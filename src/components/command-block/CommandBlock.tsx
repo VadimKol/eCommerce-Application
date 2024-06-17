@@ -15,7 +15,7 @@ interface BlockInfoProps {
   classPhoto: string;
   link: string;
   textInfo: TextInfo;
-  simpleText?: string;
+  simpleText?: string[] | [];
   github?: string;
   isEvenBlock: boolean;
 }
@@ -29,13 +29,17 @@ export function CommandBlock({
   github,
   isEvenBlock,
 }: BlockInfoProps): JSX.Element {
+  const softStackItems = textInfo['Soft stack']?.split(',').map((item) => item.trim()) || [];
+
   return (
     <div className={classNames(styles.blockInfo, { [styles.rotate as string]: isEvenBlock })}>
       <Link to={link} className={styles.linkImage}>
         <div className={classNames(styles.imageCommand, styles[classPhoto])} />
       </Link>
       <div className={styles.textInfo}>
-        <h2>{title} </h2>
+        <Link to={link} className={styles.titleBlock}>
+          <h2>{title} </h2>
+        </Link>
         {github && (
           <div>
             <span className={styles.infoTitle}>Github:</span>{' '}
@@ -62,10 +66,15 @@ export function CommandBlock({
         )}
         {textInfo['Soft stack'] && (
           <div>
-            <span className={styles.infoTitle}>Soft stack:</span> {textInfo['Soft stack']}
+            <span className={styles.infoTitle}>Soft stack: </span>
+            {softStackItems.map((item) => (
+              <span key={item} className={styles.softStackItem}>
+                {item}
+              </span>
+            ))}
           </div>
         )}
-        {simpleText && <div>{simpleText}</div>}
+        {simpleText && Array.isArray(simpleText) && simpleText.map((text) => <div key={text}>{text}</div>)}
       </div>
     </div>
   );

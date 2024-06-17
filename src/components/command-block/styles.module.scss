@@ -56,9 +56,14 @@
 .imageCommand.imageRss {
   background: url("../../assets/images/rss.png");
   background-position: center;
-  background-size: 100%;
+  background-size: 80%;
   background-repeat: no-repeat;
   border-radius: inherit;
+
+  &:hover {
+    background-size: 90%;
+    transition: all 500ms;
+  }
 }
 
 .imageCommand {
@@ -88,16 +93,39 @@
   margin-bottom: 10px;
   line-height: 20px;
   text-align: left;
-  text-indent: 20px;
 }
 
 .link {
+  color: var(--primary-color);
+  text-underline-offset: 4px;
+}
+
+.titleBlock {
   text-decoration: none;
   color: var(--primary-color);
+  transition: all 500ms;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
 .infoTitle {
   font-weight: 800;
+}
+
+.softStackItem {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: #8fe492;
+  border-radius: 4px;
+  transition: all 500ms;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
 @media (width <= 800px) {
