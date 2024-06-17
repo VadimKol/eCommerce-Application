@@ -12,7 +12,7 @@ const commandInfo = [
     textInfo: {
       role: 'frontend-developer',
       contributions:
-        'CommerceTools, Tests, Routing, Detailed product page, Header, Breadcrumbs, React contexts, 404 page',
+        'CommerceTools, Tests, Routing, Detailed product page, Error page, Header, Breadcrumbs, React contexts, 404 page',
       'Short bio':
         ' Graduated from the Bauman Moscow State Technical University, completed the Frontend Developer program at the HTML Academy',
       'Soft stack': 'CSS, Sass, HTML, JavaScript, Java, TypeScript, Webpack, Vite, Jest, React',
@@ -26,7 +26,7 @@ const commandInfo = [
     link: 'https://github.com/VadimKol',
     textInfo: {
       role: 'frontend-developer',
-      contributions: 'CommerceTools, Tests, Login page, Catalog page, Cart page',
+      contributions: 'CommerceTools, Tests, Login page, Catalog page, Cart page, Repository setup',
       'Short bio':
         'Graduated from Saratov State University, studied at the Faculty of Computer Science and Information Technologies and in the Department of Computer Security and Cryptography Theory. Graduated layout courses from Frontendblok. Worked as a TSQL developer',
       'Soft stack': 'CSS, Sass, SQL, HTML, JavaScript, TypeScript, Webpack, Vite, Jest, React',
@@ -42,7 +42,7 @@ const commandInfo = [
       role: ' frontend-developer, scrum-master',
       contributions: 'CommerceTools, Design, Registration page, Home page, About page, Profile page',
       'Short bio':
-        'Graduated from the Immanuel Kant Baltic Federal University, studied at the Faculty of Business Informatics. Graduated from 3WC courses with a degree in Frontend-developer. Worked on PHP for 1C CRM.',
+        'Graduated from the Immanuel Kant Baltic Federal University, studied at the Faculty of Business Informatics. Graduated from 3WC courses with a degree in Frontend-developer. Worked on PHP for 1C CRM',
       'Soft stack': 'PHP, C++, Python, Wordpress, CSS, Sass, HTML, JavaScript, TypeScript, Webpack, Vite, React',
     },
     github: 'bodnaralex',
