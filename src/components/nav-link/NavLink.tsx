@@ -10,9 +10,20 @@ interface NavLinkProps {
   setIsCurrent?: boolean;
   onClick?: React.MouseEventHandler;
   icon?: string;
+  extraInfo?: string;
+  insideBurgerMenu?: boolean;
 }
 
-export function NavLink({ to, label, className, setIsCurrent = false, onClick, icon = '' }: NavLinkProps): JSX.Element {
+export function NavLink({
+  to,
+  label,
+  className,
+  setIsCurrent = false,
+  onClick,
+  icon = '',
+  extraInfo = '',
+  insideBurgerMenu = false,
+}: NavLinkProps): JSX.Element {
   const location = useLocation();
   const isCurrentLink = location.pathname === to;
 
@@ -23,9 +34,18 @@ export function NavLink({ to, label, className, setIsCurrent = false, onClick, i
   if (isCurrentLink && icon) {
     return (
       <span
-        className={classNames(className, styles.link, styles.linkCurrent, styles.linkIcon, styles[`linkIcon--${icon}`])}
+        className={classNames(
+          className,
+          styles.link,
+          styles.linkCurrent,
+          styles.linkIcon,
+          styles[`linkIcon--${icon}`],
+          { [styles.linkExtra || '']: extraInfo },
+          { [styles.insideBurgerMenu || '']: insideBurgerMenu },
+        )}
       >
         <span className="visually-hidden">{label}</span>
+        {extraInfo && <span className={styles.extraInfo}>{extraInfo}</span>}{' '}
       </span>
     );
   }
@@ -38,11 +58,14 @@ export function NavLink({ to, label, className, setIsCurrent = false, onClick, i
         { [styles.linkCurrent || '']: setIsCurrent },
         { [styles.linkIcon || '']: icon },
         { [styles[`linkIcon--${icon}`] || '']: icon },
+        { [styles.linkExtra || '']: extraInfo },
+        { [styles.insideBurgerMenu || '']: insideBurgerMenu },
       )}
       to={to}
       onClick={onClick}
     >
       <span className={icon ? 'visually-hidden' : ''}>{label}</span>
+      {extraInfo && <span className={styles.extraInfo}>{extraInfo}</span>}{' '}
     </Link>
   );
 }

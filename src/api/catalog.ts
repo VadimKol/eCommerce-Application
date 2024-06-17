@@ -151,6 +151,7 @@ export async function getProduct(productKey: string): Promise<ProductDetails> {
 
   const productType = productTypeResponse.body;
 
+  const { id } = product;
   const name = product.name[DEFAULT_LOCALE];
   const description = product.description?.[DEFAULT_LOCALE];
   const { masterVariant } = product;
@@ -176,6 +177,7 @@ export async function getProduct(productKey: string): Promise<ProductDetails> {
   );
 
   return {
+    id,
     name,
     description,
     price: priceAmount || null,

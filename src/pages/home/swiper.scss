@@ -7,16 +7,26 @@
   max-height: inherit;
 }
 
-.modalSwiper {
+.homeSwiper {
   max-width: 100%;
   height: 100%;
+  background: linear-gradient(var(--background-color) 0 0) padding-box, linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+
+  & a {
+    width: 100%;
+    height: 350px;
+    opacity: 0;
+    cursor: pointer;
+  }
 }
 
 .swiper-wrapper {
   max-height: inherit;
 
-  .modalSwiper & {
-    height: 80svh;
+  .homeSwiper & {
+    max-height: 55svh;
   }
 }
 
@@ -26,10 +36,12 @@
   align-items: center;
   height: auto;
   min-height: 200px;
+  background-size: cover;
 }
 
 .swiper-button-prev,
 .swiper-button-next {
+  text-shadow: 0 0 4px 4px var(--background-color);
   transition: color 0.3s ease-in-out;
 
   @media (hover: hover) {
@@ -61,12 +73,29 @@
   cursor: default;
 }
 
-.swiper-lazy-preloader {
-  width: 50px;
-  height: 50px;
-  border: 8px solid var(--secondary-color);
-  border-right-color: var(--primary-color);
-  border-radius: 50%;
-  animation: l2 1s infinite linear;
-  aspect-ratio: 1;
+.hide,
+.link {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.avatar {
+  background-image: url("../../assets/images/avatar_banner.png");
+}
+
+.war {
+  background-image: url("../../assets/images/war_banner.png");
+}
+
+
+@media (width <= 700px) {
+  .swiper-slide {
+    background-position: 60% 50%;
+  }
+
+  .homeSwiper {
+    height: 300px;
+  }
 }
