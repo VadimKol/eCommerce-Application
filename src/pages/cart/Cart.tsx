@@ -37,7 +37,14 @@ export function Cart(): JSX.Element {
     .map(({ name }) => name);
 
   const total = (cart.totalPrice.centAmount / 100).toFixed(2);
-  const subtotal = (cartItems.reduce((acc, item) => acc + item.totalPrice.centAmount, 0) / 100).toFixed(2);
+  const subtotal = (
+    cartItems.reduce((acc, item) => acc + item.price.value.centAmount * item.quantity, 0) / 100
+  ).toFixed(2);
+
+  const isDiscounted =
+    cartItems.some((item) => item.price.discounted !== undefined) ||
+    cartItems.some((item) => item.discountedPricePerQuantity.length > 0) ||
+    cart.discountOnTotalPrice;
   const discount = (Number(subtotal) - Number(total)).toFixed(2);
 
   return (
@@ -76,14 +83,18 @@ export function Cart(): JSX.Element {
                 <span>Total:</span>
                 <span className={styles.price}>${total}</span>
               </p>
-              <p className={styles.discount_block}>
-                <span>Cart discount:</span>
-                <span className={styles.price}>${discount}</span>
-              </p>
-              <p className={styles.original_price_block}>
-                <span>Subtotal:</span>
-                <span className={styles.discount}>${subtotal}</span>
-              </p>
+              {isDiscounted && (
+                <>
+                  <p className={styles.discount_block}>
+                    <span>Discount:</span>
+                    <span className={styles.price}>${discount}</span>
+                  </p>
+                  <p className={styles.original_price_block}>
+                    <span>Subtotal:</span>
+                    <span className={styles.discount}>${subtotal}</span>
+                  </p>
+                </>
+              )}
               {appliedPromocodes.map((promo) => (
                 <p key={promo} className={styles.promocodes}>
                   <span>{`"${promo}"`}</span>

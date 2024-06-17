@@ -1,36 +1,43 @@
 import classNames from 'classnames';
 
+import home_figure from '@/assets/images/home_figure.png';
+import home_mug from '@/assets/images/home_mug.png';
+import home_note from '@/assets/images/home_note.png';
+import home_pad from '@/assets/images/home_pad.png';
+import home_weapon from '@/assets/images/home_weapon.png';
+import home_wig from '@/assets/images/home_wig.png';
+
 import styles from './styles.module.scss';
 
 const sourceArr = [
   {
     title: 'Weapons',
-    image: '/src/assets/images/home_weapon.jpg',
+    image: home_weapon,
     link: '/catalog/cosplay/weapon',
   },
   {
     title: 'Wigs',
-    image: '/src/assets/images/home_wig.jpg',
+    image: home_wig,
     link: '/catalog/cosplay/wigs',
   },
   {
-    title: 'Figure',
-    image: '/src/assets/images/home_figure.png',
+    title: 'Figures',
+    image: home_figure,
     link: '/catalog/decor/figures',
   },
   {
     title: 'Mugs',
-    image: '/src/assets/images/home_mug.png',
+    image: home_mug,
     link: '/catalog/decor/mugs',
   },
   {
     title: 'Pads',
-    image: '/src/assets/images/home_pad.jpg',
+    image: home_pad,
     link: '/catalog/decor/pads',
   },
   {
     title: 'Notepads',
-    image: '/src/assets/images/home_note.jpg',
+    image: home_note,
     link: '/catalog/stationery/notepads',
   },
 ];

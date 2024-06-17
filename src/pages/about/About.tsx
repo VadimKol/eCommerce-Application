@@ -67,6 +67,34 @@ export function About(): JSX.Element {
       <div className={styles.container}>
         <h1 className="visually-hidden">About page</h1>
         <div className={styles.blocksInfo}>
+          <div className={styles.blockIntro}>
+            <h2 className={styles.introTitle}>Team work</h2>
+            <div className={styles.introParagraph}>
+              To collaborate effectively, we held regular meetings to share progress, look for solutions to problems,
+              and find the best ideas.
+            </div>
+            <div className={styles.introParagraph}>
+              Aleksandra conceived and brought to life the overall look of the site, and the team subsequently refined
+              the color palette and layout down to the smallest detail.
+            </div>
+            <div className={styles.introParagraph}>
+              Vadim was the first to work on queries to CommerceTools and at a scheduled meeting he taught the logic of
+              how queries work, which subsequently allowed the entire team to write their queries without any problems.
+            </div>
+            <div className={styles.introParagraph}>
+              Ivan implemented a contextual system into our React project, which allowed the site to run without extra
+              requests to the backend. He also shared his knowledge among the participants, allowing them to use it in
+              the future without any problems.
+            </div>
+            <div className={styles.introParagraph}>
+              We implemented agile methods, including stand-ups every two days and sprint planning. When problems arose,
+              we worked closely together to eliminate bottlenecks.
+            </div>
+            <div className={styles.introParagraph}>
+              To sum it up, our collaboration was like a symphony: diverse talents came together to create a remarkable
+              store.
+            </div>
+          </div>
           {commandInfo.map((info, index) => (
             <CommandBlock
               key={info.classPhoto}
