@@ -1,0 +1,61 @@
+.promobox {
+  margin-top: 16px;
+
+  @media (width <= 1300px) {
+    margin-top: 0.66em;
+  }
+}
+
+.promo_desc {
+  margin: 0 0 5px;
+  font-size: 1.3rem;
+
+  @media (width <= 1300px) {
+    margin: 0;
+    font-size: 0.91rem;
+  }
+}
+
+.promoblock {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 24px;
+
+  @media (width <= 1300px) {
+    margin: 0 0 16px;
+  }
+}
+
+.promocode {
+  box-sizing: border-box;
+  width: 100%;
+  height: 30px;
+  padding: 0 5px;
+  font-family: var(--primary-font);
+  font-size: 1em;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+
+  &:focus {
+    border: 1px solid #000000;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.promocodes {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+
+  @media (width <= 1300px) {
+    font-size: 0.84rem;
+  }
+}

@@ -431,7 +431,7 @@ export function FormProfileAddresses({
   return (
     <div className={styles.detailShipping}>
       <div className={styles.defaultAddress}>
-        <b>Default {isBilling ? 'billing' : 'shipping'} address:</b>{' '}
+        <b>Default {isBilling ? 'billing' : 'shipping'} address: </b>
         {defaultAddressObject ? addressToString(defaultAddressObject) : 'No default address found'}
       </div>
       {addresses.map((addressItem: AddressCustom) => (

@@ -1,4 +1,4 @@
-import { type LineItem } from '@commercetools/platform-sdk';
+import type { LineItem } from '@commercetools/platform-sdk';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -22,19 +22,28 @@ export function CartItem({ product }: { product: LineItem }): JSX.Element {
   const totalPrice = (Number(price) * product.quantity).toFixed(2);
   const discountOnTotalPrice = (Number(discount) * product.quantity).toFixed(2);
 
+  const handleRemove = (): void => {
+    setIsRemoving(true);
+    removeItemFromCart(product.productId)
+      .then(() => toast('Successfully removed', { type: 'success' }))
+      .catch(() => toast('Failed to remove', { type: 'error' }))
+      .finally(() => setIsRemoving(false));
+  };
+
+  const handleChangeQuantity = (quantity: number): void => {
+    setIsChangingQuantity(true);
+    changeItemQuantityFromCart(product.productId, quantity)
+      .catch(() => toast('Failed to change quantity', { type: 'error' }))
+      .finally(() => setIsChangingQuantity(false));
+  };
+
   return (
     <>
       <button
         type="button"
         aria-label="remove"
         className={styles.remove}
-        onClick={() => {
-          setIsRemoving(true);
-          removeItemFromCart(product.productId)
-            .then(() => toast('Successfully removed', { type: 'success' }))
-            .catch(() => toast('Failed to remove', { type: 'error' }))
-            .finally(() => setIsRemoving(false));
-        }}
+        onClick={handleRemove}
         disabled={isRemoving}
       />
       <div className={styles.image_box}>
@@ -53,12 +62,7 @@ export function CartItem({ product }: { product: LineItem }): JSX.Element {
               type="button"
               aria-label="minus"
               className={isChangingQuantity ? styles.quantity_btn_loading : styles.quantity_btn}
-              onClick={() => {
-                setIsChangingQuantity(true);
-                changeItemQuantityFromCart(product.productId, product.quantity - 1)
-                  .catch(() => toast('Failed to change quantity', { type: 'error' }))
-                  .finally(() => setIsChangingQuantity(false));
-              }}
+              onClick={() => handleChangeQuantity(product.quantity - 1)}
               disabled={isChangingQuantity}
             >
               -
@@ -68,18 +72,13 @@ export function CartItem({ product }: { product: LineItem }): JSX.Element {
               type="button"
               aria-label="plus"
               className={isChangingQuantity ? styles.quantity_btn_loading : styles.quantity_btn}
-              onClick={() => {
-                setIsChangingQuantity(true);
-                changeItemQuantityFromCart(product.productId, product.quantity + 1)
-                  .catch(() => toast('Failed to change quantity', { type: 'error' }))
-                  .finally(() => setIsChangingQuantity(false));
-              }}
+              onClick={() => handleChangeQuantity(product.quantity + 1)}
               disabled={product.quantity === product.variant.availability?.availableQuantity || isChangingQuantity}
             >
               +
             </button>
             <span className={styles.max_quantity_desc}>
-              out of{' '}
+              {'out of '}
               <span className={styles.available_quantity}>{product.variant.availability?.availableQuantity}</span>
             </span>
           </div>
