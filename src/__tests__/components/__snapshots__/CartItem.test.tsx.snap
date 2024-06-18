@@ -55,8 +55,7 @@ exports[`renders correctly 1`] = `
         <span
           class="max_quantity_desc"
         >
-          out of
-           
+          out of 
           <span
             class="available_quantity"
           />
