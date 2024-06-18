@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <a
+    class="link linkIcon linkIcon--cart"
+    href="/cart"
+  >
+    <span
+      class="visually-hidden"
+    >
+      Items in cart:
+    </span>
+     
+  </a>
+</div>
+`;

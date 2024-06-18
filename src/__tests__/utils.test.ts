@@ -1,5 +1,6 @@
 import {
   calculateAge,
+  capitalizeFirstLetter,
   fandoms,
   getCheckboxFilter,
   getSort,
@@ -54,5 +55,9 @@ describe('Testing utils functions', () => {
   it('should set status code correctly', () => {
     const error = new StatusError('Mock error', 404);
     expect(error.statusCode).toBe(404);
+  });
+
+  it('should capitalize first letter', () => {
+    expect(capitalizeFirstLetter('test')).toBe('Test');
   });
 });
