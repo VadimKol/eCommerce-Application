@@ -39,7 +39,7 @@ export function Catalog(): JSX.Element {
 
   useEffect(() => {
     if (categoriesData) {
-      const categoryID = categoriesData?.find((category) => category.key === categories.categoryName);
+      const categoryID = categoriesData.find((category) => category.key === categories.categoryName);
       const subcategoryID = categoryID?.subcategories.find(
         (subcategory) => subcategory.key === categories.subcategoryName,
       );
@@ -57,14 +57,12 @@ export function Catalog(): JSX.Element {
         .then((data) => {
           total.current = data.total;
           data.products.forEach((product) => {
-            const category = categoriesData?.find((c) => c.id === product.categoryId);
+            const category = categoriesData.find(({ id }) => product.categories.includes(id));
             if (category) {
-              product.slugCategory = category.slug;
               product.keyCategory = category.key;
             }
-            const subcategory = category?.subcategories.find((sc) => sc.id === product.subcategoryId);
+            const subcategory = category?.subcategories.find(({ id }) => product.categories.includes(id));
             if (subcategory) {
-              product.slugSubCategory = subcategory.slug;
               product.keySubCategory = subcategory.key;
             }
           });

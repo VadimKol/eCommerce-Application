@@ -1,6 +1,7 @@
 .item {
   display: flex;
   gap: 10px;
+  justify-content: space-between;
   align-items: center;
   padding: 0 15px;
 
@@ -8,14 +9,6 @@
     &:hover {
       cursor: pointer;
     }
-  }
-
-  @media screen and (width <= 768px) {
-    justify-content: center;
-  }
-
-  @media screen and (width <= 590px) {
-    justify-content: initial;
   }
 }
 

@@ -11,9 +11,8 @@ exports[`Testing profile address component renders correctly 1`] = `
       <b>
         Default 
         shipping
-         address:
+         address: 
       </b>
-       
       No default address found
     </div>
     <button

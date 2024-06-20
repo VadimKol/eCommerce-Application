@@ -42,7 +42,7 @@ export function CommandBlock({
         </Link>
         {github && (
           <div>
-            <span className={styles.infoTitle}>Github:</span>{' '}
+            <span className={styles.infoTitle}>Github: </span>
             <Link to={link} className={styles.link}>
               {github}
             </Link>
@@ -51,17 +51,20 @@ export function CommandBlock({
 
         {textInfo.role && (
           <div>
-            <span className={styles.infoTitle}>Role:</span> {textInfo.role}
+            <span className={styles.infoTitle}>Role: </span>
+            {textInfo.role}
           </div>
         )}
         {textInfo.contributions && (
           <div>
-            <span className={styles.infoTitle}>Contributions:</span> {textInfo.contributions}
+            <span className={styles.infoTitle}>Contributions: </span>
+            {textInfo.contributions}
           </div>
         )}
         {textInfo['Short bio'] && (
           <div>
-            <span className={styles.infoTitle}>Short bio:</span> {textInfo['Short bio']}
+            <span className={styles.infoTitle}>Short bio: </span>
+            {textInfo['Short bio']}
           </div>
         )}
         {textInfo['Soft stack'] && (

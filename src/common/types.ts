@@ -164,11 +164,8 @@ export type Product = {
   price: string;
   discount: string;
   images: string[];
-  categoryId: string;
-  slugCategory: string;
+  categories: string[];
   keyCategory: string;
-  subcategoryId: string;
-  slugSubCategory: string;
   keySubCategory: string;
 };
 

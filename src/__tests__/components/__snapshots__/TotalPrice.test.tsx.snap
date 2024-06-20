@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="total_price_block"
+  >
+    <p
+      class="total_price"
+    >
+      <span>
+        Total:
+      </span>
+      <span
+        class="price"
+      >
+        $
+        0.00
+      </span>
+    </p>
+    <form
+      class="promobox"
+    >
+      <p
+        class="promo_desc"
+      >
+        Enter promocode
+      </p>
+      <div
+        class="promoblock"
+      >
+        <input
+          class="promocode"
+          id="promocode"
+          placeholder="Promocode"
+          type="text"
+        />
+        <button
+          class="button button--primary"
+          id=""
+          type="submit"
+        >
+          Apply
+        </button>
+      </div>
+    </form>
+    <button
+      class="button button--tertiary check_out"
+      id=""
+      type="button"
+    >
+      Check out
+    </button>
+  </div>
+</div>
+`;

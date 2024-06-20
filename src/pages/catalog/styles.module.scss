@@ -108,7 +108,7 @@
     border-radius: 10px;
   }
 
-  @media screen and (width > 1024px) {
+  @media screen and (width > 1166px) {
     grid-template-columns: repeat(auto-fit, minmax(265px, 0.34fr));
   }
 }
