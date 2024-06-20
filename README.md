@@ -86,8 +86,8 @@ Use `npm run ...`
 
 ## Project team 👨‍💻👩‍💻👨‍💻
 
-1. [Konstantin Zhiliaev](https://github.com/926227) - Mentor of team.
-2. [devarslan](https://github.com/devarslan) - Mentor of team.
-3. [izy](https://github.com/izy-code) - Project developer.
-4. [bodnaralex](https://github.com/BodnarAlex) - Project developer.
-5. [vadimkol](https://github.com/VadimKol) - Project developer.
+1. [izy](https://github.com/izy-code) - Project developer.
+2. [bodnaralex](https://github.com/BodnarAlex) - Project developer.
+3. [vadimkol](https://github.com/VadimKol) - Project developer.
+4. [Konstantin Zhiliaev](https://github.com/926227) - Mentor of team.
+5. [devarslan](https://github.com/devarslan) - Mentor of team.
