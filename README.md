@@ -45,7 +45,6 @@ Powered by CommerceTools 🌐, Geek Store utilizes a state-of-the-art, cloud-nat
   - [React Hook Form](https://www.react-hook-form.com/) 📄
   - [React Toastify](https://fkhadra.github.io/react-toastify) 🍞
   - [React Burger Menu](https://negomi.github.io/react-burger-menu/) 🍔
-  - [React Select](https://react-select.com/) 🔽
   - [Swiper](https://swiperjs.com/) 👉
   - [Zod](https://zod.dev/) ✅
 
