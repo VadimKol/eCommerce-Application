@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { getCategories } from '@/api/client-actions';
+import { getCategories } from '@/api/catalog';
 import { NavigationPaths } from '@/common/enums';
 import type { CategoriesContextType, CategoriesData } from '@/common/types';
 import { StatusError } from '@/common/utils';
@@ -13,11 +13,9 @@ type CategoriesProviderProps = {
   children: ReactNode;
 };
 
-let categoriesCache: CategoriesData | null = null;
-
 export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.Element {
-  const [categories, setCategories] = useState<CategoriesData | null>(categoriesCache);
-  const [loading, setLoading] = useState(!categoriesCache);
+  const [categories, setCategories] = useState<CategoriesData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const location = useLocation();
 
@@ -47,37 +45,32 @@ export function CategoriesProvider({ children }: CategoriesProviderProps): JSX.E
   };
 
   useEffect(() => {
-    setError(null);
+    const pathParts = location.pathname.split('/').filter(Boolean);
 
-    if (categoriesCache) {
-      setLoading(false);
-      setCategories(categoriesCache);
-      validatePath(categoriesCache, location.pathname);
-      return;
+    if (pathParts.length > 0 && pathParts[0] === NavigationPaths.CATALOG.toString().slice(1)) {
+      if (!categories) {
+        setLoading(true);
+
+        getCategories()
+          .then((data) => {
+            setCategories(data);
+            validatePath(data, location.pathname);
+          })
+          .catch((err) => {
+            if (err instanceof Error) {
+              setError(err);
+            } else {
+              setError(new Error('An unknown error occurred'));
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        validatePath(categories, location.pathname);
+      }
     }
-
-    if (!location.pathname.startsWith(NavigationPaths.CATALOG)) {
-      setLoading(false);
-      return;
-    }
-
-    getCategories()
-      .then((data) => {
-        categoriesCache = data;
-        setCategories(data);
-        validatePath(data, location.pathname);
-      })
-      .catch((err) => {
-        if (err instanceof Error) {
-          setError(err);
-        } else {
-          setError(new Error('An unknown error occurred'));
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [location.pathname]);
+  }, [location.pathname, categories]);
 
   const value = useMemo(() => ({ categories, loading, error }), [categories, loading, error]);
 

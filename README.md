@@ -1,22 +1,26 @@
-# eCommerce Application 🛍️🌐
+# Geek Store 🛍️👽🎃
 
-Welcome to our eCommerce application! This platform replicates real-world shopping experiences in a digital environment 🏪. It's a comprehensive online shopping portal that provides an interactive and seamless experience to users. From product discovery to checkout, the application ensures a smooth journey for the user, enhancing their engagement and boosting their purchasing confidence 🚀.
+Welcome to Geek Store, your ultimate hub for all things geek and pop culture! Our eCommerce platform is designed to bring the thrill of discovering and purchasing geeky goodies right to your fingertips 🌐. Whether you’re a fan of cosplay 🦸‍♂️, looking for unique gifts 🎁, or want to spruce up your space with geeky decor 🌟 and stationery ✒️, we’ve got you covered!
 
-Users can browse through a vast range of products 📚👗👟, view detailed descriptions, add their favorite items to the basket 🛒, and proceed to checkout 💳. It includes features such as user registration and login 📝🔐, product search 🔍, product categorization, and sorting to make the shopping experience more streamlined and convenient.
+Our platform offers a smooth and engaging shopping experience, guiding you effortlessly from product discovery to shopping cart 🛒. Explore our wide range of merchandise 🛍️ inspired by your favorite franchises like Star Wars, Marvel, Harry Potter, and more. Each product comes with detailed descriptions to help you make informed choices.
 
-An important aspect of our application is that it's responsive 📲, ensuring it looks great on various devices with a minimum resolution of 390px. This feature makes the shopping experience enjoyable, irrespective of the device users prefer.
+Key features of Geek Store include:
 
-Key pages in the application include:
+- User Registration and Login 📝🔐: Create an account or sign in.
+- Product Search and Filtering 🔍: Find exactly what you're looking for with our robust search and filter options.
+- Product Categorization 📚: Easily navigate through our well-organized categories to discover new and exciting products.
+- Responsive Design 📲: Enjoy a seamless shopping experience on any device, with a layout that adjusts beautifully from mobile to desktop.
 
-- Login and Registration pages 🖥️
-- Main page 🏠
-- Catalog Product page 📋
-- Detailed Product page 🔎
-- User Profile page 👤
-- Basket page 🛒
-- About Us page 🙋‍♂️🙋‍♀️
+Explore our key pages to enhance your Geek Store experience:
 
-The application is powered by CommerceTools 🌐, a leading provider of commerce solutions for B2C and B2B enterprises. CommerceTools offers a cloud-native, microservices-based commerce platform that enables brands to create unique and engaging digital commerce experiences.
+- Home Page 🏠: Start your journey with featured products.
+- Catalog Page 📋: Dive into our vast collection of geeky treasures.
+- Product Detail Page 🔎: Get in-depth information on each product before you buy.
+- Profile Page 👤: Manage your account details and update preferences.
+- Cart Page 🛒: Review your selections.
+- About Us Page 🙋‍♂️🙋‍♀️: Learn more about developers.
+
+Powered by CommerceTools 🌐, Geek Store utilizes a state-of-the-art, cloud-native commerce platform that ensures reliability, scalability, and a top-notch user experience.
 
 ## Technology Stack 💻📚
 
@@ -37,6 +41,14 @@ The application is powered by CommerceTools 🌐, a leading provider of commerce
   - [Prettier](https://prettier.io/) 🎩
   - [Husky](https://typicode.github.io/husky/) 🐶
   - [Stylelint](https://stylelint.io/) 🕶
+  - [React Router](https://reactrouter.com/) 📡
+  - [React Hook Form](https://www.react-hook-form.com/) 📄
+  - [React Toastify](https://fkhadra.github.io/react-toastify) 🍞
+  - [React Burger Menu](https://negomi.github.io/react-burger-menu/) 🍔
+  - [React Select](https://react-select.com/) 🔽
+  - [Swiper](https://swiperjs.com/) 👉
+  - [Zod](https://zod.dev/) ✅
+
 
  ## Requirements 📜
 
@@ -74,8 +86,8 @@ Use `npm run ...`
 
 ## Project team 👨‍💻👩‍💻👨‍💻
 
-1. [Konstantin Zhiliaev](https://github.com/926227) - Mentor of team.
-2. [devarslan](https://github.com/devarslan) - Mentor of team.
-3. [izy](https://github.com/izy-code) - Project developer.
-4. [bodnaralex](https://github.com/BodnarAlex) - Project developer.
-5. [vadimkol](https://github.com/VadimKol) - Project developer.
+1. [izy](https://github.com/izy-code) - Project developer.
+2. [bodnaralex](https://github.com/BodnarAlex) - Project developer.
+3. [vadimkol](https://github.com/VadimKol) - Project developer.
+4. [Konstantin Zhiliaev](https://github.com/926227) - Mentor of team.
+5. [devarslan](https://github.com/devarslan) - Mentor of team.

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { crudAddress, profile } from '@/api/client-actions.ts';
+import { crudAddress, profile } from '@/api/profile.ts';
 
 import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx';
 import { FormProfileAddresses } from '../../components/form-profile-addresses/FormProfileAddresses.tsx';
@@ -256,7 +256,6 @@ export function Profile(): JSX.Element {
                 className={styles.form}
               >
                 <div className={styles.detailPerson}>
-                  <h2>Person info</h2>
                   <div className={styles.mainFormProfile}>
                     <div className={classNames(styles.inputWithError, styles.bigInput)}>
                       <label htmlFor="name" className={styles.formInput}>

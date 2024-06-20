@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { tokenCache } from '@/api/build-client';
+import { deleteCart } from '@/api/cart';
 import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 import { type LoginSchema, loginSchema } from './login-schema';
 import styles from './styles.module.scss';
@@ -28,6 +29,7 @@ export function Login(): JSX.Element {
   const passwordState = getFieldState('password');
   const email = watch('email');
   const password = watch('password');
+  const { cart, updateCart } = useCart();
 
   let emailClass = styles.email;
   let passwordClass = styles.password;
@@ -47,16 +49,23 @@ export function Login(): JSX.Element {
         onSubmit={(event) => {
           event.preventDefault();
           if (isValid) {
-            login({ email, password })
-              .then((response) => {
-                localStorage.setItem('geek-shop-token', `${tokenCache.get().token}`);
-
-                // не даст выполнить запросы для анонима
-                // apiRoot.me().get().execute().then(console.log).catch(console.error);
-                // apiRoot.me().get().execute().then(console.log).catch(console.error);
-
+            login({
+              email,
+              password,
+              anonymousCart: { typeId: 'cart', id: cart?.id },
+              anonymousId: cart?.anonymousId,
+              anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+            })
+              .then(async (response) => {
+                localStorage.setItem('geek-shop-auth', 'true');
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
+                updateCart(response.body.cart || null);
+                try {
+                  await deleteCart(cart?.id || '');
+                } catch {
+                  throw new Error(`Failed to delete cart`);
+                }
               })
               .catch((error: Error) => toast(error.message, { type: 'error' }));
           } else {

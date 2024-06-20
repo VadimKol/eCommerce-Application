@@ -2,11 +2,13 @@ import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { createCart } from '@/api/cart';
 import { logout } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { NavLink } from '@/components/nav-link/NavLink';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 import { useCategories } from '@/hooks/useCategories';
 
 import styles from './styles.module.scss';
@@ -20,20 +22,26 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
   const location = useLocation();
   const navigate = useNavigate();
   const { error: error404 } = useCategories();
+  const { updateCart, getCartItemsCount } = useCart();
 
   const onLogoutClick = (): void => {
     logout()
-      .then(() => {
+      .then(async () => {
         toast('Successfully logged out', { type: 'success' });
         handleLogout();
         navigate(ActionPaths.LOGIN);
+        try {
+          const response = await createCart();
+          updateCart(response.body || null);
+        } catch {
+          throw new Error(`Failed to create cart`);
+        }
       })
-      .catch(() => {
-        toast(`Failed to logout`, { type: 'error' });
-      });
+      .catch((error: Error) => toast(error.message, { type: 'error' }));
   };
 
   const isCatalogPath = location.pathname.startsWith(`${NavigationPaths.CATALOG}`);
+  const cartItemCount = getCartItemsCount();
 
   return (
     <>
@@ -79,6 +87,16 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
             </li>
           </>
         )}
+        <li className={styles.actionsItem}>
+          <NavLink
+            to={ActionPaths.CART}
+            className={styles.cartLink}
+            label="Items in cart:"
+            extraInfo={cartItemCount ? `${cartItemCount}` : ''}
+            icon="cart"
+            insideBurgerMenu={isInsideBurgerMenu}
+          />
+        </li>
       </ul>
     </>
   );

@@ -1,7 +1,9 @@
+import type { CatalogAction } from '@/common/types';
+
 export interface FilterProps {
   priceFilter: [number, number];
-  setPriceFilter: (priceFilter: [number, number]) => void;
   franchises: boolean[];
-  setFranchises: (franchises: boolean[]) => void;
-  setPage: (page: number) => void;
+  countriesF: boolean[];
+  materialsF: boolean[];
+  dispatch: React.Dispatch<CatalogAction>;
 }

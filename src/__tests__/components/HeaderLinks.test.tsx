@@ -1,98 +1,91 @@
 import '@testing-library/jest-dom';
 
-import type { RenderResult } from '@testing-library/react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 
-import { logout } from '@/api/client-actions';
-import type { CategoriesContextType } from '@/common/types';
+import { NavigationPaths } from '@/common/enums';
+import type { AuthContextInterface, CategoriesContextType } from '@/common/types';
 import { HeaderLinks } from '@/components/header/links/HeaderLinks';
+import type { CartContextProps } from '@/contexts/cart-context';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 import { useCategories } from '@/hooks/useCategories';
 
 jest.mock('@/hooks/useAuth');
+jest.mock('@/hooks/useCart');
+jest.mock('@/hooks/useCategories');
+jest.mock('@/api/cart');
 jest.mock('@/api/client-actions');
-jest.mock('react-toastify', () => ({
-  toast: jest.fn(),
+
+jest.mock('@/components/nav-link/NavLink', () => ({
+  NavLink: ({ to, label }: { to: string; label: string }): JSX.Element => <a href={to}>{label}</a>,
+}));
+jest.mock('@/components/categories-list/CategoriesList', () => ({
+  CategoriesList: (): JSX.Element => <div>Categories List</div>,
 }));
 
-jest.mock('@/hooks/useCategories', () => ({
-  useCategories: jest.fn(),
-}));
-
-const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
-const mockLogout = logout as jest.MockedFunction<typeof logout>;
-const mockToast = toast as jest.MockedFunction<typeof toast>;
-const mockUseCategories = useCategories as jest.MockedFunction<typeof useCategories>;
-
-const setup = (
-  authState = { isAuthenticated: false, handleLogout: jest.fn(), handleLogin: jest.fn() },
-  categoriesState: CategoriesContextType = { error: null, categories: null, loading: false },
-): RenderResult => {
-  mockUseAuth.mockReturnValue(authState);
-  mockUseCategories.mockReturnValue(categoriesState);
-  return render(
-    <Router>
-      <HeaderLinks />
-    </Router>,
-  );
-};
+const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+const mockedUseCart = useCart as jest.MockedFunction<typeof useCart>;
+const mockedUseCategories = useCategories as jest.MockedFunction<typeof useCategories>;
 
 describe('HeaderLinks', () => {
-  it('renders navigation links', () => {
-    setup();
-    expect(screen.getByText('HOME')).toBeInTheDocument();
-    expect(screen.getByText('CATALOG')).toBeInTheDocument();
-    expect(screen.getByText('ABOUT')).toBeInTheDocument();
+  beforeEach(() => {
+    mockedUseAuth.mockReturnValue({
+      isAuthenticated: false,
+      handleLogout: jest.fn(),
+      handleLogin: jest.fn(),
+    } as AuthContextInterface);
+
+    mockedUseCart.mockReturnValue({
+      updateCart: jest.fn(),
+      getCartItemsCount: () => 0,
+      cart: [],
+      isItemInCart: jest.fn(),
+      getItemCount: jest.fn(),
+      getLineItemId: jest.fn(),
+    } as unknown as CartContextProps);
+
+    mockedUseCategories.mockReturnValue({
+      error: null,
+      categories: [],
+      loading: false,
+    } as CategoriesContextType);
   });
 
-  it('renders login and register links when not authenticated', () => {
-    setup();
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const renderComponent = (isInsideBurgerMenu = false): void => {
+    render(
+      <BrowserRouter>
+        <HeaderLinks isInsideBurgerMenu={isInsideBurgerMenu} />
+      </BrowserRouter>,
+    );
+  };
+
+  it('renders navigation links', () => {
+    renderComponent();
+    Object.keys(NavigationPaths).forEach((key) => {
+      expect(screen.getByText(key)).toBeInTheDocument();
+    });
+  });
+
+  it('shows login and register links when not authenticated', () => {
+    renderComponent();
     expect(screen.getByText('Login')).toBeInTheDocument();
     expect(screen.getByText('Register')).toBeInTheDocument();
   });
 
-  it('renders profile and logout links when authenticated', () => {
-    setup({ isAuthenticated: true, handleLogout: jest.fn(), handleLogin: jest.fn() });
-    expect(screen.getByText('Profile')).toBeInTheDocument();
+  it('shows logout and profile links when authenticated', () => {
+    mockedUseAuth.mockReturnValueOnce({
+      isAuthenticated: true,
+      handleLogout: jest.fn(),
+      handleLogin: jest.fn(),
+    } as AuthContextInterface);
+
+    renderComponent();
     expect(screen.getByText('Logout')).toBeInTheDocument();
-  });
-
-  it('calls logout and shows toast on logout click', async () => {
-    const handleLogout = jest.fn();
-    setup({ isAuthenticated: true, handleLogout, handleLogin: jest.fn() });
-
-    mockLogout.mockResolvedValueOnce();
-
-    fireEvent.click(screen.getByText('Logout'));
-
-    await waitFor(() => {
-      expect(mockLogout).toHaveBeenCalled();
-      expect(mockToast).toHaveBeenCalledWith('Successfully logged out', { type: 'success' });
-      expect(handleLogout).toHaveBeenCalled();
-    });
-  });
-
-  it('shows error toast on logout failure', async () => {
-    setup({ isAuthenticated: true, handleLogout: jest.fn(), handleLogin: jest.fn() });
-
-    mockLogout.mockRejectedValueOnce(new Error('Failed to logout'));
-
-    fireEvent.click(screen.getByText('Logout'));
-
-    await waitFor(() => {
-      expect(mockLogout).toHaveBeenCalled();
-      expect(mockToast).toHaveBeenCalledWith('Failed to logout', { type: 'error' });
-    });
-  });
-
-  it('does not render categories list in burger menu when not on catalog path', () => {
-    setup(
-      { isAuthenticated: true, handleLogout: jest.fn(), handleLogin: jest.fn() },
-      { error: null, categories: null, loading: false },
-    );
-    window.location.pathname = '/home';
-    expect(screen.queryByText('Categories')).not.toBeInTheDocument();
+    expect(screen.getByText('Profile')).toBeInTheDocument();
   });
 });

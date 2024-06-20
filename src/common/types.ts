@@ -139,6 +139,7 @@ export interface GeekShopCustomerDraft {
 }
 
 export type ProductDetails = {
+  id: string;
   name?: string;
   description?: string;
   price?: string | null;
@@ -163,11 +164,8 @@ export type Product = {
   price: string;
   discount: string;
   images: string[];
-  categoryId: string;
-  slugCategory: string;
+  categories: string[];
   keyCategory: string;
-  subcategoryId: string;
-  slugSubCategory: string;
   keySubCategory: string;
 };
 
@@ -200,3 +198,20 @@ export type LoaderData = {
   subcategory?: Subcategory;
   product?: Product;
 };
+
+export interface CatalogState {
+  products: Product[];
+  page: number;
+  sortType: string;
+  search: string;
+  priceFilter: [number, number];
+  franchises: boolean[];
+  countriesF: boolean[];
+  materialsF: boolean[];
+  loadingProducts: boolean;
+  categories: { categoryName?: string; subcategoryName?: string };
+}
+
+export interface CatalogAction extends Partial<CatalogState> {
+  type: string;
+}

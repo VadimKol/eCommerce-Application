@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getProduct } from '@/api/client-actions';
+import { getProduct } from '@/api/catalog';
 import type { ProductDetails } from '@/common/types';
 import { StatusError } from '@/common/utils';
 import { Breadcrumbs } from '@/components/breadcrumbs/Breadcrumbs';
@@ -15,9 +15,9 @@ import styles from './styles.module.scss';
 
 export function Product(): JSX.Element {
   const { productName: productKey } = useParams();
-  const [product, setProduct] = useState<ProductDetails | null>(null);
+  const [product, setProduct] = useState<ProductDetails>({} as ProductDetails);
   const [loading, setLoading] = useState(true);
-  const [subcategoryError, setError] = useState(false);
+  const [productError, setProductError] = useState(false);
   const { error: categoryError } = useCategories();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function Product(): JSX.Element {
         const productData = await getProduct(productKey || '');
         setProduct(productData);
       } catch {
-        setError(true);
+        setProductError(true);
       } finally {
         setLoading(false);
       }
@@ -35,11 +35,7 @@ export function Product(): JSX.Element {
     void fetchProduct();
   }, [productKey]);
 
-  if (subcategoryError) {
-    return <NoMatch />;
-  }
-
-  if (categoryError instanceof StatusError && categoryError.statusCode === 404) {
+  if (productError || (categoryError instanceof StatusError && categoryError.statusCode === 404)) {
     return <NoMatch />;
   }
 

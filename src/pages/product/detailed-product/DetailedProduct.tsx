@@ -3,18 +3,23 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './swiper.scss';
 
+import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { ProductDetails } from '@/common/types';
+import { capitalizeFirstLetter } from '@/common/utils';
+import { CustomButton } from '@/components/custom-button/СustomButton';
+import { useCart } from '@/hooks/useCart';
 
 import styles from './styles.module.scss';
 
 const OPACITY_DELAY_MS = 500;
 
 interface DetailedProductProps {
-  product: ProductDetails | null;
+  product: ProductDetails;
   loading: boolean;
 }
 
@@ -22,6 +27,66 @@ function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Elemen
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const { isItemInCart, addItemToCart, removeItemFromCart, cartItems } = useCart();
+  const { id, name, description, price, discountedPrice, currency, images, attributes, availability } = product;
+
+  const [isAdding, setIsAdding] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
+
+  useEffect(() => {
+    if (cartItems) {
+      setIsInCart(isItemInCart(id));
+    }
+  }, [id, cartItems, isItemInCart]);
+
+  const handleAddToCart = async (): Promise<void> => {
+    setIsAdding(true);
+    try {
+      await addItemToCart(id, 1);
+      setIsInCart(true);
+      toast('Item added to cart', { type: 'success' });
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const handleRemoveFromCart = async (): Promise<void> => {
+    setIsRemoving(true);
+    try {
+      await removeItemFromCart(id);
+      setIsInCart(false);
+      toast('Item removed from cart', { type: 'success' });
+    } finally {
+      setIsRemoving(false);
+    }
+  };
+
+  const getButtonText = (): string => {
+    if (isAdding) {
+      return 'Adding...';
+    }
+    if (isRemoving) {
+      return 'Removing...';
+    }
+    if (isInCart) {
+      return 'Remove from cart';
+    }
+    return 'Add to cart';
+  };
+
+  const handleButtonClick = (): void => {
+    if (isInCart) {
+      handleRemoveFromCart().catch(() => {
+        toast(`Failed to remove item from cart`, { type: 'error' });
+      });
+    } else {
+      handleAddToCart().catch(() => {
+        toast(`Failed to add item to cart`, { type: 'error' });
+      });
+    }
+  };
 
   const handleImageClick = (index: number): void => {
     setActiveImageIndex(index);
@@ -63,12 +128,6 @@ function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Elemen
   if (loading) {
     return <div className={styles.infoMessage}>Loading product data...</div>;
   }
-
-  if (!product) {
-    return <div className={styles.infoMessage}>Product not found</div>;
-  }
-
-  const { name, description, price, discountedPrice, currency, images, attributes, availability } = product;
 
   return (
     <>
@@ -126,8 +185,16 @@ function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Elemen
               </span>
             )}
           </div>
+          <CustomButton
+            className={classNames(styles.cartButton, { [styles.inCart || '']: isInCart })}
+            onClick={handleButtonClick}
+            isDisabled={isAdding || isRemoving}
+            variant="tertiary"
+          >
+            {getButtonText()}
+          </CustomButton>
           <div className={styles.productQuantity}>
-            <strong>Available Quantity:</strong> {availability?.availableQuantity}
+            <strong>Available quantity:</strong> {availability?.availableQuantity}
           </div>
           <div className={styles.productAttributes}>
             {attributes &&
@@ -135,9 +202,11 @@ function DetailedProduct({ product, loading }: DetailedProductProps): JSX.Elemen
                 (attribute) =>
                   attribute.name !== 'Description' && (
                     <div key={attribute.name} className={styles.attribute}>
-                      <strong className={styles.attributeName}>{attribute.name}:</strong>
+                      <strong className={styles.attributeName}>{capitalizeFirstLetter(attribute.name)}:</strong>
                       <span className={styles.attributeValue}>
-                        {Array.isArray(attribute.value) ? attribute?.value[0]?.key : attribute.value}
+                        {Array.isArray(attribute.value) && attribute.value[0]
+                          ? capitalizeFirstLetter(attribute.value[0].key)
+                          : capitalizeFirstLetter(attribute.value.toString())}
                       </span>
                     </div>
                   ),
