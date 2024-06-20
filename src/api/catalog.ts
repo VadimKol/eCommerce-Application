@@ -112,11 +112,8 @@ export async function getProducts(
         price,
         discount,
         images,
-        categoryId: product.categories[product.categories.length - 1]?.id ?? '',
-        slugCategory: '',
+        categories: product.categories.map(({ id }) => id),
         keyCategory: '',
-        subcategoryId: product.categories[0]?.id ?? '',
-        slugSubCategory: '',
         keySubCategory: '',
       });
     });

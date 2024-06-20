@@ -16,11 +16,8 @@ it('renders correctly', () => {
     price: '00.00',
     discount: '00.00',
     images: [''],
-    categoryId: '',
-    slugCategory: '',
+    categories: [],
     keyCategory: '',
-    subcategoryId: '',
-    slugSubCategory: '',
     keySubCategory: '',
   };
 
