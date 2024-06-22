@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { crudAddress } from '@/api/profile.ts';
-import { countries } from '@/common/utils.ts';
+import { broadcastChannel, countries } from '@/common/utils.ts';
 
 import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
@@ -177,6 +177,10 @@ export function FormProfileAddresses({
 
           setAddressesShip(addressOptionsShip);
           setAddressesBill(addressOptionsBill);
+          broadcastChannel.postMessage({
+            type: 'Address',
+            payload: { person: response.body, addressOptionsShip, addressOptionsBill },
+          });
         }
       })
       .catch((err: Error) => {
@@ -234,6 +238,10 @@ export function FormProfileAddresses({
 
           setAddressesShip(addressOptionsShip);
           setAddressesBill(addressOptionsBill);
+          broadcastChannel.postMessage({
+            type: 'Address',
+            payload: { person: response.body, addressOptionsShip, addressOptionsBill },
+          });
         }
       })
       .catch((err: Error) => {
@@ -316,6 +324,10 @@ export function FormProfileAddresses({
                 setAddressesShip(addressOptionsShip);
                 setAddressesBill(addressOptionsBill);
                 toast('The address was added and set as default successfully', { type: 'success' });
+                broadcastChannel.postMessage({
+                  type: 'Address',
+                  payload: { person: response.body, addressOptionsShip, addressOptionsBill },
+                });
               })
               .catch((err: Error) => {
                 toast(`An error occurred while setting the default address: ${err.message}`, { type: 'error' });
@@ -389,6 +401,10 @@ export function FormProfileAddresses({
 
           setAddressesShip(addressOptionsShip);
           setAddressesBill(addressOptionsBill);
+          broadcastChannel.postMessage({
+            type: 'Address',
+            payload: { person: response.body, addressOptionsShip, addressOptionsBill },
+          });
         }
       })
       .catch((err: Error) => {

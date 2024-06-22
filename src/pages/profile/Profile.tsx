@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { crudAddress, profile } from '@/api/profile.ts';
+import { broadcastChannel } from '@/common/utils.ts';
 
 import { FormChangePassword } from '../../components/form-change-password/FormChangePassword.tsx';
 import { FormProfileAddresses } from '../../components/form-profile-addresses/FormProfileAddresses.tsx';
@@ -188,6 +189,7 @@ export function Profile(): JSX.Element {
           setValue('surname', response.body.lastName || '');
           setValue('age', response.body.dateOfBirth || '');
           setValue('email', response.body.email || '');
+          broadcastChannel.postMessage({ type: 'Profile', payload: { person: response.body } });
         }
       })
       .catch((err: Error) => {
@@ -206,6 +208,44 @@ export function Profile(): JSX.Element {
     setValue('email', personInfo.email || '');
     await handleMode(!modeFix);
   };
+
+  useEffect(() => {
+    const handleProfile = (
+      e: MessageEvent<{
+        type: string;
+        payload: { person: Customer; addressOptionsShip: AddressCustom[]; addressOptionsBill: AddressCustom[] };
+      }>,
+    ): void => {
+      if (e.data.type === 'Profile' || e.data.type === 'Address' || e.data.type === 'Password') {
+        setPersonInfo({
+          version: e.data.payload.person.version || 1,
+          firstName: e.data.payload.person.firstName || '',
+          lastName: e.data.payload.person.lastName || '',
+          dateOfBirth: e.data.payload.person.dateOfBirth || '',
+          email: e.data.payload.person.email || '',
+          password: e.data.payload.person.password || '',
+          defaultShippingAddressId: e.data.payload.person.defaultShippingAddressId || '',
+          defaultBillingAddressId: e.data.payload.person.defaultBillingAddressId || '',
+          billingAddressIds: e.data.payload.person.billingAddressIds || [],
+          shippingAddressIds: e.data.payload.person.shippingAddressIds || [],
+        });
+      }
+      if (e.data.type === 'Profile') {
+        setValue('name', e.data.payload.person.firstName || '');
+        setValue('surname', e.data.payload.person.lastName || '');
+        setValue('age', e.data.payload.person.dateOfBirth || '');
+        setValue('email', e.data.payload.person.email || '');
+      }
+      if (e.data.type === 'Address') {
+        setAddressesShip(e.data.payload.addressOptionsShip);
+        setAddressesBill(e.data.payload.addressOptionsBill);
+      }
+    };
+    broadcastChannel.addEventListener('message', handleProfile);
+    return (): void => {
+      broadcastChannel.removeEventListener('message', handleProfile);
+    };
+  }, [setValue]);
 
   return (
     <main className={classNames('main', styles.main)}>
