@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { login, signup } from '@/api/client-actions.ts';
 import { ActionPaths } from '@/common/enums';
-import { countries } from '@/common/utils.ts';
+import { broadcastChannel, countries } from '@/common/utils.ts';
 import { useAuth } from '@/hooks/useAuth.ts';
 import { useCart } from '@/hooks/useCart.ts';
 
@@ -240,6 +240,7 @@ export function Register(): JSX.Element {
       toast(`${response.body.customer.firstName} registered and logged in`, { type: 'success' });
       handleLogin();
       updateCart(response.body.cart || null);
+      broadcastChannel.postMessage({ type: 'Auth', payload: { cart: response.body.cart } });
     } catch (error) {
       if (error instanceof Error) {
         toast(error.message, { type: 'error' });

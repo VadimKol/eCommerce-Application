@@ -31,6 +31,8 @@ export default {
       },
     ],
   },
+  testPathIgnorePatterns: ['/__mocks__/'],
+  setupFiles: ['<rootDir>/src/__tests__/__mocks__/mockBroadcastChannel.ts'],
   rootDir: './',
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/src/__tests__/__mocks__/fileMock.ts',

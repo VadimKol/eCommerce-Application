@@ -100,6 +100,7 @@ export const ExistingTokenFlow = (token: string): ByProjectKeyRequestBuilder => 
 
 // Refresh flow
 export const RefreshTokenFlow = (refreshToken: string): ByProjectKeyRequestBuilder => {
+  Object.assign(tokenCache, new CustomTokenCache());
   const refreshAuthMiddlewareOptions: RefreshAuthMiddlewareOptions = {
     host,
     projectKey,

@@ -193,3 +193,5 @@ export function reducerCatalog(
 }
 
 export const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1);
+
+export const broadcastChannel = new BroadcastChannel('geek-store');

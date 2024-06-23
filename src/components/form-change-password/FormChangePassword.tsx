@@ -5,12 +5,15 @@ import { toast } from 'react-toastify';
 
 import { login } from '@/api/client-actions.ts';
 import { changePassword } from '@/api/profile.ts';
+import { broadcastChannel } from '@/common/utils.ts';
+import { useCart } from '@/hooks/useCart.ts';
 
 import { type FormValues, registerSchema } from './register-schema.ts';
 import styles from './styles.module.scss';
 import type { FormChangePasswordProps } from './types.ts';
 
 export function FormChangePassword({ email, version, setPersonInfo }: FormChangePasswordProps): JSX.Element {
+  const { updateCart } = useCart();
   const {
     register,
     getFieldState,
@@ -64,18 +67,24 @@ export function FormChangePassword({ email, version, setPersonInfo }: FormChange
             billingAddressIds: response.body.billingAddressIds || [],
             shippingAddressIds: response.body.shippingAddressIds || [],
           });
-        }
-      })
-      .then(() => {
-        const password = myCustomerChangePassword.newPassword;
+          const password = myCustomerChangePassword.newPassword;
 
-        login({ email, password })
-          .then(() => {
-            toast(`Password change was successful`, { type: 'success' });
+          login({
+            email,
+            password,
           })
-          .catch(() => {
-            toast('An error occurred when changing your password, please try again', { type: 'error' });
-          });
+            .then((resp) => {
+              toast(`Password change was successful`, { type: 'success' });
+              updateCart(resp.body.cart || null);
+              broadcastChannel.postMessage({
+                type: 'Password',
+                payload: { person: response.body, cart: resp.body.cart },
+              });
+            })
+            .catch(() => {
+              toast('An error occurred when changing your password, please try again', { type: 'error' });
+            });
+        }
       })
       .catch((err: Error) => {
         toast(`Password error ${err.message}`, { type: 'error' });

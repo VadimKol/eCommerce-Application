@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { deleteCart } from '@/api/cart';
 import { login } from '@/api/client-actions';
 import { ActionPaths } from '@/common/enums';
+import { broadcastChannel } from '@/common/utils';
 import { CustomButton } from '@/components/custom-button/СustomButton';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
@@ -61,6 +62,7 @@ export function Login(): JSX.Element {
                 toast(`Hello ${response.body.customer.firstName}`, { type: 'success' });
                 handleLogin();
                 updateCart(response.body.cart || null);
+                broadcastChannel.postMessage({ type: 'Auth', payload: { cart: response.body.cart } });
                 try {
                   await deleteCart(cart?.id || '');
                 } catch {

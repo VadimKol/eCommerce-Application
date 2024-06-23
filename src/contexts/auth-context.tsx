@@ -1,6 +1,8 @@
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { apiRoot, RefreshTokenFlow } from '@/api/build-client';
 import type { AuthContextInterface } from '@/common/types';
+import { broadcastChannel } from '@/common/utils';
 
 export const AuthContext = createContext({
   isAuthenticated: false,
@@ -23,6 +25,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
     () => ({ isAuthenticated, handleLogin, handleLogout }),
     [isAuthenticated, handleLogout, handleLogin],
   );
+
+  useEffect(() => {
+    const handleAuth = (e: MessageEvent<{ type: string }>): void => {
+      if (e.data.type === 'Auth') {
+        if (!isAuthenticated) {
+          handleLogin();
+        } else {
+          handleLogout();
+        }
+      }
+      if (e.data.type === 'Password' || e.data.type === 'Auth') {
+        Object.assign(apiRoot, RefreshTokenFlow(localStorage.getItem('geek-shop-refresh') || ''));
+      }
+    };
+    broadcastChannel.addEventListener('message', handleAuth);
+    return (): void => {
+      broadcastChannel.removeEventListener('message', handleAuth);
+    };
+  }, [isAuthenticated, handleLogin, handleLogout]);
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }

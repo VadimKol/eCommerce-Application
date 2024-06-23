@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { createCart } from '@/api/cart';
 import { logout } from '@/api/client-actions';
 import { ActionPaths, NavigationPaths } from '@/common/enums';
+import { broadcastChannel } from '@/common/utils';
 import { CategoriesList } from '@/components/categories-list/CategoriesList';
 import { NavLink } from '@/components/nav-link/NavLink';
 import { useAuth } from '@/hooks/useAuth';
@@ -33,6 +34,7 @@ export function HeaderLinks({ isInsideBurgerMenu = false }: Props): JSX.Element 
         try {
           const response = await createCart();
           updateCart(response.body || null);
+          broadcastChannel.postMessage({ type: 'Auth', payload: { cart: response.body } });
         } catch {
           throw new Error(`Failed to create cart`);
         }

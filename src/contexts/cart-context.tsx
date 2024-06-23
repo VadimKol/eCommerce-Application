@@ -2,6 +2,8 @@ import type { Cart, LineItem } from '@commercetools/platform-sdk';
 import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { broadcastChannel } from '@/common/utils';
+
 import {
   addPromocodeIntoCart,
   addToCart,
@@ -42,10 +44,25 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
         .then((response) => setCart(response.body))
         .catch(() => toast(`Failed to get cart`, { type: 'error' }));
     }
+    const handleCart = (
+      e: MessageEvent<{
+        type: string;
+        payload: { cart: Cart | null };
+      }>,
+    ): void => {
+      if (e.data.type === 'Password' || e.data.type === 'Auth' || e.data.type === 'Cart') {
+        setCart(e.data.payload.cart);
+      }
+    };
+    broadcastChannel.addEventListener('message', handleCart);
+    return (): void => {
+      broadcastChannel.removeEventListener('message', handleCart);
+    };
   }, []);
 
   const updateCart = useCallback((updatedCard: Cart | null): void => {
     setCart(updatedCard);
+    broadcastChannel.postMessage({ type: 'Cart', payload: { cart: updatedCard } });
   }, []);
 
   const cartItems = useMemo(() => (cart ? cart.lineItems : []), [cart]);
@@ -76,6 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
       const response = await addToCart(cart!, id, quantity);
 
       setCart(response.body);
+      broadcastChannel.postMessage({ type: 'Cart', payload: { cart: response.body } });
     },
     [cart],
   );
@@ -88,6 +106,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
         const response = await removeFromCart(cart!, lineItemId, quantity);
 
         setCart(response.body);
+        broadcastChannel.postMessage({ type: 'Cart', payload: { cart: response.body } });
       }
     },
     [cart, getLineItemId],
@@ -103,6 +122,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
       const response = await clearCart(cart!, lineItems);
 
       setCart(response.body);
+      broadcastChannel.postMessage({ type: 'Cart', payload: { cart: response.body } });
     },
     [cart],
   );
@@ -115,6 +135,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
         const response = await changeQuantityFromCart(cart!, lineItemId, quantity);
 
         setCart(response.body);
+        broadcastChannel.postMessage({ type: 'Cart', payload: { cart: response.body } });
       }
     },
     [cart, getLineItemId],
@@ -125,6 +146,7 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
       const response = await addPromocodeIntoCart(cart!, code);
 
       setCart(response.body);
+      broadcastChannel.postMessage({ type: 'Cart', payload: { cart: response.body } });
     },
     [cart],
   );
