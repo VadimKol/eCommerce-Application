@@ -2,9 +2,7 @@ import type { Cart, LineItem } from '@commercetools/platform-sdk';
 import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { apiRoot, RefreshTokenFlow } from '@/api/build-client';
 import { broadcastChannel } from '@/common/utils';
-import { useAuth } from '@/hooks/useAuth';
 
 import {
   addPromocodeIntoCart,
@@ -35,7 +33,6 @@ export const CartContext = createContext({} as CartContextProps);
 
 export function CartProvider({ children }: { children: ReactNode }): React.ReactElement {
   const [cart, setCart] = useState<Cart | null>(null);
-  const { isAuthenticated, handleLogin, handleLogout } = useAuth();
 
   useEffect(() => {
     if (localStorage.getItem('geek-shop-refresh') === null) {
@@ -47,6 +44,20 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
         .then((response) => setCart(response.body))
         .catch(() => toast(`Failed to get cart`, { type: 'error' }));
     }
+    const handleCart = (
+      e: MessageEvent<{
+        type: string;
+        payload: { cart: Cart | null };
+      }>,
+    ): void => {
+      if (e.data.type === 'Password' || e.data.type === 'Auth' || e.data.type === 'Cart') {
+        setCart(e.data.payload.cart);
+      }
+    };
+    broadcastChannel.addEventListener('message', handleCart);
+    return (): void => {
+      broadcastChannel.removeEventListener('message', handleCart);
+    };
   }, []);
 
   const updateCart = useCallback((updatedCard: Cart | null): void => {
@@ -139,33 +150,6 @@ export function CartProvider({ children }: { children: ReactNode }): React.React
     },
     [cart],
   );
-
-  useEffect(() => {
-    const handleCart = (
-      e: MessageEvent<{
-        type: string;
-        payload: { cart: Cart | null };
-      }>,
-    ): void => {
-      if (e.data.type === 'Auth') {
-        if (!isAuthenticated) {
-          handleLogin();
-        } else {
-          handleLogout();
-        }
-      }
-      if (e.data.type === 'Password' || e.data.type === 'Auth') {
-        Object.assign(apiRoot, RefreshTokenFlow(localStorage.getItem('geek-shop-refresh') || ''));
-      }
-      if (e.data.type === 'Password' || e.data.type === 'Auth' || e.data.type === 'Cart') {
-        setCart(e.data.payload.cart);
-      }
-    };
-    broadcastChannel.addEventListener('message', handleCart);
-    return (): void => {
-      broadcastChannel.removeEventListener('message', handleCart);
-    };
-  }, [isAuthenticated, handleLogin, handleLogout]);
 
   const CartContextValue: CartContextProps = useMemo(
     () => ({
