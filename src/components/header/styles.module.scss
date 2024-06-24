@@ -1,0 +1,43 @@
+.header {
+  position: relative;
+  width: 100%;
+  background-image: linear-gradient(to bottom, var(--primary-color), #073283);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding: 9px 10px 10px;
+  font-size: 20px;
+  color: var(--text-color);
+
+  @media (width <= 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wordmark {
+  display: block;
+  width: fit-content;
+  font-family: var(--secondary-font);
+  font-size: 34px;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: -webkit-text-stroke-color 0.6s ease;
+  -webkit-text-fill-color: var(--primary-color);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--secondary-color);
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      -webkit-text-stroke-color: var(--tertiary-color);
+    }
+  }
+}

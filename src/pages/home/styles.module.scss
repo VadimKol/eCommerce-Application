@@ -1,0 +1,56 @@
+.main {
+  padding: 0 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 300px;
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 28px 40px 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.title {
+  display: none;
+  width: max-content;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.linksDesc {
+  margin: 0;
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modalImage {
+  height: 100%;
+  border-radius: 10px;
+}
+
+.h2Title {
+  width: max-content;
+  margin: 15px auto 10px;
+  font-size: 26px;
+  background-color: var(--background-color);
+  border-radius: 15px;
+  box-shadow: 0 0 7px var(--background-color);
+}
+
+@media (width <= 800px) {
+  .container {
+    padding: 28px 10px 30px;
+  }
+}

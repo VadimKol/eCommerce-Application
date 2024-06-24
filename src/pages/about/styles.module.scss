@@ -1,0 +1,61 @@
+.main {
+  padding: 0 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 100%;
+  margin: auto;
+  padding: 28px 40px 30px;
+  font-family: var(--primary-font);
+  text-align: center;
+  border-radius: 10px;
+}
+
+.title {
+  margin-block: 0;
+  text-shadow: var(--background-color) 2px 0 5px;
+}
+
+.blocksInfo {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+}
+
+.blockIntro {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 40px 25px;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+
+  & .introTitle {
+    margin-bottom: 10px;
+  }
+
+  & .introParagraph {
+    text-align: justify;
+
+    &:not(:last-child) {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+@media (width <= 500px) {
+  .container {
+    margin: 2;
+    padding: 20px 0;
+  }
+}

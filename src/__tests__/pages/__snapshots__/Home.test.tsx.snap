@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <main
+    class="main main"
+  >
+    <div
+      class="animateBlock green"
+    >
+      <div
+        class="animateLine"
+      >
+        Click and get the Promo Code "COSPLAY" with a 10% discount on the category
+         
+      </div>
+    </div>
+    <div
+      class="animateBlock tertiary"
+    >
+      <div
+        class="animateLine"
+      >
+        Click and get the Promo Code "GEEK-SHOP" and get 10% discount for all
+         
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <h1
+        class="title"
+      >
+        Home page
+      </h1>
+      <h2
+        class="h2Title"
+      >
+        Our Products 
+      </h2>
+      <div
+        class="catalogBlock"
+      >
+        <div
+          class="catalogItem"
+        >
+          <a
+            class="link"
+            href="/catalog/cosplay/weapon"
+          >
+            <img
+              alt="Weapons"
+              class="catalogImage"
+              src="stub-test"
+            />
+            <h3
+              class="catalogTitle"
+            >
+              Weapons
+            </h3>
+          </a>
+        </div>
+        <div
+          class="catalogItem"
+        >
+          <a
+            class="link"
+            href="/catalog/cosplay/wigs"
+          >
+            <img
+              alt="Wigs"
+              class="catalogImage"
+              src="stub-test"
+            />
+            <h3
+              class="catalogTitle"
+            >
+              Wigs
+            </h3>
+          </a>
+        </div>
+        <div
+          class="catalogItem"
+        >
+          <a
+            class="link"
+            href="/catalog/decor/figures"
+          >
+            <img
+              alt="Figures"
+              class="catalogImage"
+              src="stub-test"
+            />
+            <h3
+              class="catalogTitle"
+            >
+              Figures
+            </h3>
+          </a>
+        </div>
+        <div
+          class="catalogItem"
+        >
+          <a
+            class="link"
+            href="/catalog/decor/mugs"
+          >
+            <img
+              alt="Mugs"
+              class="catalogImage"
+              src="stub-test"
+            />
+            <h3
+              class="catalogTitle"
+            >
+              Mugs
+            </h3>
+          </a>
+        </div>
+        <div
+          class="catalogItem"
+        >
+          <a
+            class="link"
+            href="/catalog/decor/pads"
+          >
+            <img
+              alt="Pads"
+              class="catalogImage"
+              src="stub-test"
+            />
+            <h3
+              class="catalogTitle"
+            >
+              Pads
+            </h3>
+          </a>
+        </div>
+        <div
+          class="catalogItem"
+        >
+          <a
+            class="link"
+            href="/catalog/stationery/notepads"
+          >
+            <img
+              alt="Notepads"
+              class="catalogImage"
+              src="stub-test"
+            />
+            <h3
+              class="catalogTitle"
+            >
+              Notepads
+            </h3>
+          </a>
+        </div>
+        <div
+          class="catalogItem catalogItemMore"
+        >
+          <a
+            class="link"
+            href="/catalog"
+          >
+            <h3
+              class="catalogTitle"
+            >
+              Show more at Catalog
+            </h3>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

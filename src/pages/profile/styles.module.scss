@@ -1,0 +1,229 @@
+.main {
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 850px;
+  max-width: 100%;
+  margin: auto;
+  padding: 28px 40px 30px;
+  text-align: center;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+}
+
+.form {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  max-width: 600px;
+}
+
+.profileBlock {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
+}
+
+.detailPerson {
+  width: 100%;
+}
+
+.button {
+  width: 80px;
+  height: 40px;
+  font-size: 1em;
+  color: var(--text-color);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 500ms;
+}
+
+.button:hover {
+  box-shadow: -5px 5px 5px var(--secondary-color);
+  transition: all 500ms;
+  transform: translateY(-2px);
+}
+
+.chooseInfoBlock {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+  justify-content: start;
+  align-items: center;
+  width: 25%;
+}
+
+.chooseInfoItem {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 100px;
+  font-family: var(--primary-font);
+  font-size: 1.2rem;
+  color: inherit;
+  background: var(--background-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: 10px;
+  box-shadow: 4px 2px 6px var(--secondary-color);
+  cursor: pointer;
+  user-select: none;
+  transition: all 500ms;
+
+  &:active {
+    box-shadow: none;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.activeBtn {
+  border: 1px solid var(--primary-color);
+  box-shadow: 4px 2px 6px var(--primary-color);
+}
+
+.detailInfoBlock {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 75%;
+  margin: 40px auto 20px;
+}
+
+.mainFormProfile {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: start;
+}
+
+.disabled {
+  background-color: var(--disabled-color);
+  border-color: var(--disabled-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.valid {
+  box-shadow: 0 0 7px var(--secondary-color);
+}
+
+.invalid {
+  box-shadow: 0 0 7px var(--error-color);
+}
+
+.formInput {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.input {
+  width: 200px;
+  height: 30px;
+  padding: 0 5px;
+  font-family: var(--primary-font);
+  font-size: 15px;
+  text-align: start;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+.input.noMode {
+  border: 1px solid var(--background-color);
+  box-shadow: none;
+}
+
+.input.noMode:focus {
+  outline: none;
+}
+
+.newInput {
+  border: none;
+}
+
+.errorMsg {
+  width: 100%;
+  margin: -20px 0 -10px;
+  font-size: 14px;
+  text-align: right;
+  color: var(--error-color);
+}
+
+.invalid,
+.input.invalid:focus {
+  box-shadow: 0 0 7px var(--error-color);
+}
+
+.buttonBlock {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.inputWithError {
+  width: 350px;
+}
+
+@media (width <= 900px) {
+  .container {
+    min-width: 330px;
+  }
+
+  .form,
+  .profileBlock {
+    flex-flow: column nowrap;
+  }
+
+  .chooseInfoBlock {
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .detailInfoBlock {
+    width: 100%;
+  }
+
+  .inputWithError {
+    width: 250px;
+  }
+
+  .input {
+    width: 150px;
+  }
+
+  .chooseInfoItem {
+    flex: 1 1 45%;
+    box-sizing: border-box;
+    max-width: 250px;
+    height: 80px;
+  }
+}
+
+h2 {
+  margin: 0;
+}
+

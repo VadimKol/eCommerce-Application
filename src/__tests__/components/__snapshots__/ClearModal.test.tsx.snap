@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="modal"
+    >
+      <p
+        class="question"
+      >
+        Are you sure you want to clear the cart?
+      </p>
+      <div
+        class="buttons"
+      >
+        <button
+          class="button button--cancel cancel"
+          id=""
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="button button--secondary confirm"
+          id=""
+          type="button"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

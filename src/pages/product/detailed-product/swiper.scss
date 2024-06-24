@@ -1,0 +1,72 @@
+.swiper {
+  min-height: 100px;
+}
+
+.pageSwiper {
+  max-width: 100%;
+  max-height: inherit;
+}
+
+.modalSwiper {
+  max-width: 100%;
+  height: 100%;
+}
+
+.swiper-wrapper {
+  max-height: inherit;
+
+  .modalSwiper & {
+    height: 80svh;
+  }
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  min-height: 200px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  transition: color 0.3s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      color: var(--tertiary-color);
+    }
+  }
+}
+
+.swiper-pagination-bullet {
+  --swiper-pagination-bullet-inactive-opacity: 0.5;
+  --swiper-pagination-bullet-inactive-color: var(--secondary-color);
+
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 4px 4px var(--background-color);
+  transition: background-color 0.3s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      background: var(--tertiary-color);
+    }
+  }
+}
+
+.swiper-pagination-bullet-active:hover {
+  cursor: default;
+}
+
+.swiper-lazy-preloader {
+  width: 50px;
+  height: 50px;
+  border: 8px solid var(--secondary-color);
+  border-right-color: var(--primary-color);
+  border-radius: 50%;
+  animation: l2 1s infinite linear;
+  aspect-ratio: 1;
+}
