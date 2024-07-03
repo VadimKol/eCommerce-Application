@@ -54,7 +54,8 @@ const commandInfo = [
     link: 'https://rollingscopes.com/',
     textInfo: {},
     simpleText: [
-      'RSSchool is an online educational community specializing in web development and programming. It offers comprehensive, well-structured courses designed for both beginners and experienced developers. Known for its high-quality education, RSSchool provides an extensive curriculum that covers everything from basic HTML, CSS, and JavaScript to advanced technologies like React and Node.js. The school is emphasis on project-based learning allows students to build real-world projects and create impressive portfolios.',
+      'RSSchool is an online educational community specializing in web development and programming. It offers comprehensive, well-structured courses designed for both beginners and experienced developers.',
+      'Known for its high-quality education, RSSchool provides an extensive curriculum that covers everything from basic HTML, CSS, and JavaScript to advanced technologies like React and Node.js. The school is emphasis on project-based learning allows students to build real-world projects and create impressive portfolios.',
       'RSSchool thrives on a vibrant community of volunteers, including seasoned developers and alumni who mentor and support new learners.',
     ],
     github: '',
