@@ -2,12 +2,8 @@ import classNames from 'classnames';
 import { toast } from 'react-toastify';
 
 import styles from './styles.module.scss';
+import type { BlockInfoProps } from './types.ts';
 
-interface BlockInfoProps {
-  colorClass: string;
-  text: string;
-  copyText: string;
-}
 export function PromocodeLine({ colorClass, text, copyText }: BlockInfoProps): JSX.Element {
   async function handleCopyClick(): Promise<void> {
     try {
@@ -24,7 +20,7 @@ export function PromocodeLine({ colorClass, text, copyText }: BlockInfoProps): J
         handleCopyClick().catch(() => {});
       }}
     >
-      <div className={styles.animateLine}>{text} </div>
+      <div className={styles.animateLine}>{text}</div>
     </div>
   );
 }
