@@ -10,22 +10,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CatalogGrid } from '../../components/catalog-grid/CatalogGrid.tsx';
 import { PromocodeLine } from '../../components/promocode-line/PromocodeLine.tsx';
+import { bannerImages } from './data.ts';
 import styles from './styles.module.scss';
 
 export function Home(): JSX.Element {
-  const bannerImages = [
-    {
-      id: 1,
-      extraClass: 'avatar',
-      link: '/catalog/decor/figures/aang-tubbz',
-    },
-    {
-      id: 2,
-      extraClass: 'war',
-      link: '/catalog/decor/figures/stormtrooper-mini-tubbz',
-    },
-  ];
-
   return (
     <main className={classNames('main', styles.main)}>
       <PromocodeLine

@@ -2,22 +2,15 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import styles from './styles.module.scss';
+import type { BlockInfoProps, BlockParagraph } from './types.ts';
 
-interface TextInfo {
-  role?: string;
-  contributions?: string;
-  'Short bio'?: string;
-  'Soft stack'?: string;
-}
-
-interface BlockInfoProps {
-  title: string;
-  classPhoto: string;
-  link: string;
-  textInfo: TextInfo;
-  simpleText?: string[] | [];
-  github?: string;
-  isEvenBlock: boolean;
+function InfoItem({ title, content }: BlockParagraph): JSX.Element {
+  return (
+    <div>
+      <span className={styles.infoTitle}>{title}: </span>
+      {content}
+    </div>
+  );
 }
 
 export function CommandBlock({
@@ -33,40 +26,24 @@ export function CommandBlock({
 
   return (
     <div className={classNames(styles.blockInfo, { [styles.rotate as string]: isEvenBlock })}>
-      <Link to={link} className={styles.linkImage}>
+      <Link to={link} className={styles.linkImage} target="_blank">
         <div className={classNames(styles.imageCommand, styles[classPhoto])} />
       </Link>
       <div className={styles.textInfo}>
-        <Link to={link} className={styles.titleBlock}>
+        <Link to={link} className={styles.titleBlock} target="_blank">
           <h2>{title} </h2>
         </Link>
         {github && (
           <div>
             <span className={styles.infoTitle}>Github: </span>
-            <Link to={link} className={styles.link}>
+            <Link to={link} className={styles.link} target="_blank">
               {github}
             </Link>
           </div>
         )}
-
-        {textInfo.role && (
-          <div>
-            <span className={styles.infoTitle}>Role: </span>
-            {textInfo.role}
-          </div>
-        )}
-        {textInfo.contributions && (
-          <div>
-            <span className={styles.infoTitle}>Contributions: </span>
-            {textInfo.contributions}
-          </div>
-        )}
-        {textInfo['Short bio'] && (
-          <div>
-            <span className={styles.infoTitle}>Short bio: </span>
-            {textInfo['Short bio']}
-          </div>
-        )}
+        {textInfo.role && <InfoItem title="Role" content={textInfo.role} />}
+        {textInfo.contributions && <InfoItem title="Contributions" content={textInfo.contributions} />}
+        {textInfo['Short bio'] && <InfoItem title="Short bio" content={textInfo['Short bio']} />}
         {textInfo['Soft stack'] && (
           <div>
             <span className={styles.infoTitle}>Soft stack: </span>
