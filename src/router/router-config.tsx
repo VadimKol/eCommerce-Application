@@ -28,14 +28,9 @@ export const routerConfig = createRoutesFromElements(
         <Route path={ActionPaths.LOGIN} element={<Login />} />
         <Route path={ActionPaths.REGISTER} element={<Register />} />
       </Route>
-      <Route
-        path={ActionPaths.PROFILE}
-        element={
-          <AuthRoute>
-            <Profile />
-          </AuthRoute>
-        }
-      />
+      <Route element={<AuthRoute />}>
+        <Route path={ActionPaths.PROFILE} element={<Profile />} />
+      </Route>
       <Route path={ActionPaths.CART} element={<Cart />} />
       <Route path="*" element={<NoMatch />} />
     </Route>
