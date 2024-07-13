@@ -12,7 +12,6 @@ exports[`renders correctly 1`] = `
         class="animateLine"
       >
         Click and get the Promo Code "COSPLAY" with a 10% discount on the category
-         
       </div>
     </div>
     <div
@@ -22,7 +21,6 @@ exports[`renders correctly 1`] = `
         class="animateLine"
       >
         Click and get the Promo Code "GEEK-SHOP" and get 10% discount for all
-         
       </div>
     </div>
     <div

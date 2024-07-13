@@ -24,30 +24,13 @@ export const routerConfig = createRoutesFromElements(
       <Route path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName`} element={<Catalog />} />
       <Route path={`${NavigationPaths.CATALOG}/:categoryName/:subcategoryName/:productName`} element={<Product />} />
       <Route path={NavigationPaths.ABOUT} element={<About />} />
-      <Route
-        path={ActionPaths.LOGIN}
-        element={
-          <NonAuthRoute>
-            <Login />
-          </NonAuthRoute>
-        }
-      />
-      <Route
-        path={ActionPaths.REGISTER}
-        element={
-          <NonAuthRoute>
-            <Register />
-          </NonAuthRoute>
-        }
-      />
-      <Route
-        path={ActionPaths.PROFILE}
-        element={
-          <AuthRoute>
-            <Profile />
-          </AuthRoute>
-        }
-      />
+      <Route element={<NonAuthRoute />}>
+        <Route path={ActionPaths.LOGIN} element={<Login />} />
+        <Route path={ActionPaths.REGISTER} element={<Register />} />
+      </Route>
+      <Route element={<AuthRoute />}>
+        <Route path={ActionPaths.PROFILE} element={<Profile />} />
+      </Route>
       <Route path={ActionPaths.CART} element={<Cart />} />
       <Route path="*" element={<NoMatch />} />
     </Route>
