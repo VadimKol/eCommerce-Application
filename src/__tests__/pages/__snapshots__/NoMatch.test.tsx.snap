@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders NoMatch component correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="main main"
+  >
+    <div
+      class="container"
+    >
+      <h1
+        class="title"
+      >
+        404
+      </h1>
+      <p
+        class="text"
+      >
+        The page you requested was not found.
+      </p>
+      <div
+        class="buttons"
+      >
+        <button
+          class="button button--tertiary"
+          id=""
+          type="button"
+        >
+          Previous page
+        </button>
+        <button
+          class="button button--tertiary"
+          id=""
+          type="button"
+        >
+          Home page
+        </button>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

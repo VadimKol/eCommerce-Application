@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <main
+    class="main main"
+  >
+    <div
+      class="topContainer"
+    >
+      <div
+        class="filler"
+      >
+        Loading categories
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <div
+        class="infoMessage"
+      >
+        Loading product data...
+      </div>
+    </div>
+  </main>
+</div>
+`;

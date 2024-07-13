@@ -1,0 +1,179 @@
+.main {
+  padding: 20px;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
+  max-width: 100%;
+  margin: auto;
+  padding: 28px 40px 30px;
+  font-size: 2em;
+  text-align: center;
+  color: var(--primary-color);
+  background:
+    linear-gradient(var(--background-color) 0 0) padding-box,
+    linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+  border: 5px solid transparent;
+  border-radius: 10px;
+}
+
+.topContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-image: linear-gradient(to bottom, #085a1f, #088d2e);
+}
+
+.categoriesList {
+  max-width: var(--max-width);
+  margin-inline: auto;
+}
+
+.breadcrumbs {
+  align-self: flex-start;
+  width: fit-content;
+  margin-inline: calc(((100% - var(--max-width)) / 2) + 10px);
+  margin-block: 10px;
+
+  @media (width <= 1440px) {
+    & {
+      margin-inline: 10px;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--max-width);
+  padding: 0 10px;
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.title {
+  margin-block: 0;
+}
+
+.text {
+  margin-block: 0;
+}
+
+.product_box {
+  display: flex;
+  flex-grow: 1;
+  gap: 15px;
+  margin-bottom: 30px;
+
+  @media screen and (width <= 768px) {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+.products_section {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: calc(100% - 300px);
+
+  @media screen and (width <= 768px) {
+    width: 100%;
+  }
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  &_not_found {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    background:
+      linear-gradient(var(--background-color) 0 0) padding-box,
+      linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+    border: 5px solid transparent;
+    border-radius: 10px;
+  }
+
+  @media screen and (width > 1166px) {
+    grid-template-columns: repeat(auto-fit, minmax(265px, 0.34fr));
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 2px;
+  margin-bottom: 15px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  border-radius: 5px;
+  box-shadow: 0 0 2px 4px var(--background-color);
+}
+
+.sort_n_search_form {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 15px;
+
+  @media screen and (width <= 820px) {
+    flex-direction: column-reverse;
+  }
+
+  @media screen and (width <= 768px) {
+    flex-direction: initial;
+  }
+
+  @media screen and (width <= 590px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.products_item {
+  position: relative;
+  z-index: 0;
+}
+
+.not_found {
+  width: 100%;
+  padding: 0 30px;
+  font-size: 4rem;
+
+  @media screen and (width <= 1000px) {
+    font-size: 2rem;
+  }
+}
+
+.filters {
+  width: 300px;
+  height: fit-content;
+  margin-top: 45px;
+  padding-bottom: 10px;
+  font-size: 1.5em;
+  font-weight: 600;
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+
+  @media screen and (width <= 820px) {
+    margin-top: 90px;
+  }
+
+  @media screen and (width <= 768px) {
+    width: 100%;
+    margin-top: 0;
+  }
+}

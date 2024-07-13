@@ -1,0 +1,18 @@
+.footer {
+  width: 100%;
+  background-image: linear-gradient(to top, var(--primary-color), #073283);
+}
+
+.container {
+  display: flex;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding: 20px;
+}
+
+.footerItem {
+  margin: 0 auto;
+  font-size: 20px;
+  text-align: center;
+  color: var(--text-color);
+}

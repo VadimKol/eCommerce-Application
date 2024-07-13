@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <main
+    class="main main"
+  >
+    <div
+      class="infoContainer"
+    >
+      Loading cart...
+    </div>
+  </main>
+</div>
+`;

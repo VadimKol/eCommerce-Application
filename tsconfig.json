@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2022" /* Ignored by Vite bundler https://vitejs.dev/guide/features.html#target */,
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "preserve",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleDetection": "force" /* every non-declaration file is treated as a module */,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    /* Linting */
+    "strict": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true /* forbids unsafe indexing of Records and arrays */,
+    /* Path aliases */
+    "baseUrl": "",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

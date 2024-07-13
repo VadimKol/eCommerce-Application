@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    class="productDetails"
+  >
+    <div
+      class="imageSlider"
+    />
+    <div
+      class="productInfo"
+    >
+      <h1
+        class="productName"
+      />
+      <p
+        class="productDescription"
+      />
+      <div
+        class="productPrice"
+      >
+        <span
+          class="price"
+        >
+           
+        </span>
+      </div>
+      <button
+        class="button button--tertiary cartButton"
+        id=""
+        type="button"
+      >
+        Add to cart
+      </button>
+      <div
+        class="productQuantity"
+      >
+        <strong>
+          Available quantity:
+        </strong>
+         
+      </div>
+      <div
+        class="productAttributes"
+      />
+    </div>
+  </div>
+</div>
+`;

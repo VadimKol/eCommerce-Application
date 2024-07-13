@@ -1,0 +1,113 @@
+.navigation {
+  display: flex;
+  justify-content: center;
+
+  @media (width <= 768px) {
+    display: none;
+  }
+}
+
+.insideMenu.navigation {
+  @media (width <= 768px) {
+    display: flex;
+    margin-bottom: 10px;
+  }
+}
+
+.navList {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (width <= 900px) {
+    gap: 8px;
+  }
+
+  @media (width <= 768px) {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.actionsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: end;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (width <= 900px) {
+    gap: 5px;
+  }
+
+  @media (width <= 768px) {
+    display: none;
+  }
+}
+
+.insideMenu.actionsList {
+  @media (width <= 768px) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-bottom: 10px;
+    text-align: center;
+
+    &::before {
+      content: "";
+      display: block;
+      width: calc(100% + 40px);
+      height: 1px;
+      margin-block: 10px;
+      background-color: var(--text-color);
+    }
+  }
+}
+
+.actionsItem {
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child) {
+    &::after {
+      content: "|";
+      margin-left: 10px;
+
+      @media (width <= 900px) {
+        margin-left: 5px;
+      }
+
+      @media (width <= 768px) {
+        content: none;
+      }
+    }
+  }
+}
+
+.logoutButton {
+  padding: 5px;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  color: var(--text-color);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    @media (hover: hover) {
+      color: var(--tertiary-color);
+      text-decoration-color: var(--tertiary-color);
+    }
+  }
+}
